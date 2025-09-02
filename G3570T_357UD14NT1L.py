@@ -48,6 +48,8 @@ class Student(User):
     def inscription(self):
         pass
 
+    def deploy_s_menu(self):
+        pass
 
 class Teacher(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_cat):
@@ -61,6 +63,9 @@ class Teacher(User):
     def subir_notas(self):
         pass
     def crear_asignacion(self):
+        pass
+
+    def deploy_t_menu(self):
         pass
 
 
@@ -92,4 +97,45 @@ class Actividad:
         pass
     def assignment_modification(self):
         pass
+
+
+
+
+def deploy_admin_menu():
+    admin_key = True
+    while admin_key:
+        print("~"*15, "BIENVENIDO", "~"*15)
+        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Salir")
+        match admin_ops:
+            case "1":
+                pass
+            case "2":
+                pass
+            case "3":
+                pass
+            case "6":
+                print("Gracias por usar el programa...")
+                admin_key = False
+                return False
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+students_db = {}
+teachers_db = {}
+courses_db = {}
+
+key = True
+while key:
+    try:
+        user_pass = input("> User:")
+        password_pass = input("> Password: ")
+        if user_pass == "ruler" and password_pass == "admin01":
+            key = deploy_admin_menu()
+        elif user_pass in students_db and password_pass == students_db[user_pass].pass_ward:
+            students_db[user_pass].deploy_s_menu()
+        elif user_pass in teachers_db and password_pass == teachers_db[user_pass].pass_ward:
+            teachers_db[user_pass].deploy_t_menu()
+        else:
+            print("> Usuario o Contraseña incorrectos, por favor intente de nuevo...")
+
+    except Exception as e:
+        print(f"Ha ocurrido un error inesperado: {e}")
