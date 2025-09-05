@@ -74,7 +74,7 @@ class Student(User):
                         case "2":
                             print("---NOTA DE CURSO---")
                         case "3":
-                            print("Volviendo a menú principal...")
+                            print("Volviendo a menú principal....")
                             break
                 case "2":
                     print("---INSCRIPCIÓN A CURSOS---")
