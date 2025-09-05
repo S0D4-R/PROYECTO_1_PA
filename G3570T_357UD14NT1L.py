@@ -117,6 +117,8 @@ def deploy_admin_menu():
         print("~"*15, "BIENVENIDO", "~"*15)
         admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Salir\n")
         match admin_ops:
+
+
             #Creación de cursos
             case "1":
                 print("-"*15, "COURSE CREATION", "-"*15)
@@ -143,9 +145,26 @@ def deploy_admin_menu():
                 courses_db[course_id] = Curso(course_id, course_name, teacher)
                 if teacher is not None:
                     teacher.assigned_courses.append(course_id)
-            # Creación de usuarios
+
+
+            # Creación de usuarios ; dpi, address, phone, dob, password_u
             case "2":
-                pass
+
+                user_name = input("> Coloque el nombre del Usuario: ")
+                user_address = input("> Coloque la dirección del Usuario: ")
+                user_phone = input("> Coloque el teléfono del Usuario: ")
+                user_dob = input("> Coloque la fecha de nacimiento del Usuario: ")
+                user_pass = input("> Coloque la contraseña del Usuario: ")
+                user_dpi = input("> Coloque el DPI del Usuario: ")
+
+                type_conf = False
+                while not  type_conf:
+                    user_type = input("> Seleccione el tipo de usuario:\n1. Estudiante\n2. Docente\n")
+                    if user_type == "1":
+                        user_type = "S"
+                    elif user_type == "2":
+                        user_type = "T"
+
             case "3":
                 pass
             case "6":
