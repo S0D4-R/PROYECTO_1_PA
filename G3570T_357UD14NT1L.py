@@ -59,7 +59,7 @@ class Teacher(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_cat):
         super().__init__(name, dpi, address, phone, dob, password_u)
         self.__id_cat = id_cat
-        self.assigned_courses = {}
+        self.assigned_courses = []
     @property
     def codigo_catredatico(self):
         return self.__id_cat
@@ -117,6 +117,7 @@ def deploy_admin_menu():
         print("~"*15, "BIENVENIDO", "~"*15)
         admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Salir\n")
         match admin_ops:
+            #Creación de cursos
             case "1":
                 print("-"*15, "COURSE CREATION", "-"*15)
                 name_ver = False
@@ -129,18 +130,20 @@ def deploy_admin_menu():
                 teacher= None
                 if not teachers_db:
                     print("> No hay maestros disponibles...\n> Curso ha sido creado con éxito...")
-
                 else:
                     for temp_cont, workid, teacher_x in enumerate(teachers_db.keys(), start=1):
                         print(f"{temp_cont}|{teacher_x.name}|{workid} ~ ID")
                     chose_teach = False
                     while not chose_teach:
-                        pass
+                        search_work_id = input("> Coloque el ID del maestro que desea asignar: ")
+                        teacher = teachers_db[search_work_id]
 
 
                 course_id = id_creation(course_name)
                 courses_db[course_id] = Curso(course_id, course_name, teacher)
-
+                if teacher is not None:
+                    teacher.assigned_courses.append(course_id)
+            # Creación de usuarios
             case "2":
                 pass
             case "3":
