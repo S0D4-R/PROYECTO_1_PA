@@ -117,7 +117,12 @@ def deploy_admin_menu():
                 print("Gracias por usar el programa...")
                 admin_key = False
                 return False
+""" 
 
+class Facultad:
+    def __init__(self):
+        self.students_db = {}
+"""
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 students_db = {}
 teachers_db = {}
