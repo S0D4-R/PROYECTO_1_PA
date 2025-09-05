@@ -63,15 +63,17 @@ class Teacher(User):
     @property
     def codigo_catredatico(self):
         return self.__id_cat
-
+    @codigo_catredatico.setter
+    def codigo_catredatico(self, val = None):
+        pass
     def subir_notas(self):
         pass
     def crear_asignacion(self):
         pass
 
+
     def deploy_t_menu(self):
         pass
-
 
 class Curso:
     def __init__(self, id_course, name, docente):
@@ -83,6 +85,19 @@ class Curso:
 
     def reporte_x(self):
         pass
+    def mostrar_datos(self):
+        print(f"=========================\nID: {self.id_course}\n Nombre: {self.name}\n Docente: {self.teacher_assigned}\n Alumnos:")
+        if self.roster_alumnos:
+            for id, alumno in self.roster_alumnos.items():
+                pass # Se llama a una función para mostrar los datos de cada alumno
+        else:
+            print("No hay alumnos asignados")
+        print("\nAsignaciones: ")
+        if self.asignaciones:
+            for asignacion in self.asignaciones:
+                asignacion.mostrar_datos()
+        else:
+            print("No hay asignaciones asignadas")
 
 
 class Actividad:
@@ -101,6 +116,8 @@ class Actividad:
         pass
     def assignment_modification(self):
         pass
+    def mostrar_datos(self):
+        print(f"------------------------------\nValor: {self.valor_n}\n fecha: {self.date}\n apertura: {self.h_apertura}\n cierre: {self.h_cierre}\n tipo: {self.type_a}\n status: {self.status}")
 
 
 def id_creation(name_x):
