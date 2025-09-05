@@ -45,8 +45,17 @@ class Student(User):
 
     def entregar_tarea(self):
         pass
-    def inscription(self):
-        pass
+
+    def inscription(self,course_name):
+        for curse in courses_db.values():
+            if curse.name == course_name:
+                if curse.id_course in self.assigned_c:
+                    print("Ya te asignaste a este curso...")
+                else:
+                    self.assigned_c[curse.id_course] = curse
+                    curse.roster_alumnos[self.__id_s] = self
+                    print(f"Inscripción al curso {curse.name} compeltada con exito!")
+        print("Curso no encontrado...")
 
     def deploy_s_menu(self):
         pass
