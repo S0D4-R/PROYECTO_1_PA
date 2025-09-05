@@ -66,7 +66,7 @@ class Student(User):
             match option:
                 case "1":
                     print("---CURSOS---")
-                    print(f"1.Entregar Tareas\n2.Ver notas\n3.Volver a menu principal")
+                    print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
                     sub_option= input("Igrese una ocpion:")
                     match sub_option:
                         case "1":
@@ -74,13 +74,19 @@ class Student(User):
                         case "2":
                             print("---NOTA DE CURSO---")
                         case "3":
+                            print("---NOTA DE ACTIVIDADES---")
+                        case "4":
                             print("Volviendo a menú principal....")
                             break
+                        case _:
+                            print("Opcion no valida :(...")
                 case "2":
                     print("---INSCRIPCIÓN A CURSOS---")
                 case "3":
                     print("Saliendo del sistema...")
                     break
+                case _:
+                    print("Opcion no valida ;(...")
 
 class Teacher(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_cat):
