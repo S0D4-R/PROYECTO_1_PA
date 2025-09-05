@@ -7,6 +7,10 @@ DEVELOPERS:
 import os
 import time
 import random
+
+students_db = {}
+teachers_db = {}
+courses_db = {}
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
@@ -99,16 +103,44 @@ class Actividad:
         pass
 
 
+def id_creation(name_x):
+    ran_code1 = random.randint(0, 50)
+    ran_code2 = random.randint(0, 50)
+    id_p1 = name_x.strip()
 
+    id_gen = id_p1[0].upper() + id_p1[1].upper() + id_p1[2].upper() + str(ran_code1) + str(ran_code2)
+    return id_gen
 
 def deploy_admin_menu():
     admin_key = True
     while admin_key:
         print("~"*15, "BIENVENIDO", "~"*15)
-        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Salir")
+        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Salir\n")
         match admin_ops:
             case "1":
-                pass
+                print("-"*15, "COURSE CREATION", "-"*15)
+                name_ver = False
+                while not name_ver:
+                    course_name = input("> Nombre del curso: ")
+                    if len(course_name) <= 3:
+                        print("> El nombre no es válido")
+                    else:
+                        name_ver = True
+                teacher= None
+                if not teachers_db:
+                    print("> No hay maestros disponibles...\n> Curso ha sido creado con éxito...")
+
+                else:
+                    for temp_cont, workid, teacher_x in enumerate(teachers_db.keys(), start=1):
+                        print(f"{temp_cont}|{teacher_x.name}|{workid} ~ ID")
+                    chose_teach = False
+                    while not chose_teach:
+                        pass
+
+
+                course_id = id_creation(course_name)
+                courses_db[course_id] = Curso(course_id, course_name, teacher)
+
             case "2":
                 pass
             case "3":
@@ -124,14 +156,12 @@ class Facultad:
         self.students_db = {}
 """
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-students_db = {}
-teachers_db = {}
-courses_db = {}
+
 
 key = True
 while key:
     try:
-        user_pass = input("> User:")
+        user_pass = input("> User: ")
         password_pass = input("> Password: ")
         if user_pass == "ruler" and password_pass == "admin01":
             key = deploy_admin_menu()
