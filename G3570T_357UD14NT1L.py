@@ -8,6 +8,7 @@ import os
 import time
 import random
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
         self.name = name
@@ -81,7 +82,15 @@ class Student(User):
                         case _:
                             print("Opcion no valida :(...")
                 case "2":
-                    print("---INSCRIPCIÓN A CURSOS---")
+                    print("----INSCRIPCIÓN A CURSOS----")
+                    if not courses_db:
+                        print("No hay cursos disnponibles...")
+                    print("Cursos disponibles")
+                    for course in courses_db.values():
+                        print(f"{course.name} - Docente:{course.teacher_assigned.name}")
+                    course_name= input("Ingrese nombre de curso a inscribir:")
+                    self.inscription(course_name)
+
                 case "3":
                     print("Saliendo del sistema...")
                     break
