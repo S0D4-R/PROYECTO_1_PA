@@ -68,7 +68,6 @@ class Teacher(User):
         pass
     def crear_asignacion(self, curso):
         pass
-
     def deploy_t_menu(self):
         while True:
             print("\n\n========== MENÚ DE CATEDRÁTICOS ==========\n1. Ver cursos\n2. Salir")
@@ -84,7 +83,6 @@ class Teacher(User):
                         course_select = input("Ingrese la ID del curso: ")
                         if course_select in self.assigned_courses.keys():
                             course = self.assigned_courses[course_select]
-
                             print("\nOpciones\1. Crear asignación\n2. Subir notas")
                             subselect = input("Ingrese la opción que desea elegir: ")
                             match subselect:
