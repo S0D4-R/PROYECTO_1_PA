@@ -84,6 +84,7 @@ class Teacher(User):
                         course_select = input("Ingrese la ID del curso: ")
                         if course_select in self.assigned_courses.keys():
                             course = self.assigned_courses[course_select]
+
                             print("\nOpciones\1. Crear asignación\n2. Subir notas")
                             subselect = input("Ingrese la opción que desea elegir: ")
                             match subselect:
