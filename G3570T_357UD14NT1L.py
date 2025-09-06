@@ -7,6 +7,7 @@ DEVELOPERS:
 import os
 import time
 import random
+from unittest import case
 
 students_db = {}
 teachers_db = {}
@@ -39,7 +40,7 @@ class User:
 
 class Student(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_student, gen):
-        super.__init__(name, dpi, address, phone, dob, password_u)
+        super().__init__(name, dpi, address, phone, dob, password_u)
         self.__id_s = id_student
         self.gen = gen
         self.assigned_c = {}
@@ -63,17 +64,42 @@ class Teacher(User):
     @property
     def codigo_catredatico(self):
         return self.__id_cat
-    @codigo_catredatico.setter
-    def codigo_catredatico(self, val = None):
+    def subir_notas(self, curso):
         pass
-    def subir_notas(self):
+    def crear_asignacion(self, curso):
         pass
-    def crear_asignacion(self):
-        pass
-
 
     def deploy_t_menu(self):
-        pass
+        while True:
+            print("\n\n========== MENÚ DE CATEDRÁTICOS ==========\n1. Ver cursos\n2. Salir")
+            select_cat = input("Seleccione una opción")
+            match select_cat:
+                case "1":
+                    if not self.assigned_courses:
+                        print("No hay cursos asignados")
+                    else:
+                        for clave, data in self.assigned_courses.items():
+                            print(f"{clave}, {data.id_course}, {data.name}")
+                            data.mostrar_datos()
+                        course_select = input("Ingrese la ID del curso: ")
+                        if course_select in self.assigned_courses.keys():
+                            course = self.assigned_courses[course_select]
+                            print("\nOpciones\1. Crear asignación\n2. Subir notas")
+                            subselect = input("Ingrese la opción que desea elegir: ")
+                            match subselect:
+                                case "1":
+                                    self.crear_asignacion(course)
+                                case "2":
+                                    self.subir_notas(course)
+                                case _:
+                                    print("Opción inválida")
+                        else:
+                            print("La clave del curso no existe")
+                case "2":
+                    print("Saliendo...")
+                    break
+                case _:
+                    print("Opción inválida")
 
 class Curso:
     def __init__(self, id_course, name, docente):
