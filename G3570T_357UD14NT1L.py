@@ -8,10 +8,9 @@ import os
 import time
 import random
 
-students_db = {}
-teachers_db = {}
-courses_db = {}
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
         self.name = name
@@ -120,11 +119,11 @@ def id_creation(name_x, typeP):
     else:
         return  None
 
-def deploy_admin_menu():
+def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
-        print("~"*15, "BIENVENIDO", "~"*15)
-        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Salir\n")
+        print("\n~"*15, "BIENVENIDO", "~"*15)
+        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Asignar Maestros\n7. Salir\n")
         match admin_ops:
 
 
@@ -139,19 +138,19 @@ def deploy_admin_menu():
                     else:
                         name_ver = True
                 teacher= None
-                if not teachers_db:
+                if not faculty.teachers_db:
                     print("> No hay maestros disponibles...\n> Curso ha sido creado con éxito...")
                 else:
-                    for temp_cont, workid, teacher_x in enumerate(teachers_db.keys(), start=1):
+                    for temp_cont, workid, teacher_x in enumerate(faculty.teachers_db.keys(), start=1):
                         print(f"{temp_cont}|{teacher_x.name}|{workid} ~ ID")
                     chose_teach = False
                     while not chose_teach:
                         search_work_id = input("> Coloque el ID del maestro que desea asignar: ")
-                        teacher = teachers_db[search_work_id]
+                        teacher = faculty.teachers_db[search_work_id]
 
 
                 course_id = id_creation(course_name, "C")
-                courses_db[course_id] = Curso(course_id, course_name, teacher)
+                faculty.courses_db[course_id] = Curso(course_id, course_name, teacher)
                 if teacher is not None:
                     teacher.assigned_courses.append(course_id)
 
@@ -173,26 +172,49 @@ def deploy_admin_menu():
                     if user_type == "1":
                         user_type = "S"
                         user_id = id_creation("", user_type)
-                        students_db[user_id] = Student(user_name,user_dpi,user_address,user_phone,user_dob,user_pass,user_id,user_inscr_year)
+                        faculty.students_db[user_id] = Student(user_name,user_dpi,user_address,user_phone,user_dob,user_pass,user_id,user_inscr_year)
                     elif user_type == "2":
                         user_type = "T"
                         user_id = id_creation("", user_type)
-                        teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob, user_pass, user_id)
+                        faculty.teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob, user_pass, user_id)
+
 
             case "3":
-                pass
+                print("-"*15, "CURSOS DISPONIBLES", "-"*15)
+                for index, course in enumerate(faculty.courses_db.values(), start=1):
+                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+
+
+            case "4":
+                print("-" * 15, "ALUMNOS REGISTRADOS", "-" * 15)
+                for index, course in enumerate(faculty.students_db.values(), start=1):
+                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+
+            case "5":
+                print("-" * 15, "MAESTROS REGISTRADOS", "-" * 15)
+                for index, course in enumerate(faculty.teachers_db.values(), start=1):
+                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+
             case "6":
-                print("Gracias por usar el programa...")
+                print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
+                for index, course in enumerate(faculty.courses_db.values(), start=1):
+                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+
+
+            case "7":
+                print("> Gracias por usar el programa...")
                 admin_key = False
                 return False
-""" 
 
-class Facultad:
+
+class Database:
     def __init__(self):
         self.students_db = {}
-"""
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        self.teachers_db = {}
+        self.courses_db = {}
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+engineering_faculty = Database()
 
 key = True
 while key:
@@ -200,11 +222,11 @@ while key:
         user_pass = input("> User: ")
         password_pass = input("> Password: ")
         if user_pass == "ruler" and password_pass == "admin01":
-            key = deploy_admin_menu()
-        elif user_pass in students_db and password_pass == students_db[user_pass].pass_ward:
-            students_db[user_pass].deploy_s_menu()
-        elif user_pass in teachers_db and password_pass == teachers_db[user_pass].pass_ward:
-            teachers_db[user_pass].deploy_t_menu()
+            key = deploy_admin_menu(engineering_faculty)
+        elif user_pass in engineering_faculty.students_db and password_pass == engineering_faculty.students_db[user_pass].pass_ward:
+            engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
+        elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[user_pass].pass_ward:
+            engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
         else:
             print("> Usuario o Contraseña incorrectos, por favor intente de nuevo...")
 
