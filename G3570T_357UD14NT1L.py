@@ -103,13 +103,22 @@ class Actividad:
         pass
 
 
-def id_creation(name_x):
+def id_creation(name_x, typeP):
     ran_code1 = random.randint(1000, 9999)
     ran_code2 = random.randint(0, 9)
-    id_p1 = name_x.strip()
+    if typeP == "C":
+        id_p1 = name_x.strip()
 
-    id_gen = id_p1[0].upper() + id_p1[1].upper() + id_p1[2].upper() + str(ran_code1) + str(ran_code2)
-    return id_gen
+        id_gen = id_p1[0].upper() + id_p1[1].upper() + id_p1[2].upper() + str(ran_code1) + str(ran_code2)
+        return id_gen
+    elif typeP == "S":
+        id_gen = "STU" + str(ran_code1) + str(ran_code2)
+        return id_gen
+    elif typeP == "T":
+        id_gen = "DOC" + str(ran_code1) + str(ran_code2)
+        return id_gen
+    else:
+        return  None
 
 def deploy_admin_menu():
     admin_key = True
@@ -141,7 +150,7 @@ def deploy_admin_menu():
                         teacher = teachers_db[search_work_id]
 
 
-                course_id = id_creation(course_name)
+                course_id = id_creation(course_name, "C")
                 courses_db[course_id] = Curso(course_id, course_name, teacher)
                 if teacher is not None:
                     teacher.assigned_courses.append(course_id)
@@ -156,15 +165,19 @@ def deploy_admin_menu():
                 user_dob = input("> Coloque la fecha de nacimiento del Usuario: ")
                 user_pass = input("> Coloque la contraseña del Usuario: ")
                 user_dpi = input("> Coloque el DPI del Usuario: ")
+                user_inscr_year = input("> Coloque el año de inscripción: ")
 
                 type_conf = False
                 while not  type_conf:
                     user_type = input("> Seleccione el tipo de usuario:\n1. Estudiante\n2. Docente\n")
                     if user_type == "1":
                         user_type = "S"
-
+                        user_id = id_creation("", user_type)
+                        students_db[user_id] = Student(user_name,user_dpi,user_address,user_phone,user_dob,user_pass,user_id,user_inscr_year)
                     elif user_type == "2":
                         user_type = "T"
+                        user_id = id_creation("", user_type)
+                        teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob, user_pass, user_id)
 
             case "3":
                 pass
