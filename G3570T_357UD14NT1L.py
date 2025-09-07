@@ -405,7 +405,7 @@ class Database:
         except FileNotFoundError:
             print("No existe Cursos.txt, se creara al guardar...")
 
-#Ola
+#Ol
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
 
