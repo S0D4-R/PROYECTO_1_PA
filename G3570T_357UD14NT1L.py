@@ -361,6 +361,20 @@ class Database:
         self.students_db = {}
         self.teachers_db = {}
         self.courses_db = {}
+        self.cargar_informacion()
+
+    def cargar_informacion(self):
+        try:
+            with open("estudiantes.txt","r",enconding="uft-8") as archivo_estudiantes:
+                for linea in archivo_estudiantes:
+                    linea= linea.strip()
+                    if linea:
+                        id_s, name, dpi, address, phone, dob, password, gen = linea.split(":")
+                        alumno= Student(name,dpi,address,phone,dob,password,gen)
+                        self.students_db[id_s] = alumno
+                        print("Estudiantes importados desde el archivo estudiantes.txt")
+        except FileExistsError:
+            print("No existe estudiantes.txt, se creara al guardar...")
 #Ola
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
