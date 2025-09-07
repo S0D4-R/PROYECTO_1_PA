@@ -395,7 +395,7 @@ class Database:
         self.teachers_db = {}
         self.courses_db = {}
 
-#Ola
+#Ol
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
 
