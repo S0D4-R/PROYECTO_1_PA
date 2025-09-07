@@ -6,9 +6,12 @@ DEVELOPERS:
 """
 import os
 import time
+import datetime
 import random
 from unittest import case
-
+def courseError(Exception): . . .
+def fechaFormatError(Exception): . . .
+def horaFormatError(Exception): . . .
 students_db = {}
 teachers_db = {}
 courses_db = {}
@@ -66,8 +69,84 @@ class Teacher(User):
         return self.__id_cat
     def subir_notas(self, curso):
         pass
-    def crear_asignacion(self, curso):
-        pass
+    def crear_asignacion(self, curso=None):
+        if not self.assigned_courses.values():
+            print("Aún no está a cargo de un curso, no puede crear actividades")
+        else:
+            try:
+                if not curso:
+                    curso = input("Ingrese el nombre del curso de la asignación: ")
+                if not any(curso = course.name for course in self.assigned_courses.values()):
+                    raise courseError("El curso asignado no existe")
+                for id, curso_option in self.assigned_courses.items():
+                    if curso_option.name == curso:
+                        curso_search = self.assigned_courses[id]
+
+
+                val_net = int(input("Ingrese el valor neto de la asignación:"))
+                val_clasif = 0
+                fecha = input("Ingrese la fecha límite (formato dd-mm-aaaa): ")
+                if "-" in fecha:
+                    secciones = fecha.split("-")
+                    if len(secciones) != 3:
+                        raise fechaFormatError("Debe ingresar el formato dd-mm-aaaa")
+                    if any(False == seccion.isdigit() for seccion in secciones):
+                        raise fechaFormatError("Solo puede ingresar números (además de los guiones de separación)")
+                    if len(secciones[0]) != 2:
+                        raise fechaFormatError("El día debe tener 2 valores")
+                    if len(secciones[1]) != 2:
+                        raise fechaFormatError("El mes debe tener 2 valores")
+                    if len(secciones[2]) != 4:
+                        raise fechaFormatError("El año debe tener 4 valores")
+                    secciones[0] = int(secciones[0])
+                    secciones[1] = int(secciones[1])
+                    secciones[2] = int(secciones[2])
+                else:
+                    raise fechaFormatError("Debe ingresar el formato dd-mm-aaaa")
+
+                hora_open = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
+                if ":" in hora_open:
+                    secciones2 = hora_open.split(":")
+                    if len(secciones2) != 2:
+                        raise horaFormatError("Debe ingresar el formato hh:mm")
+                    if any(False == seccion.isdigit() for seccion in secciones2):
+                        raise horaFormatError("Solo puede ingresar números (además de los dos puntos)")
+                    if len(secciones2[0]) != 2:
+                        raise horaFormatError("La hora debe tener 2 valores")
+                    if len(secciones2[1]) != 2:
+                        raise horaFormatError("Los deben tener 2 valores")
+                    secciones2[0] = int(secciones2[0])
+                    secciones2[1] = int(secciones2[1])
+                hora_close = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
+                if ":" in hora_close:
+                    secciones3 = hora_close.split(":")
+                    if len(secciones3) != 2:
+                        raise horaFormatError("Debe ingresar el formato hh:mm")
+                    if any(False == seccion.isdigit() for seccion in secciones3):
+                        raise horaFormatError("Solo puede ingresar números (además de los dos puntos)")
+                    if len(secciones3[0]) != 2:
+                        raise horaFormatError("La hora debe tener 2 valores")
+                    if len(secciones3[1]) != 2:
+                        raise horaFormatError("Los deben tener 2 valores")
+                    secciones3[0] = int(secciones3[0])
+                    secciones3[1] = int(secciones3[1])
+                else:
+                    raise horaFormatError("Debe ingresar el formato hh:mm")
+                tipo = input("Ingrese el tipo de asignación: ")
+                assign = Actividad(val_net, val_clasif, fecha, hora_open, hora_close, tipo)
+                curso_search.asignaciones.append(assign)
+
+
+            except ValueError:
+                print("Ingrese solo números enteros")
+            except fechaFormatError as e:
+                print(e)
+            except horaFormatError as e:
+                print(e)
+            except courseError as e:
+                print(e)
+
+
     def deploy_t_menu(self):
         while True:
             print("\n\n========== MENÚ DE CATEDRÁTICOS ==========\n1. Ver cursos\n2. Salir")
@@ -126,14 +205,32 @@ class Curso:
 
 
 class Actividad:
-    def __init__(self, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a, status):
+    def __init__(self, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
         self.valor_n = valor_neto
         self.valor_dc = valor_de_calificacion
-        self.date = date
-        self.h_apertura = h_apertura
-        self.h_cierre = h_cierre
+        self.date = datetime.datetime.strptime(date, "%d/%m/%Y").date()
+        self.h_apertura = datetime.datetime.strptime(h_apertura, "%H:%M").time()
+        self.h_cierre = datetime.datetime.strptime(h_cierre, "%H:%M").time()
         self.type_a = type_a
-        self.status = status
+        self.status = False
+
+    def set_status(self):
+        ahora = datetime.datetime.now()
+        ahora_fecha = ahora.date()
+        ahora_hora = ahora.time()
+        if ahora_fecha > self.date:
+            self.status = False
+        elif ahora_fecha == self.date:
+            if self.h_apertura <= ahora_hora <= self.h_cierre:
+                self.status = True
+            else:
+                self.status = False
+        else:
+            if ahora_hora > self.h_apertura:
+                self.status = True
+            else:
+                self.status = False
+
 
     def auto_cierre(self):
         pass
