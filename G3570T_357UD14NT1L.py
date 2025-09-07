@@ -9,9 +9,9 @@ import time
 import datetime
 import random
 from unittest import case
-def courseError(Exception): . . .
-def fechaFormatError(Exception): . . .
-def horaFormatError(Exception): . . .
+def courseError(Exception): pass
+def fechaFormatError(Exception): pass
+def horaFormatError(Exception): pass
 students_db = {}
 teachers_db = {}
 courses_db = {}
@@ -84,7 +84,7 @@ class Teacher(User):
             try:
                 if not curso:
                     curso = input("Ingrese el nombre del curso de la asignación: ")
-                if not any(curso = course.name for course in self.assigned_courses.values()):
+                if not any(curso == course.name for course in self.assigned_courses.values()):
                     raise courseError("El curso asignado no existe")
                 for id, curso_option in self.assigned_courses.items():
                     if curso_option.name == curso:
@@ -271,7 +271,7 @@ def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
         print("\n~"*15, "BIENVENIDO", "~"*15)
-        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Asignar Maestros\n7. Salir\n")
+        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Asignar Maestros\n7. Guardar\n8. Salir\n")
         match admin_ops:
 
 
@@ -345,12 +345,45 @@ def deploy_admin_menu(faculty):
                     print(teacher_x.display_info())
 
             case "6":
-                print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
-                for index, course in enumerate(faculty.courses_db.values(), start=1):
-                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+                if not faculty.teachers_db:
+                    print("> No hay maestros disponibles...")
+                else:
+                    print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
+                    for index, course in enumerate(faculty.courses_db.values(), start=1):
+                        if course.teacher_assigned is None:
+                            print(f"> {index}. {course.name}|ID: {course.id_course}")
+
+                    calss_conmf = False
+                    while not  calss_conmf:
+                        class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
+                        if class_assignment not in faculty.courses_db:
+                            print("> Ese ID no es válido...")
+                        else:
+                            calss_conmf = True
+
+                    print("-"*15, f"{courses_db[class_assignment].name}", "-"*15)
+                    print("> Lista de maestros disponibles: ")
+                    for index_x, teacher_y in enumerate(faculty.teachers_db.values(), start=1):
+                        print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.codigo_catredatico}")
+
+                    teach_conf = False
+                    while not  teach_conf:
+                        teacher_assignment = input("> Coloque el ID del maestro al que quiere agregar: ")
+                        if teacher_assignment not in faculty.teachers_db:
+                            print("> Ese ID no es válido...")
+                        else:
+                            teach_conf = True
+                    faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment]
+                    faculty.teachers_db[teacher_assignment].assigned_courses.append(class_assignment)
 
 
-            case "7":
+            case "8":
+                print("> Gracias por usar el programa...")
+                admin_key = False
+                return False
+
+
+            case "8":
                 print("> Gracias por usar el programa...")
                 admin_key = False
                 return False
