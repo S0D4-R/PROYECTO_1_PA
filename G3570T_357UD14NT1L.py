@@ -220,6 +220,7 @@ class Database:
         self.teachers_db = {}
         self.courses_db = {}
 
+#Ola
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
 
