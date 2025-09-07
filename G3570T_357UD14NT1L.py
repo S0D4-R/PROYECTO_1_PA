@@ -58,7 +58,7 @@ class Student(User):
         pass
 
     def display_info(self):
-        return f"{self.name}|Carnet: "
+        return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
     def inscription(self):
         pass
@@ -361,7 +361,6 @@ class Database:
         self.students_db = {}
         self.teachers_db = {}
         self.courses_db = {}
-
 #Ola
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
