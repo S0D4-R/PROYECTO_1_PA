@@ -104,8 +104,8 @@ class Actividad:
 
 
 def id_creation(name_x):
-    ran_code1 = random.randint(0, 50)
-    ran_code2 = random.randint(0, 50)
+    ran_code1 = random.randint(1000, 9999)
+    ran_code2 = random.randint(0, 9)
     id_p1 = name_x.strip()
 
     id_gen = id_p1[0].upper() + id_p1[1].upper() + id_p1[2].upper() + str(ran_code1) + str(ran_code2)
@@ -162,6 +162,7 @@ def deploy_admin_menu():
                     user_type = input("> Seleccione el tipo de usuario:\n1. Estudiante\n2. Docente\n")
                     if user_type == "1":
                         user_type = "S"
+
                     elif user_type == "2":
                         user_type = "T"
 
