@@ -135,6 +135,8 @@ class Teacher(User):
                 tipo = input("Ingrese el tipo de asignación: ")
                 assign = Actividad(val_net, val_clasif, fecha, hora_open, hora_close, tipo)
                 curso_search.asignaciones.append(assign)
+
+
             except ValueError:
                 print("Ingrese solo números enteros")
             except fechaFormatError as e:
@@ -203,16 +205,32 @@ class Curso:
 
 
 class Actividad:
-    def __init__(self, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a, status):
+    def __init__(self, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
         self.valor_n = valor_neto
         self.valor_dc = valor_de_calificacion
-        self.date = date
-        self.h_apertura = h_apertura
-        self.h_cierre = h_cierre
+        self.date = datetime.datetime.strptime(date, "%d/%m/%Y").date()
+        self.h_apertura = datetime.datetime.strptime(h_apertura, "%H:%M").time()
+        self.h_cierre = datetime.datetime.strptime(h_cierre, "%H:%M").time()
         self.type_a = type_a
-        self.status = status
+        self.status = False
+
     def set_status(self):
         ahora = datetime.datetime.now()
+        ahora_fecha = ahora.date()
+        ahora_hora = ahora.time()
+        if ahora_fecha > self.date:
+            self.status = False
+        elif ahora_fecha == self.date:
+            if self.h_apertura <= ahora_hora <= self.h_cierre:
+                self.status = True
+            else:
+                self.status = False
+        else:
+            if ahora_hora > self.h_apertura:
+                self.status = True
+            else:
+                self.status = False
+
 
     def auto_cierre(self):
         pass
