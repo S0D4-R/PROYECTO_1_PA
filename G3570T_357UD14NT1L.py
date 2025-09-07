@@ -345,9 +345,19 @@ def deploy_admin_menu(faculty):
                     print(teacher_x.display_info())
 
             case "6":
-                print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
-                for index, course in enumerate(faculty.courses_db.values(), start=1):
-                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+                if not faculty.teachers_db:
+                    print("> No hay maestros disponibles...")
+                else:
+                    print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
+                    for index, course in enumerate(faculty.courses_db.values(), start=1):
+                        if course.teacher_assigned is None:
+                            print(f"> {index}. {course.name}|ID: {course.id_course}")
+
+                    class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
+                    print("-"*15, f"{courses_db[class_assignment].name}", "-"*15)
+                    print("> Lista de maestros disponibles: ")
+                    for index_x, teacher_y in enumerate(teachers_db.values(), start=1):
+                        print(f"")
 
 
             case "7":
