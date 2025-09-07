@@ -9,9 +9,9 @@ import time
 import datetime
 import random
 from unittest import case
-def courseError(Exception): . . .
-def fechaFormatError(Exception): . . .
-def horaFormatError(Exception): . . .
+def courseError(Exception): pass
+def fechaFormatError(Exception): pass
+def horaFormatError(Exception): pass
 students_db = {}
 teachers_db = {}
 courses_db = {}
@@ -84,7 +84,7 @@ class Teacher(User):
             try:
                 if not curso:
                     curso = input("Ingrese el nombre del curso de la asignación: ")
-                if not any(curso = course.name for course in self.assigned_courses.values()):
+                if not any(curso == course.name for course in self.assigned_courses.values()):
                     raise courseError("El curso asignado no existe")
                 for id, curso_option in self.assigned_courses.items():
                     if curso_option.name == curso:
@@ -271,7 +271,7 @@ def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
         print("\n~"*15, "BIENVENIDO", "~"*15)
-        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Asignar Maestros\n7. Salir\n")
+        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Asignar Maestros\n7. Guardar\n8. Salir\n")
         match admin_ops:
 
 
@@ -377,7 +377,13 @@ def deploy_admin_menu(faculty):
                     faculty.teachers_db[teacher_assignment].assigned_courses.append(class_assignment)
 
 
-            case "7":
+            case "8":
+                print("> Gracias por usar el programa...")
+                admin_key = False
+                return False
+
+
+            case "8":
                 print("> Gracias por usar el programa...")
                 admin_key = False
                 return False
