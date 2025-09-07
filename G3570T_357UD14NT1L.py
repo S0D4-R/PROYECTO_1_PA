@@ -58,7 +58,7 @@ class Student(User):
         pass
 
     def display_info(self):
-        return f"{self.name}|Carnet: "
+        return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
     def inscription(self):
         pass
@@ -361,6 +361,49 @@ class Database:
         self.students_db = {}
         self.teachers_db = {}
         self.courses_db = {}
+        self.cargar_estudiantes()
+        self.cargar_profesores()
+        self.cargar_cursos()
+
+    def cargar_estudiantes(self):
+        try:
+            with open("estudiantes.txt","r",enconding="uft-8") as archivo_estudiantes:
+                for linea in archivo_estudiantes:
+                    linea= linea.strip()
+                    if linea:
+                        id_s, name, dpi, address, phone, dob, password, gen = linea.split(":")
+                        alumno= Student(name,dpi,address,phone,dob,password,gen)
+                        self.students_db[id_s] = alumno
+                print("Estudiantes importados desde el archivo estudiantes.txt")
+        except FileNotFoundError:
+            print("No existe estudiantes.txt, se creara al guardar...")
+
+    def cargar_profesores(self):
+        try:
+            with open("Profesores.txt","r",enconding="uft-8" ) as archivo_profesores:
+                for linea in archivo_profesores:
+                    linea = linea.strip()
+                    if linea:
+                        id_t, name, dpi, address, phone, dob, password = linea.split(":")
+                        maestro = Teacher(name, dpi, address, phone, dob, password, id_t)
+                        self.teachers_db[id_t]=maestro
+                print("Maestros inportados desde el archivo profesores.txt")
+        except FileNotFoundError:
+            print("No existe profesores.txt, se creara al guardar")
+
+    def cargar_cursos(self):
+        try:
+            with open("Cursos.txt","r",enconding="uft-8") as archivo_cursos:
+                for linea in archivo_cursos:
+                    linea = linea.strip()
+                    if linea:
+                        id_c, name, teacher_id = linea.split(":")
+                        teacher = self.teachers_db.get(teacher_id)
+                        curso = Curso(id_c, name, teacher)
+                        self.courses_db[id_c] = curso
+                print("Cursos importados...")
+        except FileNotFoundError:
+            print("No existe Cursos.txt, se creara al guardar...")
 
 #Ola
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
