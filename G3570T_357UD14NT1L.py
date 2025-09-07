@@ -353,13 +353,26 @@ def deploy_admin_menu(faculty):
                         if course.teacher_assigned is None:
                             print(f"> {index}. {course.name}|ID: {course.id_course}")
 
-                    class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
+                    calss_conmf = False
+                    while not  calss_conmf:
+                        class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
+                        if class_assignment not in faculty.courses_db:
+                            print("> Ese ID no es válido...")
+                        else:
+                            calss_conmf = True
+
                     print("-"*15, f"{courses_db[class_assignment].name}", "-"*15)
                     print("> Lista de maestros disponibles: ")
                     for index_x, teacher_y in enumerate(faculty.teachers_db.values(), start=1):
                         print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.codigo_catredatico}")
 
-                    teacher_assignment = input("> Coloque el ID del maestro al que quiere agregar: ")
+                    teach_conf = False
+                    while not  teach_conf:
+                        teacher_assignment = input("> Coloque el ID del maestro al que quiere agregar: ")
+                        if teacher_assignment not in faculty.teachers_db:
+                            print("> Ese ID no es válido...")
+                        else:
+                            teach_conf = True
                     faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment]
                     faculty.teachers_db[teacher_assignment].assigned_courses.append(class_assignment)
 
