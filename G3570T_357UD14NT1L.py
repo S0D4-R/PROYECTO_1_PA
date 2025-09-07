@@ -7,8 +7,6 @@ DEVELOPERS:
 import os
 import time
 import random
-
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class User:
@@ -36,6 +34,9 @@ class User:
         return self.__password
 
 
+    def display_info(self):
+        pass
+
 class Student(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_student, gen):
         super.__init__(name, dpi, address, phone, dob, password_u)
@@ -48,6 +49,10 @@ class Student(User):
 
     def entregar_tarea(self):
         pass
+
+    def display_info(self):
+        return f"{self.name}|Carnet: "
+
     def inscription(self):
         pass
 
@@ -65,6 +70,8 @@ class Teacher(User):
 
     def subir_notas(self):
         pass
+    def display_info(self):
+        return f"{self.name}|Carnet: "
     def crear_asignacion(self):
         pass
 
@@ -187,13 +194,13 @@ def deploy_admin_menu(faculty):
 
             case "4":
                 print("-" * 15, "ALUMNOS REGISTRADOS", "-" * 15)
-                for index, course in enumerate(faculty.students_db.values(), start=1):
-                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+                for index, student in enumerate(faculty.students_db.values(), start=1):
+                    print(student.display_info())
 
             case "5":
                 print("-" * 15, "MAESTROS REGISTRADOS", "-" * 15)
-                for index, course in enumerate(faculty.teachers_db.values(), start=1):
-                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+                for index, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
+                    print(teacher_x.display_info())
 
             case "6":
                 print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
