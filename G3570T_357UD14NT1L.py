@@ -363,6 +363,7 @@ class Database:
         self.courses_db = {}
         self.cargar_estudiantes()
         self.cargar_profesores()
+        self.cargar_cursos()
 
     def cargar_estudiantes(self):
         try:
@@ -389,6 +390,20 @@ class Database:
                 print("Maestros inportados desde el archivo profesores.txt")
         except FileNotFoundError:
             print("No existe profesores.txt, se creara al guardar")
+
+    def cargar_cursos(self):
+        try:
+            with open("Cursos.txt","r",enconding="uft-8") as archivo_cursos:
+                for linea in archivo_cursos:
+                    linea = linea.strip()
+                    if linea:
+                        id_c, name, teacher_id = linea.split(":")
+                        teacher = self.teachers_db.get(teacher_id)
+                        curso = Curso(id_c, name, teacher)
+                        self.courses_db[id_c] = curso
+                print("Cursos importados...")
+        except FileNotFoundError:
+            print("No existe Cursos.txt, se creara al guardar...")
 
 #Ola
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
