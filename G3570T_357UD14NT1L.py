@@ -9,9 +9,9 @@ import time
 import datetime
 import random
 from unittest import case
-def courseError(Exception): . . .
-def fechaFormatError(Exception): . . .
-def horaFormatError(Exception): . . .
+def courseError(Exception): pass
+def fechaFormatError(Exception): pass
+def horaFormatError(Exception): pass
 students_db = {}
 teachers_db = {}
 courses_db = {}
@@ -75,20 +75,20 @@ class Teacher(User):
     def codigo_catredatico(self):
         return self.__id_cat
 
-    def subir_notas(self):
+    def subir_notas(self, curso = None):
         pass
     def crear_asignacion(self, curso=None):
-        if not self.assigned_courses.values():
+        if not self.assigned_courses:
             print("Aún no está a cargo de un curso, no puede crear actividades")
         else:
             try:
                 if not curso:
                     curso = input("Ingrese el nombre del curso de la asignación: ")
-                if not any(curso = course.name for course in self.assigned_courses.values()):
+                if not any(curso = course.name for course in self.assigned_courses):
                     raise courseError("El curso asignado no existe")
-                for id, curso_option in self.assigned_courses.items():
+                for i, curso_option in enumerate(self.assigned_courses):
                     if curso_option.name == curso:
-                        curso_search = self.assigned_courses[id]
+                        curso_search = self.assigned_courses[i]
 
 
                 val_net = int(input("Ingrese el valor neto de la asignación:"))
@@ -106,9 +106,6 @@ class Teacher(User):
                         raise fechaFormatError("El mes debe tener 2 valores")
                     if len(secciones[2]) != 4:
                         raise fechaFormatError("El año debe tener 4 valores")
-                    secciones[0] = int(secciones[0])
-                    secciones[1] = int(secciones[1])
-                    secciones[2] = int(secciones[2])
                 else:
                     raise fechaFormatError("Debe ingresar el formato dd-mm-aaaa")
 
@@ -123,8 +120,6 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones2[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
-                    secciones2[0] = int(secciones2[0])
-                    secciones2[1] = int(secciones2[1])
                 hora_close = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
                 if ":" in hora_close:
                     secciones3 = hora_close.split(":")
@@ -136,8 +131,6 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones3[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
-                    secciones3[0] = int(secciones3[0])
-                    secciones3[1] = int(secciones3[1])
                 else:
                     raise horaFormatError("Debe ingresar el formato hh:mm")
                 tipo = input("Ingrese el tipo de asignación: ")
@@ -164,12 +157,15 @@ class Teacher(User):
                     if not self.assigned_courses:
                         print("No hay cursos asignados")
                     else:
-                        for clave, data in self.assigned_courses.items():
-                            print(f"{clave}, {data.id_course}, {data.name}")
+                        for clave, data in enumerate(self.assigned_courses):
+                            print(f"{clave}.", end = "")
                             data.mostrar_datos()
                         course_select = input("Ingrese la ID del curso: ")
-                        if course_select in self.assigned_courses.keys():
-                            course = self.assigned_courses[course_select]
+                        if any(course_select == course.id_course for course in self.assigned_courses):
+                            course = None
+                            for course_find in self.assigned_courses:
+                                if course_find.id_course == course_select:
+                                    course = course_find
                             print("\nOpciones\1. Crear asignación\n2. Subir notas")
                             subselect = input("Ingrese la opción que desea elegir: ")
                             match subselect:
