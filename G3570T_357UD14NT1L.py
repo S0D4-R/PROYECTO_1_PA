@@ -9,9 +9,9 @@ import time
 import datetime
 import random
 from unittest import case
-def courseError(Exception): pass
-def fechaFormatError(Exception): pass
-def horaFormatError(Exception): pass
+def courseError(exception): pass
+def fechaFormatError(exception): pass
+def horaFormatError(exception): pass
 students_db = {}
 teachers_db = {}
 courses_db = {}
@@ -82,6 +82,7 @@ class Teacher(User):
             print("Aún no está a cargo de un curso, no puede crear actividades")
         else:
             try:
+                curso_search = None
                 if not curso:
                     curso = input("Ingrese el nombre del curso de la asignación: ")
                 if not any(curso = course.name for course in self.assigned_courses):
@@ -146,6 +147,8 @@ class Teacher(User):
                 print(e)
             except courseError as e:
                 print(e)
+            except Exception as e:
+                print("Error inesperado", e)
 
 
     def deploy_t_menu(self):
