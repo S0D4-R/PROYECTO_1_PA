@@ -377,7 +377,7 @@ def deploy_admin_menu(faculty):
                     faculty.teachers_db[teacher_assignment].assigned_courses.append(class_assignment)
 
 
-            case "8":
+            case "7":
                 print("> Gracias por usar el programa...")
                 admin_key = False
                 return False

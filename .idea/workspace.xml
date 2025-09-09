@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[11] VERIFICATIONS ADDED">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,6 +109,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.G3570T_357UD14NT1L (2)" />
+        <item itemvalue="Python.G3570T_357UD14NT1L (2)" />
+        <item itemvalue="Python.G3570T_357UD14NT1L (2)" />
         <item itemvalue="Python.G3570T_357UD14NT1L (2)" />
       </list>
     </recent_temporary>
@@ -255,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757227686740</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="[11] VERIFICATIONS ADDED">
+      <option name="closed" value="true" />
+      <created>1757265678298</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1757265678298</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
