@@ -61,7 +61,15 @@ class Student(User):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
     def inscription(self):
-        pass
+        for curse in courses_db.values():
+            if curse.name == course_name:
+                if curse.id_course in self.assigned_c:
+                    print("Ya te asignaste a este curso...")
+                else:
+                    self.assigned_c[curse.id_course] = curse
+                    curse.roster_alumnos[self.__id_s] = self
+                    print(f"Inscripción al curso {curse.name} compeltada con exito!")
+        print("Curso no encontrado...")
 
     def deploy_s_menu(self):
         pass
