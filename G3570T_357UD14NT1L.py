@@ -471,6 +471,11 @@ class Database:
         except FileNotFoundError:
             print("No existe Cursos.txt, se creara al guardar...")
 
+    def guardar_estudiantes(self):
+        with open("estudiantes.txt", "w", encoding="utf-8") as archivo_estudiantes:
+            for id_s, alumno in self.students_db.items():
+                archivo_estudiantes.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob__}:{alumno.pass_ward}:{alumno.gen}\n")
+
 #Ol
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
