@@ -480,6 +480,11 @@ class Database:
         with open("profesores.txt","w",enconding="utf-8") as archivo_profesores:
             for id_t,profesor in self.teachers_db.items():
                 archivo_profesores.write(f"{id_t}:{maestro.name}:{maestro.documento_personal}:{maestro.address}:{maestro.phone_u}:{maestro.dob__}:{maestro.pass_ward}\n")
+
+    def guardar_cursos(self):
+        with open("cursos.txt","w",enconding="utf-8") as archivo_cursos:
+            for id_c,curso in self.courses_db.items():
+                archivo_cursos.write(f"{id_c}:{curso.name}:{teacher_id}\n")
 #Ol
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
