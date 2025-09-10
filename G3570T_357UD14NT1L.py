@@ -72,7 +72,35 @@ class Student(User):
         print("Curso no encontrado...")
 
     def deploy_s_menu(self):
-        pass
+        while True:
+            print("---MENÚ ESTUDIANTE---")
+            print(f"1.Ver cursos\n2.Inscrición de cursos.\n3.Cerrar Sesión.")
+            option= input("Ingrese una opcion:")
+
+            match option:
+                case "1":
+                    print(f"{"---"*4}CURSOS{"---"*4}")
+                    print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
+                    sub_option= input("Ingrese una opcion:")
+                    match sub_option:
+                        case "1":
+                            print("---ENTREGA DE TAREAS---")
+                        case "2":
+                            print("---NOTA DE CURSO---")
+                        case "3":
+                            print("---NOTA DE ACTIVIDADES---")
+                        case "4":
+                            print("Saliendo del sistema....")
+                            break
+                        case _:
+                            print("Opcion no valida...")
+                case "2":
+                    print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
+                case "3":
+                    print("Salieno del sistema...")
+                    break
+                case _:
+                    print("Opcion no valida...")
 
 class Teacher(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_cat):
