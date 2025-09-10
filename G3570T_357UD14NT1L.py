@@ -76,7 +76,16 @@ class Teacher(User):
         return self.__id_cat
 
     def subir_notas(self, curso = None):
-        pass
+        print("\n\n---------SUBIR NOTAS----------\n1. Actualizar notas de una actividad\n2. Actualizar curso")
+        option = input("Seleccione una opción: ")
+        match option:
+            case "1":
+                pass
+            case "2":
+                pass
+            case _:
+                print("Opción inválida")
+
     def crear_asignacion(self, curso=None):
         if not self.assigned_courses:
             print("Aún no está a cargo de un curso, no puede crear actividades")
@@ -137,6 +146,9 @@ class Teacher(User):
                 tipo = input("Ingrese el tipo de asignación: ")
                 assign = Actividad(val_net, val_clasif, fecha, hora_open, hora_close, tipo)
                 curso_search.asignaciones.append(assign)
+                for estudiante in curso_search.roster_alumnos.items():
+                    for id, curso in estudiante.assigned_c.items():
+                        pass
 
 
             except ValueError:
