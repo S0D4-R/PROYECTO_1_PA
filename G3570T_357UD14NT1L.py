@@ -96,6 +96,14 @@ class Student(User):
                             print("Opcion no valida...")
                 case "2":
                     print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
+                    if not courses_db:
+                        print("No hay cursos disponibles...")
+                    print("Cursos disponibles")
+                    for course in courses_db.values():
+                        print(f"{course.name} - Docente:{course.teacher_assigned.name}")
+                    couse_name= input("Ingrese nombre de curso a inscribir:")
+                    self.inscription()couse_name
+
                 case "3":
                     print("Salieno del sistema...")
                     break
