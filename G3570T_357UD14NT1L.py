@@ -71,6 +71,14 @@ class Student(User):
                     print(f"Inscripción al curso {curse.name} compeltada con exito!")
         print("Curso no encontrado...")
 
+    def ver_notas(self):
+        for course in self.assigned_c.values():
+            nota, total = course.calcular_nota_final()
+            if total == 0:
+                print(f"{course.name} | Sin actividades registradas.")
+            else:
+                print(f"{course.name} | Nota global: {nota}/{total}")
+
     def deploy_s_menu(self):
         while True:
             print("---MENÚ ESTUDIANTE---")
@@ -90,6 +98,7 @@ class Student(User):
                                 print("---ENTREGA DE TAREAS---")
                             case "2":
                                 print("---NOTA DE CURSO---")
+
                             case "3":
                                 print("---NOTA DE ACTIVIDADES---")
                             case "4":
@@ -257,6 +266,15 @@ class Curso:
                 asignacion.mostrar_datos()
         else:
             print("No hay asignaciones asignadas")
+
+    def calcular_nota(self):
+        nota_final=0
+        nota=0
+        for asignacion in self.asignaciones:
+            if asignacion.valor_dc is not None:
+                nota_final +=asignacion.valor_dc
+            nota += asignacion.valor_dc
+        return nota_final, nota
 
 
 class Actividad:
