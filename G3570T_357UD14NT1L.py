@@ -98,6 +98,7 @@ class Student(User):
                                 print("---ENTREGA DE TAREAS---")
                             case "2":
                                 print("---NOTA DE CURSO---")
+                                self.ver_notas()
 
                             case "3":
                                 print("---NOTA DE ACTIVIDADES---")
