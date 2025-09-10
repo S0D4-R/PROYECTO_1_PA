@@ -476,6 +476,10 @@ class Database:
             for id_s, alumno in self.students_db.items():
                 archivo_estudiantes.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob__}:{alumno.pass_ward}:{alumno.gen}\n")
 
+    def guardar_profesores(self):
+        with open("profesores.txt","w",enconding="utf-8") as archivo_profesores:
+            for id_t,profesor in self.teachers_db.items():
+                archivo_profesores.write(f"{id_t}:{maestro.name}:{maestro.documento_personal}:{maestro.address}:{maestro.phone_u}:{maestro.dob__}:{maestro.pass_ward}\n")
 #Ol
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
