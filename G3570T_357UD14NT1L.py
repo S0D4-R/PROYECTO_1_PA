@@ -79,6 +79,8 @@ class Student(User):
 
             match option:
                 case "1":
+                    if not self.assigned_c:
+                        print("No estas asignado a ningun curso...")
                     print(f"{"---"*4}CURSOS{"---"*4}")
                     print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
                     sub_option= input("Ingrese una opcion:")
