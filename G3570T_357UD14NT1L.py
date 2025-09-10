@@ -81,21 +81,22 @@ class Student(User):
                 case "1":
                     if not self.assigned_c:
                         print("No estas asignado a ningun curso...")
-                    print(f"{"---"*4}CURSOS{"---"*4}")
-                    print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
-                    sub_option= input("Ingrese una opcion:")
-                    match sub_option:
-                        case "1":
-                            print("---ENTREGA DE TAREAS---")
-                        case "2":
-                            print("---NOTA DE CURSO---")
-                        case "3":
-                            print("---NOTA DE ACTIVIDADES---")
-                        case "4":
-                            print("Saliendo del sistema....")
-                            break
-                        case _:
-                            print("Opcion no valida...")
+                    else:
+                        print(f"{"---"*4}CURSOS{"---"*4}")
+                        print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
+                        sub_option= input("Ingrese una opcion:")
+                        match sub_option:
+                            case "1":
+                                print("---ENTREGA DE TAREAS---")
+                            case "2":
+                                print("---NOTA DE CURSO---")
+                            case "3":
+                                print("---NOTA DE ACTIVIDADES---")
+                            case "4":
+                                print("Saliendo del sistema....")
+                                break
+                            case _:
+                                print("Opcion no valida...")
                 case "2":
                     print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
                     if not courses_db:
