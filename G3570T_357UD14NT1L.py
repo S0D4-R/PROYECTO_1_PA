@@ -390,8 +390,8 @@ def deploy_admin_menu(faculty):
                 save_ops = input("> 1. Alumnos...\n> 2. Maestros...\n> 3. Cursos...\n")
                 match save_ops:
                     case "1":
-                        with open("Cursos.txt","w",encoding="utf-8") as courses_file:
-                            for id_s, alumni in faculty.courses_db.items():
+                        with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
+                            for id_s, alumni in faculty.students_db.items():
                                 courses_file.write(f"{id_s}:{alumni.name}:{alumni.documento_personal}:{alumni.address}:{alumni.phone_u}:{alumni.dob}"
                                                    f":{alumni.pass_ward}:{alumni.carnet}:{alumni.gen}:{json.dumps(alumni.assigned_c)}\n"
                                                    )
@@ -436,7 +436,7 @@ class Database:
                         # id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
                         id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split(":",9)
                         assigned_cl = json.loads(assigned_c_file)
-                        alumno= Student(name,dpi,address,phone,dob,password,gen)
+                        alumno= Student(name,dpi,address,phone,dob,password,carnet, gen)
                         alumno.assigned_c = assigned_cl
                         self.students_db[id_s] = alumno
                 print("Estudiantes importados desde el archivo estudiantes.txt")
