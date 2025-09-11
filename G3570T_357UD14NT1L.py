@@ -80,7 +80,38 @@ class Teacher(User):
         option = input("Seleccione una opción: ")
         match option:
             case "1":
-                pass
+                for actividad in curso.asgnaciones:
+                    actividad.mostrar_datos()
+                id_act = input("Ingrese la ID de la actividad: ")
+                if not any(id_act == actividad.self.id for actividad in curso.asignaciones):
+                    print("No se encontro la actividad")
+                else:
+                    for actividad in curso.asignaciones:
+                        if actividad.id == id_act:
+                            for est in curso.roster_alumnos.values():
+                                actividades = est.assigned_c[curso.id_course][1]
+                                for act in actividades:
+                                    act[0].set_status()
+                                    if act[0].id == id_act:
+                                        if act[1]:
+                                            print("El estudiante realizó su entrega")
+                                        else:
+                                            print("El estudiante aún no ha entregado nada")
+
+                                        while True:
+                                            try:
+                                                punteo = int(input("Ingrese el punteo: "))
+                                                if punteo <0 or punteo > act[0].valor_n:
+                                                    print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
+                                                else:
+                                                    act[0].valor_dc = punteo
+                                                    break
+                                            except ValueError:
+                                                print("Solo puede ingresar números enteros")
+                                            except Exception as e:
+                                                print("Error inesperado", e)
+
+
             case "2":
                 pass
             case _:
