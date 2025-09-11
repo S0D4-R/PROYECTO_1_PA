@@ -23,7 +23,7 @@ class User:
         self.__dpi = dpi
         self.address = address
         self.__phone = phone
-        self.dob__ = dob
+        self.dob = dob
         self.__password = password_u
     @property
     def documento_personal(self):
@@ -75,6 +75,9 @@ class Teacher(User):
     @property
     def codigo_catredatico(self):
         return self.__id_cat
+
+    def display_info(self):
+        return f"{self.name}|Código de catedrático:{self.__id_cat} | DPI: {self.documento_personal} | tel:{self.phone_u}"
 
     def subir_notas(self):
         pass
@@ -175,7 +178,7 @@ class Teacher(User):
                             subselect = input("Ingrese la opción que desea elegir: ")
                             match subselect:
                                 case "1":
-                                    self.crear_asignacion(course)
+                                    pass#self.crear_asignacion(course)
                                 case "2":
                                     self.subir_notas(course)
                                 case _:
@@ -271,7 +274,7 @@ def id_creation(name_x, typeP):
 def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
-        print("\n~"*15, "BIENVENIDO", "~"*15)
+        print("\n", "~"*15, "BIENVENIDO", "~"*15)
         admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Asignar Maestros\n7. Guardar\n8. Salir\n")
         match admin_ops:
 
@@ -291,8 +294,8 @@ def deploy_admin_menu(faculty):
                     print("> No hay maestros disponibles...\n> Curso ha sido creado con éxito...")
 
                 else:
-                    for temp_cont, workid, teacher_x in enumerate(faculty.teachers_db.keys(), start=1):
-                        print(f"{temp_cont}|{teacher_x.name}|{workid} ~ ID")
+                    for temp_cont, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
+                        print(f"{temp_cont}|{teacher_x.name}|{teacher_x.codigo_catredatico} ~ ID")
                     chose_teach = False
                     while not chose_teach:
                         search_work_id = input("> Coloque el ID del maestro que desea asignar: ")
@@ -323,10 +326,12 @@ def deploy_admin_menu(faculty):
                         user_type = "S"
                         user_id = id_creation("", user_type)
                         faculty.students_db[user_id] = Student(user_name,user_dpi,user_address,user_phone,user_dob,user_pass,user_id,user_inscr_year)
+
                     elif user_type == "2":
                         user_type = "T"
                         user_id = id_creation("", user_type)
                         faculty.teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob, user_pass, user_id)
+                    type_conf = True
 
 
             case "3":
@@ -395,7 +400,7 @@ def deploy_admin_menu(faculty):
                                 # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
                                 teachers_file.write(
                                     f"{id_t}:{teacher_temp.name}:{teacher_temp.documento_personal}:{teacher_temp.address}:{teacher_temp.phone_u}:{teacher_temp.dob}"
-                                    f":{teacher_temp.pass_ward}:{teacher_temp.codigo_catedratico}:{json.dumps(teacher_temp.assigned_courses)}\n"
+                                    f":{teacher_temp.pass_ward}:{teacher_temp.codigo_catredatico}:{json.dumps(teacher_temp.assigned_courses)}\n"
                                 )
                     case "3":
                         with open("Cursos.txt","a",encoding="utf-8") as courses_file:
@@ -472,6 +477,9 @@ class Database:
 #Ol
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
+engineering_faculty.cargar_cursos()
+engineering_faculty.cargar_profesores()
+engineering_faculty.cargar_estudiantes()
 
 key = True
 while key:
@@ -484,6 +492,8 @@ while key:
             engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
         elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[user_pass].pass_ward:
             engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
+        elif user_pass == "0" and password_pass == "0":
+            key = False
         else:
             print("> Usuario o Contraseña incorrectos, por favor intente de nuevo...")
 

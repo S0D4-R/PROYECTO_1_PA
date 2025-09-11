@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[12] VERIFICATIONS ADDED">
+    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[13] SAVING SYSTEM IMPLEMENTED">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
     </list>
@@ -49,17 +49,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.G3570T_357UD14NT1L (2).executor&quot;: &quot;Run&quot;,
-    &quot;Python.G3570T_357UD14NT1L.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;soda__branch__dev__work&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.G3570T_357UD14NT1L (2).executor": "Run",
+    "Python.G3570T_357UD14NT1L.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "soda__branch__dev__work",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="G3570T_357UD14NT1L (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PROYECTO_1_PA" />
@@ -275,7 +275,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757431023199</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="[13] SAVING SYSTEM IMPLEMENTED">
+      <option name="closed" value="true" />
+      <created>1757566576728</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1757566576728</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -304,7 +312,8 @@
     <MESSAGE value="[10.6] ASIGNACIÓN MAESTROS MOD" />
     <MESSAGE value="[11] VERIFICATIONS ADDED" />
     <MESSAGE value="[12] VERIFICATIONS ADDED" />
-    <option name="LAST_COMMIT_MESSAGE" value="[12] VERIFICATIONS ADDED" />
+    <MESSAGE value="[13] SAVING SYSTEM IMPLEMENTED" />
+    <option name="LAST_COMMIT_MESSAGE" value="[13] SAVING SYSTEM IMPLEMENTED" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
