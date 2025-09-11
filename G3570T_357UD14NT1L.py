@@ -13,9 +13,7 @@ from unittest import case
 def courseError(Exception): pass
 def fechaFormatError(Exception): pass
 def horaFormatError(Exception): pass
-students_db = {}
-teachers_db = {}
-courses_db = {}
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
