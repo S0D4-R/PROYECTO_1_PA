@@ -80,6 +80,9 @@ class Teacher(User):
         option = input("Seleccione una opción: ")
         match option: #Crear función en Cursos() para añadir cualquier nueva actividad al repositorio de los alumnos asignados al curso
             case "1":
+                if not curso.asignaciones:
+                    print("Aún no hay actividades")
+                    return
                 for actividad in curso.asgnaciones:
                     actividad.mostrar_datos()
                     for est in curso.roster_alumnos.values():
@@ -104,6 +107,9 @@ class Teacher(User):
                                     print("Error inesperado", e)
 
             case "2":
+                if not curso.asignaciones:
+                    print("Aún no hay actividades")
+                    return
                 for actividad in curso.asgnaciones:
                     actividad.mostrar_datos()
                 id_act = input("Ingrese la ID de la actividad: ")
@@ -135,7 +141,20 @@ class Teacher(User):
                                             except Exception as e:
                                                 print("Error inesperado", e)
             case "3":
-                pass
+                if not curso.asignaciones:
+                    print("Aún no hay actividades")
+                    return
+                for id, est in curso.roster_alumnos.values():
+                    actividades_upd = est.assigned_c[curso.id_course][1]
+                    est_base = engineering_faculty.students_db.get(id, False)
+                    if est_base == False:
+                        print(f"Estudiante con ID {id} no encontrado en la base de datos")
+                    else:
+                        est_base.assigned_c[curso.id_course][1] = actividades_upd
+                print(f"Estudiantes del curso {curso.name} actualizados")
+                engineering_faculty.courses_db[curso.id_course] = curso
+                print("Curso actualizado en la base de datos")
+
             case _:
                 print("Opción inválida")
 
