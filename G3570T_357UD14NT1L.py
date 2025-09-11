@@ -289,7 +289,7 @@ def deploy_admin_menu(faculty):
                         print("> El nombre no es válido")
                     else:
                         name_ver = True
-                teacher= None
+                teacher= "N/A"
                 if not faculty.teachers_db:
                     print("> No hay maestros disponibles...\n> Curso ha sido creado con éxito...")
 
@@ -300,6 +300,7 @@ def deploy_admin_menu(faculty):
                     while not chose_teach:
                         search_work_id = input("> Coloque el ID del maestro que desea asignar: ")
                         teacher = faculty.teachers_db[search_work_id]
+                        chose_teach = True
 
 
                 course_id = id_creation(course_name, "C")
@@ -337,7 +338,7 @@ def deploy_admin_menu(faculty):
             case "3":
                 print("-"*15, "CURSOS DISPONIBLES", "-"*15)
                 for index, course in enumerate(faculty.courses_db.values(), start=1):
-                    print(f"> {index}. {course.name}|Maestro asignado: {course.teacher_assigned}")
+                    print(f"> {index}. {course.name}|Maestro asignado: {faculty.teachers_db[course.teacher_assigned].name}")
 
 
             case "4":
@@ -356,7 +357,7 @@ def deploy_admin_menu(faculty):
                 else:
                     print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
                     for index, course in enumerate(faculty.courses_db.values(), start=1):
-                        if course.teacher_assigned is None:
+                        if course.teacher_assigned == "N/A":
                             print(f"> {index}. {course.name}|ID: {course.id_course}")
 
                     calss_conmf = False
@@ -367,7 +368,7 @@ def deploy_admin_menu(faculty):
                         else:
                             calss_conmf = True
 
-                    print("-"*15, f"{courses_db[class_assignment].name}", "-"*15)
+                    print("-"*15, f"{faculty.courses_db[class_assignment].name}", "-"*15)
                     print("> Lista de maestros disponibles: ")
                     for index_x, teacher_y in enumerate(faculty.teachers_db.values(), start=1):
                         print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.codigo_catredatico}")
@@ -379,8 +380,9 @@ def deploy_admin_menu(faculty):
                             print("> Ese ID no es válido...")
                         else:
                             teach_conf = True
-                    faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment]
+                    faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment].codigo_catredatico
                     faculty.teachers_db[teacher_assignment].assigned_courses.append(class_assignment)
+                    print("Maestro asignado con éxito...\n\n")
 
 
             case "7":
@@ -388,14 +390,14 @@ def deploy_admin_menu(faculty):
                 save_ops = input("> 1. Alumnos...\n> 2. Maestros...\n> 3. Cursos...\n")
                 match save_ops:
                     case "1":
-                        with open("Cursos.txt","a",encoding="utf-8") as courses_file:
+                        with open("Cursos.txt","w",encoding="utf-8") as courses_file:
                             for id_s, alumni in faculty.courses_db.items():
                                 courses_file.write(f"{id_s}:{alumni.name}:{alumni.documento_personal}:{alumni.address}:{alumni.phone_u}:{alumni.dob}"
                                                    f":{alumni.pass_ward}:{alumni.carnet}:{alumni.gen}:{json.dumps(alumni.assigned_c)}\n"
                                                    )
                                 #id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
                     case "2":
-                        with open("Profesores.txt","a",encoding="utf-8") as teachers_file:
+                        with open("Profesores.txt","w",encoding="utf-8") as teachers_file:
                             for id_t, teacher_temp in faculty.teachers_db.items():
                                 # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
                                 teachers_file.write(
@@ -403,7 +405,7 @@ def deploy_admin_menu(faculty):
                                     f":{teacher_temp.pass_ward}:{teacher_temp.codigo_catredatico}:{json.dumps(teacher_temp.assigned_courses)}\n"
                                 )
                     case "3":
-                        with open("Cursos.txt","a",encoding="utf-8") as courses_file:
+                        with open("Cursos.txt","w",encoding="utf-8") as courses_file:
                             for id_cs, course_x in faculty.courses_db.items():
                                 #id_course, name, docente, roster_alumnos, asignaciones
                                 courses_file.write(f"{course_x.id_course};{course_x.name};{course_x.teacher_assigned};{json.dumps(course_x.roster_alumnos)};{json.dumps(course_x.asignaciones)}")
@@ -450,7 +452,7 @@ class Database:
                         # id_t, name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
                         id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split(":",8)
                         maestro = Teacher(name, dpi, address, phone, dob, password, id_t)
-                        maestro.assigned_courses = assigned_courses
+                        maestro.assigned_courses = json.loads(assigned_courses)
                         self.teachers_db[id_t]=maestro
                 print("Maestros inportados desde el archivo profesores.txt")
         except FileNotFoundError:
