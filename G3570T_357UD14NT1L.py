@@ -60,10 +60,67 @@ class Student(User):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
     def inscription(self):
-        pass
+        for curse in courses_db.values():
+            if curse.name == course_name:
+                if curse.id_course in self.assigned_c:
+                    print("Ya te asignaste a este curso...")
+                else:
+                    self.assigned_c[curse.id_course] = curse
+                    curse.roster_alumnos[self.__id_s] = self
+                    print(f"Inscripción al curso {curse.name} compeltada con exito!")
+        print("Curso no encontrado...")
+
+    def ver_notas(self):
+        for course in self.assigned_c.values():
+            nota, total = course.calcular_nota_final()
+            if total == 0:
+                print(f"{course.name} | Sin actividades registradas.")
+            else:
+                print(f"{course.name} | Nota global: {nota}/{total}")
 
     def deploy_s_menu(self):
-        pass
+        while True:
+            print("---MENÚ ESTUDIANTE---")
+            print(f"1.Ver cursos\n2.Inscrición de cursos.\n3.Cerrar Sesión.")
+            option= input("Ingrese una opcion:")
+
+            match option:
+                case "1":
+                    if not self.assigned_c:
+                        print("No estas asignado a ningun curso...")
+                    else:
+                        print(f"{"---"*4}CURSOS{"---"*4}")
+                        print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
+                        sub_option= input("Ingrese una opcion:")
+                        match sub_option:
+                            case "1":
+                                print("---ENTREGA DE TAREAS---")
+                            case "2":
+                                print("---NOTA DE CURSO---")
+                                self.ver_notas()
+
+                            case "3":
+                                print("---NOTA DE ACTIVIDADES---")
+                            case "4":
+                                print("Saliendo del sistema....")
+                                break
+                            case _:
+                                print("Opcion no valida...")
+                case "2":
+                    print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
+                    if not courses_db:
+                        print("No hay cursos disponibles...")
+                    print("Cursos disponibles")
+                    for course in courses_db.values():
+                        print(f"{course.name} - Docente:{course.teacher_assigned.name}")
+                    course_name= input("Ingrese nombre de curso a inscribir:")
+                    self.inscription(course_name)
+
+                case "3":
+                    print("Salieno del sistema...")
+                    break
+                case _:
+                    print("Opcion no valida...")
 
 class Teacher(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_cat): # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
@@ -212,6 +269,15 @@ class Curso:
                 asignacion.mostrar_datos()
         else:
             print("No hay asignaciones asignadas")
+
+    def calcular_nota(self):
+        nota_final=0
+        nota=0
+        for asignacion in self.asignaciones:
+            if asignacion.valor_dc is not None:
+                nota_final +=asignacion.valor_dc
+            nota += asignacion.valor_dc
+        return nota_final, nota
 
 
 class Actividad:
