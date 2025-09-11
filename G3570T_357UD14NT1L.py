@@ -476,7 +476,7 @@ class Database:
             print("No existe Cursos.txt, se creara al guardar...")
 
 
-#Ol
+#OlA
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
 engineering_faculty.cargar_cursos()
