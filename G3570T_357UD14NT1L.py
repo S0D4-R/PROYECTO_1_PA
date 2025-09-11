@@ -8,6 +8,7 @@ import os
 import time
 import datetime
 import random
+import json
 from unittest import case
 def courseError(Exception): pass
 def fechaFormatError(Exception): pass
@@ -67,7 +68,7 @@ class Student(User):
         pass
 
 class Teacher(User):
-    def __init__(self, name, dpi, address, phone, dob, password_u, id_cat):
+    def __init__(self, name, dpi, address, phone, dob, password_u, id_cat): # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
         super().__init__(name, dpi, address, phone, dob, password_u)
         self.__id_cat = id_cat
         self.assigned_courses = []
@@ -378,9 +379,32 @@ def deploy_admin_menu(faculty):
 
 
             case "7":
-                print("> Gracias por usar el programa...")
-                admin_key = False
-                return False
+                print("-"*15, "GUARDADO DE INFORMACIÓN", "-"*15)
+                save_ops = input("> 1. Alumnos...\n> 2. Maestros...\n> 3. Cursos...\n")
+                match save_ops:
+                    case "1":
+                        with open("Cursos.txt","a",encoding="utf-8") as courses_file:
+                            for id_s, alumni in faculty.courses_db.items():
+                                courses_file.write(f"{id_s}:{alumni.name}:{alumni.documento_personal}:{alumni.address}:{alumni.phone_u}:{alumni.dob}"
+                                                   f":{alumni.pass_ward}:{alumni.carnet}:{alumni.gen}:{json.dumps(alumni.assigned_c)}\n"
+                                                   )
+                                #id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
+                    case "2":
+                        with open("Profesores.txt","a",encoding="utf-8") as teachers_file:
+                            for id_t, teacher_temp in faculty.teachers_db.items():
+                                # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
+                                teachers_file.write(
+                                    f"{id_t}:{teacher_temp.name}:{teacher_temp.documento_personal}:{teacher_temp.address}:{teacher_temp.phone_u}:{teacher_temp.dob}"
+                                    f":{teacher_temp.pass_ward}:{teacher_temp.codigo_catedratico}:{json.dumps(teacher_temp.assigned_courses)}\n"
+                                )
+                    case "3":
+                        with open("Cursos.txt","a",encoding="utf-8") as courses_file:
+                            for id_cs, course_x in faculty.courses_db.items():
+                                #id_course, name, docente, roster_alumnos, asignaciones
+                                courses_file.write(f"{course_x.id_course};{course_x.name};{course_x.teacher_assigned};{json.dumps(course_x.roster_alumnos)};{json.dumps(course_x.asignaciones)}")
+                    case _:
+                        pass
+
 
 
             case "8":
@@ -394,18 +418,19 @@ class Database:
         self.students_db = {}
         self.teachers_db = {}
         self.courses_db = {}
-        self.cargar_estudiantes()
-        self.cargar_profesores()
-        self.cargar_cursos()
+
 
     def cargar_estudiantes(self):
         try:
-            with open("estudiantes.txt","r",enconding="uft-8") as archivo_estudiantes:
+            with open("estudiantes.txt","r",encoding="utf-8") as archivo_estudiantes:
                 for linea in archivo_estudiantes:
                     linea= linea.strip()
                     if linea:
-                        id_s, name, dpi, address, phone, dob, password, gen = linea.split(":")
+                        # id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
+                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split(":",9)
+                        assigned_cl = json.loads(assigned_c_file)
                         alumno= Student(name,dpi,address,phone,dob,password,gen)
+                        alumno.assigned_c = assigned_cl
                         self.students_db[id_s] = alumno
                 print("Estudiantes importados desde el archivo estudiantes.txt")
         except FileNotFoundError:
@@ -413,12 +438,14 @@ class Database:
 
     def cargar_profesores(self):
         try:
-            with open("Profesores.txt","r",enconding="uft-8" ) as archivo_profesores:
+            with open("Profesores.txt","r",encoding="utf-8" ) as archivo_profesores:
                 for linea in archivo_profesores:
                     linea = linea.strip()
                     if linea:
-                        id_t, name, dpi, address, phone, dob, password = linea.split(":")
+                        # id_t, name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
+                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split(":",8)
                         maestro = Teacher(name, dpi, address, phone, dob, password, id_t)
+                        maestro.assigned_courses = assigned_courses
                         self.teachers_db[id_t]=maestro
                 print("Maestros inportados desde el archivo profesores.txt")
         except FileNotFoundError:
@@ -426,19 +453,22 @@ class Database:
 
     def cargar_cursos(self):
         try:
-            with open("Cursos.txt","r",enconding="uft-8") as archivo_cursos:
+            with open("Cursos.txt","r",encoding="utf-8") as archivo_cursos:
                 for linea in archivo_cursos:
                     linea = linea.strip()
                     if linea:
-                        id_c, name, teacher_id = linea.split(":")
-                        teacher = self.teachers_db.get(teacher_id)
-                        curso = Curso(id_c, name, teacher)
+                        #id_course, name, docente, roster_alumnos, asignaciones
+                        id_c, name, teacher_id, roster_alumnos, asignaciones = linea.split(";")
+                        #teacher = self.teachers_db.get(teacher_id)
+                        curso = Curso(id_c, name, teacher_id)
+                        curso.roster_alumnos = roster_alumnos
+                        curso.asignaciones = asignaciones
                         self.courses_db[id_c] = curso
                 print("Cursos importados...")
         except FileNotFoundError:
             print("No existe Cursos.txt, se creara al guardar...")
 
-#Ol
+
 #Ol
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()

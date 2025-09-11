@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[11] VERIFICATIONS ADDED">
+    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[12] VERIFICATIONS ADDED">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
     </list>
@@ -53,14 +53,14 @@
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Python.G3570T_357UD14NT1L (2).executor&quot;: &quot;Run&quot;,
-    &quot;Python.G3570T_357UD14NT1L.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.G3570T_357UD14NT1L.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;soda__branch__dev__work&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.G3570T_357UD14NT1L (2)">
+  <component name="RunManager">
     <configuration name="G3570T_357UD14NT1L (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PROYECTO_1_PA" />
       <option name="ENV_FILES" value="" />
@@ -267,7 +267,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757265678298</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="[12] VERIFICATIONS ADDED">
+      <option name="closed" value="true" />
+      <created>1757431023199</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1757431023199</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -295,7 +303,8 @@
     <MESSAGE value="[10.3] ASIGNACIÓN MAESTROS" />
     <MESSAGE value="[10.6] ASIGNACIÓN MAESTROS MOD" />
     <MESSAGE value="[11] VERIFICATIONS ADDED" />
-    <option name="LAST_COMMIT_MESSAGE" value="[11] VERIFICATIONS ADDED" />
+    <MESSAGE value="[12] VERIFICATIONS ADDED" />
+    <option name="LAST_COMMIT_MESSAGE" value="[12] VERIFICATIONS ADDED" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
