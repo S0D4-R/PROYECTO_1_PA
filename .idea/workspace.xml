@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[15] DEBUGGING OF THE SAVING PROCESS">
-      <change beforePath="$PROJECT_DIR$/.idea/PROYECTO_1_PA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PROYECTO_1_PA.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="- MENU FUNCTION">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
     </list>
@@ -300,7 +298,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757574402285</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="- MENU FUNCTION">
+      <option name="closed" value="true" />
+      <created>1757652303386</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1757652303386</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -332,7 +338,8 @@
     <MESSAGE value="[13] SAVING SYSTEM IMPLEMENTED" />
     <MESSAGE value="[14] ADMIN MENU IMPLEMENTED" />
     <MESSAGE value="[15] DEBUGGING OF THE SAVING PROCESS" />
-    <option name="LAST_COMMIT_MESSAGE" value="[15] DEBUGGING OF THE SAVING PROCESS" />
+    <MESSAGE value="- MENU FUNCTION" />
+    <option name="LAST_COMMIT_MESSAGE" value="- MENU FUNCTION" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

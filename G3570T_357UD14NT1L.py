@@ -11,31 +11,37 @@ import time
 import datetime
 import random
 import json
-import readchar
+import msvcrt
+from colorama import Fore, init
 from unittest import case
 def courseError(Exception): pass
 def fechaFormatError(Exception): pass
 def horaFormatError(Exception): pass
+init(autoreset=True)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def navegar_menu(options,title="MENÚ"):
-    seleccion= 0
+def menu(opciones, titulo="MENÚ"):
+    seleccion = 0
     while True:
-        os.system("cls" if os.name == "nt" else "clear")
-        print(f"---{title}---")
-        for i,option in enumerate(options):
-            if i== seleccion:
-                print(f"→ {option}")
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+        print(Fore.CYAN + f"--- {titulo} ---\n")
+        for i, opcion in enumerate(opciones):
+            if i == seleccion:
+                print(Fore.LIGHTMAGENTA_EX + f"→ {opcion}")
             else:
-                print(f"{option}")
-        tecla= readchar.readkey()
-        if tecla == readchar.key.UP and seleccion >0:
-            seleccion -=1
-        else:
-            if tecla == readchar.key.DOWN and seleccion < len(options)-1:
-                seleccion +=1
-            elif tecla == readchar.key.ENTER:
-                return seleccion
+                print(f"  {opcion}")
+        print("\nUsa ↑/↓ para mover, ENTER para seleccionar.")
+
+        tecla = msvcrt.getch()
+        if tecla == b'\xe0':
+            tecla2 = msvcrt.getch()
+            if tecla2 == b'H' and seleccion > 0:
+                seleccion -= 1
+            elif tecla2 == b'P' and seleccion < len(opciones) - 1:
+                seleccion += 1
+        elif tecla == b'\r':
+            return seleccion
 
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
@@ -102,18 +108,19 @@ class Student(User):
 
     def deploy_s_menu(self):
         while True:
-            print("---MENÚ ESTUDIANTE---")
-            print(f"1.Ver cursos\n2.Inscripción de cursos.\n3.Cerrar Sesión.")
-            option= input("Ingrese una opcion:")
-
+            opciones_menu = ["1.Ver cursos", "2.Inscripción de cursos", "3.Cerrar Sesión"]
+            opcion= menu(opciones_menu, "MENÚ ESTUDIANTE")
+            option = opciones_menu[opcion]
             match option:
                 case "1":
                     if not self.assigned_c:
                         print("No estas asignado a ningun curso...")
+                        print("Presione ENTER para volver")
                     else:
+                        sub_opciones = ["1.Entregar Tareas", "2.Ver nota de curso", "3.Ver nota de actividad","4.Volver a menu principal"]
                         print(f"{"---"*4}CURSOS{"---"*4}")
-                        print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
-                        sub_option= input("Ingrese una opcion:")
+                        sub = menu(sub_opciones, "---CURSOS---")
+                        sub_option = sub_opciones[sub].split(".")[0]
                         match sub_option:
                             case "1":
                                 print("---ENTREGA DE TAREAS---")
@@ -237,9 +244,10 @@ class Teacher(User):
 
 
     def deploy_t_menu(self):
+        opciones_menu = ["Ver cursos", "Crear asignación", "Subir notas", "Cerrar sesión"]
         while True:
-            print("\n\n========== MENÚ DE CATEDRÁTICOS ==========\n1. Ver cursos\n2. Salir")
-            select_cat = input("Seleccione una opción")
+            seleccion = menu(opciones_menu, "MENÚ DOCENTE")
+            select_cat = opciones_menu[seleccion].split(":")[0]
             match select_cat:
                 case "1":
                     if not self.assigned_courses:
@@ -361,7 +369,10 @@ def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
         print("\n", "~"*15, "BIENVENIDO", "~"*15)
-        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Asignar Maestros\n7. Guardar\n8. Salir\n")
+        ops = ["1. Crear Curso","2. Crear Usuario","3. Ver cursos","4. Ver alumnos","5. Ver maestros",
+               "6. Asignar Maestros","7. Guardar","8. Salir"]
+        seleccion = menu(ops, "MENÚ ADMIN")
+        admin_ops = ops[seleccion].split(".")[0]
         match admin_ops:
 
 
@@ -497,7 +508,7 @@ def deploy_admin_menu(faculty):
                                 courses_file.write(f"{course_x.id_course};{course_x.name};{course_x.teacher_assigned};{json.dumps(course_x.roster_alumnos)};{json.dumps(course_x.asignaciones)}")
                     case _:
                         pass
-
+                        time.sleep(1)
 
 
             case "8":
