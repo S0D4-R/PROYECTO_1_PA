@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[15] DEBUGGING OF THE SAVING PROCESS">
+      <change beforePath="$PROJECT_DIR$/.idea/PROYECTO_1_PA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PROYECTO_1_PA.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,12 +37,12 @@
     &quot;assignee&quot;: &quot;S0D4-R&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/S0D4-R/PROYECTO_1_PA.git&quot;,
-    &quot;accountId&quot;: &quot;38fedd2a-bf65-47e1-97d5-2e9a047d679e&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/S0D4-R/PROYECTO_1_PA.git",
+    "accountId": "a5d6c4e7-3bf3-46ca-89f4-51b9f3302856"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -54,9 +57,10 @@
     "Python.G3570T_357UD14NT1L (2).executor": "Run",
     "Python.G3570T_357UD14NT1L.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+    "git-widget-placeholder": "menus",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RunManager" selected="Python.G3570T_357UD14NT1L">
@@ -116,7 +120,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-4c141bd692a7-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.90" />
+        <option value="bundled-python-sdk-598b0484d0b5-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.74" />
       </set>
     </attachedChunks>
   </component>

@@ -11,12 +11,32 @@ import time
 import datetime
 import random
 import json
+import readchar
 from unittest import case
 def courseError(Exception): pass
 def fechaFormatError(Exception): pass
 def horaFormatError(Exception): pass
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def navegar_menu(options,title="MENÚ"):
+    seleccion= 0
+    while True:
+        os.system("cls" if os.name == "nt" else "clear")
+        print(f"---{title}---")
+        for i,option in enumerate(options):
+            if i== seleccion:
+                print(f"→ {option}")
+            else:
+                print(f"{option}")
+        tecla= readchar.readkey()
+        if tecla == readchar.key.UP and seleccion >0:
+            seleccion -=1
+        else:
+            if tecla == readchar.key.DOWN and seleccion < len(options)-1:
+                seleccion +=1
+            elif tecla == readchar.key.ENTER:
+                return seleccion
+
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
         self.name = name
