@@ -72,8 +72,11 @@ class Teacher(User):
         self.__id_cat = id_cat
         self.assigned_courses = []
     @property
-    def codigo_catredatico(self):
+    def id_cat(self):
         return self.__id_cat
+    @id_cat.setter
+    def id_cat(self, id_cat):
+        pass
 
     def subir_notas(self, curso):
         print("\n\n---------SUBIR NOTAS----------\n1. Actualizar las notas de todas las actividades\n2. Actualizar notas de una actividad\n3. Actualizar curso")
@@ -267,6 +270,14 @@ class Teacher(User):
                     break
                 case _:
                     print("Opción inválida")
+    def display_info(self):
+        print(f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.dpi}\nNúmero telefónico: {self.phone}\nCursos:")
+        if self.assigned_courses:
+            for course in self.assigned_courses:
+                print(f"\nID: {course.id_course}, Nombre: {course.name}")
+        else:
+            print("No hay cursos asignados")
+
 
 class Curso:
     def __init__(self, id_course, name, docente):
