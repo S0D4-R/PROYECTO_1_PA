@@ -10,6 +10,7 @@ import datetime
 import random
 from unittest import case
 def courseError(exception): pass
+def nameDupeError(exception): pass
 def fechaFormatError(exception): pass
 def horaFormatError(exception): pass
 students_db = {}
@@ -116,7 +117,7 @@ class Teacher(User):
                 for actividad in curso.asgnaciones:
                     actividad.mostrar_datos()
                 id_act = input("Ingrese la ID de la actividad: ")
-                if not any(id_act == actividad.self.id for actividad in curso.asignaciones):
+                if not any(id_act == actividad.act_id for actividad in curso.asignaciones):
                     print("No se encontro la actividad")
                 else:
                     for actividad in curso.asignaciones:
@@ -173,7 +174,10 @@ class Teacher(User):
                     if curso_option.name == curso:
                         curso_search = self.assigned_courses[i]
 
-
+                act_id = input("Ingrese la ID de la actividad: ")
+                act_name = input("Ingrese el nombre de la actividad: ")
+                if any(act_name.lower() == act.name.lower() for act in self.assigned_courses.asignaciones):
+                    raise nameDupeError("Ya hay una actividad con ese nombre")
                 val_net = int(input("Ingrese el valor neto de la asignación:"))
                 val_clasif = 0
                 fecha = input("Ingrese la fecha límite (formato dd-mm-aaaa): ")
@@ -217,7 +221,7 @@ class Teacher(User):
                 else:
                     raise horaFormatError("Debe ingresar el formato hh:mm")
                 tipo = input("Ingrese el tipo de asignación: ")
-                assign = Actividad(val_net, val_clasif, fecha, hora_open, hora_close, tipo)
+                assign = Actividad(act_id,act_name,val_net, val_clasif, fecha, hora_open, hora_close, tipo)
                 curso_search.asignaciones.append(assign)
                 for estudiante in curso_search.roster_alumnos.items():
                     actividades = estudiante.assigned_c[curso_search.id_course][1]
@@ -226,6 +230,8 @@ class Teacher(User):
 
             except ValueError:
                 print("Ingrese solo números enteros")
+            except nameDupeError as e:
+                print(e)
             except fechaFormatError as e:
                 print(e)
             except horaFormatError as e:
@@ -305,7 +311,9 @@ class Curso:
 
 
 class Actividad:
-    def __init__(self, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
+    def __init__(self,act_id, name, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
+        self.__act_id = act_id
+        self.name = name
         self.valor_n = valor_neto
         self.valor_dc = valor_de_calificacion
         self.date = datetime.datetime.strptime(date, "%d/%m/%Y").date()
@@ -314,6 +322,9 @@ class Actividad:
         self.type_a = type_a
         self.status = False
 
+    @property
+    def act_id(self):
+        return self.__act_id
     def set_status(self):
         ahora = datetime.datetime.now()
         ahora_fecha = ahora.date()
