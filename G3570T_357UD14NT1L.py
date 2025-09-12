@@ -2,7 +2,9 @@
 DEVELOPERS:
 ~ JACKY
 ~ PABLO
+~ JORGE ERNESTO
 ~ JORGE
+
 """
 import os
 import time
@@ -81,7 +83,7 @@ class Student(User):
     def deploy_s_menu(self):
         while True:
             print("---MENÚ ESTUDIANTE---")
-            print(f"1.Ver cursos\n2.Inscrición de cursos.\n3.Cerrar Sesión.")
+            print(f"1.Ver cursos\n2.Inscripción de cursos.\n3.Cerrar Sesión.")
             option= input("Ingrese una opcion:")
 
             match option:
