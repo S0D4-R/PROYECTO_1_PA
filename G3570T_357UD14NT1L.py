@@ -179,6 +179,14 @@ class Teacher(User):
                 if any(act_name.lower() == act.name.lower() for act in self.assigned_courses.asignaciones):
                     raise nameDupeError("Ya hay una actividad con ese nombre")
                 val_net = int(input("Ingrese el valor neto de la asignación:"))
+                if val_net<1 or val_net>100:
+                    raise ValueError("El valor de la nota debe estar entre 0 y 100")
+                nota_total = 0
+                for actividad in curso.asignaciones:
+                    nota_total += actividad.valor_n
+                if (nota_total + val_net) > 100:
+                    raise ValueError(f"La ponderación de esta actividad debe ser de {100-nota_total} puntos como máximo para evitar sobrepasar los 100 puntos")
+
                 val_clasif = 0
                 fecha = input("Ingrese la fecha límite (formato dd-mm-aaaa): ")
                 if "-" in fecha:
