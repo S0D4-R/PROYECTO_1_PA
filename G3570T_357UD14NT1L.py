@@ -91,39 +91,26 @@ class Student(User):
                     if not self.assigned_c:
                         print("No estas asignado a ningun curso...")
                     else:
-                        print(f"{"---"*4}MOSTRANDO-CURSOS-ASIGNADOS{"---"*4}")
-                        print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
-                        sub_option= input("Ingrese una opcion (1-4): ")
-                        match sub_option:
-                            case "1":
-                                print("---ENTREGA DE TAREAS---")
-                            case "2":
-                                print("---NOTA DE CURSO---")
-                                self.ver_notas()
+                        while True:
+                            print(f"{"---" * 4}MOSTRANDO-CURSOS-ASIGNADOS{"---" * 4}")
+                            print(
+                                f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
+                            sub_option = input("Ingrese una opcion (1-4): ")
+                            match sub_option:
+                                case "1":
+                                    print("---ENTREGA DE TAREAS---")
+                                case "2":
+                                    print("---NOTA DE CURSO---")
+                                    self.ver_notas()
 
-                            case "3":
-                                print("---NOTA DE ACTIVIDADES---")
-                                '''
-                                opciones del menu de estudiantes 
-                                opcion de la 1 a la 3 el menú
-                                Pertenencen a Jackelin
-                                esperando merge.....
-                                '''
+                                case "3":
+                                    print("---NOTA DE ACTIVIDADES---")
 
-
-                            case "4":
-                                print("Saliendo del sistema....")
-                                break
-                            case "5":
-                                print("esperando implementacion de funcion nueva")
-
-                            case "6":
-                                print("esperando implementacion de funcion nueva")
-
-                            case "7":
-                                print("Regresando el menú anterior..........")
-                            case _:
-                                print("Opcion no valida, intente de nuevo.....")
+                                case "4":
+                                    print("volviendo al menú prinpicpal.........")
+                                    break
+                                case _:
+                                    print("Opcion no valida, intente de nuevo.........")
                 case "2":
                     print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
                     if not courses_db:
@@ -135,10 +122,19 @@ class Student(User):
                     self.inscription(course_name)
 
                 case "3":
-                    print("Salieno del sistema...")
+                    print(f"{"---" * 4}PROMEDIO GENERAL{"---" * 4}")
+
+                case "4": # pablo
+                    print(f"{"---"*4}VER PERFIL{"---"*4}")
+                case "5": #pablo
+                    print(f"{"---"*4}TRAYECTORIA-ACADEMICA{"---"*4}")
+                case "6": # pablo
+                    print(f"{"---"*4}VER NOTAS DE TODOS LOS CURSOS{"---"*4}")
+                case "7": #pablo
+                    print(f"Volviendo al login inicial...........")
                     break
                 case _:
-                    print("Opcion no valida...")
+                    print("Opcion no válida, por favor intentelo de nuevo...........")
 
 class Teacher(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_cat): # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
