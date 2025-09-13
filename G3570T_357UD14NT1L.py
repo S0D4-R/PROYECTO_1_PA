@@ -136,8 +136,49 @@ class Student(User):
                     print(f"Año de ingreso al establecimiento: {self.gen}")# atributo gen ´año de ingreso del usuario al sistema o estblecimiento´
 
                     print(f"\n{"--"*2}CURSOS EN LOS QUE ESTOY INSCRITO{"--"*2}")
-                    approved_courses = []
-                    failed_courses =[]
+                    approved_courses = [] #lista de cursos ganados
+                    failed_courses =[] #lista de cursos reprobados
+                    if self.assigned_c:
+                        for course_id, curso in self.assigned_c.items():
+                            print(f"Curso: {curso.name}")
+                            print(f"Asignaciones")
+
+                            #mostrar las actividades y sus notas (ya calificados por el maestro)
+                            if course.asignaciones:
+                                for actividad in curso.asignaciones:
+                                    print(f""
+                                          f" - Tarea: {actividad.type_a}, Nota: {actividad.valor_dc} / {actividad.valor_n}"
+                                          )
+                            else:
+                                print(f"---SIN ACTIVIDADES REGISTRADAS---")
+
+                            # Calculando y clasificando el promedio del curso
+                            nota_promedio, _= curso.calcular_nota()
+                            if nota_promedio >=65:
+                                approved_courses.append(curso.name)
+                            else:
+                                failed_courses.append(curso.name)
+                            print("-"*20)
+                        else:
+                            print(----"NO ESTAS REGISTRADO A NINGUN CURSO, CONSULTA ESTO CON TU ENCARGADO-------")
+
+                            print(f"\n{"--"*5}RESUMEN DE MIS NOTAS{"--"*5}")
+                            print(f"Cursos Ganados (mayores a un 65% de la nota)")
+                            if approved_courses:
+                                for curso in approved_courses:
+                                    print(f" - {curso}")
+                            else:
+                                print("Aún no has ganado ningun curso...........")
+
+                            print(f"Cursos Perdidos(menores a un 65% de la nota)")
+                            if failed_courses:
+                                for failed in failed_courses:
+                                    print(f" - {curso}")
+                            else:
+                                print(f"No tienes cursos perdidos, ¡Muchas felicidades sigue así!")
+                            input("\nPresiona Enter para volver al menú principal...")
+
+
 
                 case "5": #pablo
                     print(f"{"---"*4}TRAYECTORIA-ACADEMICA{"---"*4}")
