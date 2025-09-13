@@ -83,8 +83,8 @@ class Student(User):
     def deploy_s_menu(self):
         while True:
             print("---MENÚ ESTUDIANTE---")
-            print(f"1.Ver cursos\n2.Inscripción de cursos.\n3.Cerrar Sesión.")
-            option= input("Ingrese una opcion (1-3):")
+            print(f"1.Ver cursos\n2.Inscripción de cursos.\n3.Promedio General.\n4.Ver Perfil. \n5.Trayectoria de cursos. \n6. Ver notas de cursos. \n7. Salir.")
+            option= input("Ingrese una opcion (1-7):")
 
             match option:
                 case "1":
@@ -103,11 +103,27 @@ class Student(User):
 
                             case "3":
                                 print("---NOTA DE ACTIVIDADES---")
+                                '''
+                                opciones del menu de estudiantes 
+                                opcion de la 1 a la 3 el menú
+                                Pertenencen a Jackelin
+                                esperando merge.....
+                                '''
+
+
                             case "4":
                                 print("Saliendo del sistema....")
                                 break
+                            case "5":
+                                print("esperando implementacion de funcion nueva")
+
+                            case "6":
+                                print("esperando implementacion de funcion nueva")
+
+                            case "7":
+                                print("Regresando el menú anterior..........")
                             case _:
-                                print("Opcion no valida...")
+                                print("Opcion no valida, intente de nuevo.....")
                 case "2":
                     print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
                     if not courses_db:
