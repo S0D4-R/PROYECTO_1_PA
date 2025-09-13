@@ -80,7 +80,7 @@ class Student(User):
             else:
                 print(f"{course.name} | Nota global: {nota}/{total}")
 
-    def deploy_s_menu(self):
+    def deploy_s_menu(self, faculty):
         while True:
             print("---MENÚ ESTUDIANTE---")
             print(f"1.Ver cursos\n2.Inscripción de cursos.\n3.Cerrar Sesión.")
@@ -556,8 +556,12 @@ while key:
         password_pass = input("> Password: ")
         if user_pass == "ruler" and password_pass == "admin01":
             key = deploy_admin_menu(engineering_faculty)
+
+
         elif user_pass in engineering_faculty.students_db and password_pass == engineering_faculty.students_db[user_pass].pass_ward:
-            engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
+            key = engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
+
+
         elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[user_pass].pass_ward:
             engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
         elif user_pass == "0" and password_pass == "0":
