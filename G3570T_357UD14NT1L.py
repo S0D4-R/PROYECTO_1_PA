@@ -70,13 +70,7 @@ class Student(User):
                 return
 
             actividad = curso_seleccionado.asignaciones[seleccion - 1]
-            try:
-                entrega_actividad = actividad.submissions
-            except AttributeError:
-                actividad.submissions = {}
-                entrega_actividad = actividad.submissions
-
-            entrega_actividad[self.carnet] = "Entregado"
+            actividad.submissions[self.carnet] = "Entregado"
             print("Actividad entregada con éxito!")
         except ValueError:
             print("Debe ingresar un número válido...")
@@ -103,6 +97,22 @@ class Student(User):
                 print(f"{course.name} | Sin actividades registradas.")
             else:
                 print(f"{course.name} | Nota global: {nota}/{total}")
+
+    def ver_nota_actividad(self,curso_seleccionado):
+        if not curso_seleccionado.asignaciones:
+            print("No hay actividades en este curso...")
+            return
+        print(f"---NOTAS DE ACTIVIDADES EN {curso_seleccionado}---")
+        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+            try:
+                try:
+                    estado= asignacion.submissions[self.carnet]
+                except KeyError:
+                    estado= "No entregado"
+            except AtributeError:
+                estado= "No entregado"
+            print(
+                f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date} | Estado: {estado}")
 
     def deploy_s_menu(self):
         while True:
@@ -144,6 +154,7 @@ class Student(User):
 
                                         case "3":
                                             print("---NOTA DE ACTIVIDADES---")
+                                            self.ver_nota_actividad(curso_seleccion)
                                         case "4":
                                             print("Volviendo a menú principal...")
                                             break
@@ -342,6 +353,7 @@ class Actividad:
         self.h_cierre = datetime.datetime.strptime(h_cierre, "%H:%M").time()
         self.type_a = type_a
         self.status = False
+        self.submission={}
 
     def set_status(self):
         ahora = datetime.datetime.now()
