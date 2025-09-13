@@ -55,13 +55,31 @@ class Student(User):
     def carnet(self):
         return self.__id_s
 
-    def entregar_tarea(self):
-        pass
+    def entregar_tarea(self, curso_seleccionado):
+        if not curso_seleccionado.asignaciones:
+            print("No hay actividades en este curso...")
+            return
+
+        print("---ACTIVIDADES DEL CURSO---")
+        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+            print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date}")
+
+        try:
+            seleccion = int(input("Ingrese el número de la actividad a entregar: "))
+            if not 1 <= seleccion <= len(curso_seleccionado.asignaciones):
+                print("Número de asignación no válido.")
+                return
+
+            actividad = curso_seleccionado.asignaciones[seleccion - 1]
+            actividad.submissions[self.carnet] = "Entregado"
+            print("Actividad entregada con éxito!")
+        except ValueError:
+            print("Debe ingresar un número válido...")
 
     def display_info(self):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
-    def inscription(self):
+    def inscription(self,course_name):
         for curse in courses_db.values():
             if curse.name == course_name:
                 if curse.id_course in self.assigned_c:
@@ -69,7 +87,8 @@ class Student(User):
                 else:
                     self.assigned_c[curse.id_course] = curse
                     curse.roster_alumnos[self.__id_s] = self
-                    print(f"Inscripción al curso {curse.name} compeltada con exito!")
+                    print(f"Inscripción al curso {curse.name} completada con éxito!")
+                return
         print("Curso no encontrado...")
 
     def ver_notas(self):
@@ -80,10 +99,26 @@ class Student(User):
             else:
                 print(f"{course.name} | Nota global: {nota}/{total}")
 
-    def deploy_s_menu(self, faculty):
+    def ver_nota_actividad(self,curso_seleccionado):
+        if not curso_seleccionado.asignaciones:
+            print("No hay actividades en este curso...")
+            return
+        print(f"---NOTAS DE ACTIVIDADES EN {curso_seleccionado}---")
+        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+            try:
+                try:
+                    estado= asignacion.submissions[self.carnet]
+                except KeyError:
+                    estado= "No entregado"
+            except AtributeError:
+                estado= "No entregado"
+            print(
+                f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date} | Estado: {estado}")
+
+    def deploy_s_menu(self):
         while True:
             print("---MENÚ ESTUDIANTE---")
-            print(f"1.Ver cursos\n2.Inscripción de cursos.\n3.Cerrar Sesión.")
+            print(f"1.Ver cursos\n2.Inscripción a cursos.\n3.Promedio General.\n4.Ver perfil\n5.Trayectoria de cursos\n6.Ver notas de Cursos\n7.Cerrar Sesión.")
             option= input("Ingrese una opcion:")
 
             match option:
@@ -92,22 +127,45 @@ class Student(User):
                         print("No estas asignado a ningun curso...")
                     else:
                         print(f"{"---"*4}CURSOS{"---"*4}")
-                        print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
-                        sub_option= input("Ingrese una opcion:")
-                        match sub_option:
-                            case "1":
-                                print("---ENTREGA DE TAREAS---")
-                            case "2":
-                                print("---NOTA DE CURSO---")
-                                self.ver_notas()
+                        for indice, curso in enumerate(self.assigned_c.values(), start=1):
+                            print(f"{indice}. {curso.name}")
 
-                            case "3":
-                                print("---NOTA DE ACTIVIDADES---")
-                            case "4":
-                                print("Saliendo del sistema....")
-                                break
-                            case _:
-                                print("Opcion no valida...")
+                        try:
+                            curso_seleccion = int(input("Seleccione el número del curso: "))
+                            curso_lista = list(self.assigned_c.values())
+
+                            if 1 <= curso_seleccion <= len(curso_lista):
+                                curso_selecionado = course_list[curso_seleccion - 1]
+
+                                while True:
+                                    print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad.\n4.Volver a menu principal")
+                                    sub_option= input("Ingrese una opcion:")
+
+                                    match sub_option:
+                                        case "1":
+                                            print("---ENTREGA DE TAREAS---")
+                                            self.entregar_tarea(curso_seleccion)
+                                        case "2":
+                                            print("---NOTA DE CURSO---")
+                                            nota, total = curso_selecionado.calcular_nota_final()
+                                            if total == 0:
+                                                print("Sin actividades registradas.")
+                                            else:
+                                                print(f"Nota global: {nota}/{total}")
+
+                                        case "3":
+                                            print("---NOTA DE ACTIVIDADES---")
+                                            self.ver_nota_actividad(curso_seleccion)
+                                        case "4":
+                                            print("Volviendo a menú principal...")
+                                            break
+                                        case _:
+                                            print("Opcion no valida...")
+                            else:
+                                print("Número de curso no válido...")
+
+                        except ValueError:
+                            print("Se debe ingresar un número válido...")
                 case "2":
                     print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
                     if not courses_db:
@@ -119,7 +177,15 @@ class Student(User):
                     self.inscription(course_name)
 
                 case "3":
-                    print("Salieno del sistema...")
+                    print("---PROMEDIO GENERAL---")
+                case "4":
+                    print("---PERFIL DE USUARIO---")
+                case "5":
+                    print("----TRAYECTORIA DE CURSOS---")
+                case "6":
+                    print("---NOTAS DE CURSOS---")
+                case "7":
+                    print("Saliendo del sistema...")
                     break
                 case _:
                     print("Opcion no valida...")
@@ -291,6 +357,7 @@ class Actividad:
         self.h_cierre = datetime.datetime.strptime(h_cierre, "%H:%M").time()
         self.type_a = type_a
         self.status = False
+        self.submission={}
 
     def set_status(self):
         ahora = datetime.datetime.now()
