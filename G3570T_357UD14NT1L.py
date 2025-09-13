@@ -34,7 +34,7 @@ class User:
     @phone_u.setter
     def phone_u(self, new_phone):
         if len(new_phone) > 8 or len(new_phone) < 8:
-            print("Ese número no es válido...")
+            print("Este número de telefono no es válido...")
         else:
             self.__phone = new_phone
     @property
@@ -47,10 +47,10 @@ class User:
 
 class Student(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_student, gen):
-        super().__init__(name, dpi, address, phone, dob, password_u)
+        super().__init__(name, dpi, address, phone, dob, password_u) #atributos heredados de user
         self.__id_s = id_student
-        self.gen = gen
-        self.assigned_c = {}
+        self.gen = gen #anio de ingreso del estudiante
+        self.assigned_c = {} # diccionario en donde se almacenaran las clases (en las que el estudiante este inscrito)
     @property
     def carnet(self):
         return self.__id_s
@@ -69,7 +69,7 @@ class Student(User):
                 else:
                     self.assigned_c[curse.id_course] = curse
                     curse.roster_alumnos[self.__id_s] = self
-                    print(f"Inscripción al curso {curse.name} compeltada con exito!")
+                    print(f"Inscripción al curso {curse.name} completada con exito!")
         print("Curso no encontrado...")
 
     def ver_notas(self):
@@ -84,16 +84,16 @@ class Student(User):
         while True:
             print("---MENÚ ESTUDIANTE---")
             print(f"1.Ver cursos\n2.Inscripción de cursos.\n3.Cerrar Sesión.")
-            option= input("Ingrese una opcion:")
+            option= input("Ingrese una opcion (1-3):")
 
             match option:
                 case "1":
                     if not self.assigned_c:
                         print("No estas asignado a ningun curso...")
                     else:
-                        print(f"{"---"*4}CURSOS{"---"*4}")
+                        print(f"{"---"*4}MOSTRANDO-CURSOS-ASIGNADOS{"---"*4}")
                         print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
-                        sub_option= input("Ingrese una opcion:")
+                        sub_option= input("Ingrese una opcion (1-4): ")
                         match sub_option:
                             case "1":
                                 print("---ENTREGA DE TAREAS---")
