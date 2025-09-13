@@ -563,7 +563,7 @@ while key:
 
 
         elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[user_pass].pass_ward:
-            engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
+            key = engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
         elif user_pass == "0" and password_pass == "0":
             key = False
         else:
