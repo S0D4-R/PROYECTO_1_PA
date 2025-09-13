@@ -126,6 +126,19 @@ class Student(User):
 
                 case "4": # pablo
                     print(f"{"---"*4}VER PERFIL{"---"*4}")
+                    print(f"{"--"*3}DATOS PERSONALES DEL ESTUDIANTE{"--"*3}")
+                    print(f"Nombre:{self.name}")
+                    print(f"DPI/CUI: {self.documento_personal}")
+                    print(f"Dirección: {self.address}")
+                    print(f"Número de Teléfono:{self.phone_u} ")
+                    print(f"Fecha de Nacimiento: {self.dob}") #atributo dob: fehca de nacimineto del usuario
+                    print(f"Canet:{self.carnet}")
+                    print(f"Año de ingreso al establecimiento: {self.gen}")# atributo gen ´año de ingreso del usuario al sistema o estblecimiento´
+
+                    print(f"\n{"--"*2}CURSOS EN LOS QUE ESTOY INSCRITO{"--"*2}")
+                    approved_courses = []
+                    failed_courses =[]
+
                 case "5": #pablo
                     print(f"{"---"*4}TRAYECTORIA-ACADEMICA{"---"*4}")
                 case "6": # pablo
