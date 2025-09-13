@@ -54,8 +54,32 @@ class Student(User):
     def carnet(self):
         return self.__id_s
 
-    def entregar_tarea(self):
-        pass
+    def entregar_tarea(self, curso_seleccionado):
+        if not curso_seleccionado.asignaciones:
+            print("No hay actividades en este curso...")
+            return
+
+        print("---ACTIVIDADES DEL CURSO---")
+        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+            print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date}")
+
+        try:
+            seleccion = int(input("Ingrese el número de la actividad a entregar: "))
+            if not 1 <= seleccion <= len(curso_seleccionado.asignaciones):
+                print("Número de asignación no válido.")
+                return
+
+            actividad = curso_seleccionado.asignaciones[seleccion - 1]
+            try:
+                entrega_actividad = actividad.submissions
+            except AttributeError:
+                actividad.submissions = {}
+                entrega_actividad = actividad.submissions
+
+            entrega_actividad[self.carnet] = "Entregado"
+            print("Actividad entregada con éxito!")
+        except ValueError:
+            print("Debe ingresar un número válido...")
 
     def display_info(self):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
@@ -109,6 +133,7 @@ class Student(User):
                                     match sub_option:
                                         case "1":
                                             print("---ENTREGA DE TAREAS---")
+                                            self.entregar_tarea(curso_seleccion)
                                         case "2":
                                             print("---NOTA DE CURSO---")
                                             nota, total = curso_selecionado.calcular_nota_final()
