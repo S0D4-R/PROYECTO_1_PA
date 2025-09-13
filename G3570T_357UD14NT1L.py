@@ -83,7 +83,7 @@ class Student(User):
     def deploy_s_menu(self):
         while True:
             print("---MENÚ ESTUDIANTE---")
-            print(f"1.Ver cursos\n2.Inscripción a cursos.\n3.Promedio General.\n4.Ver perfil\n5.Trayectoria de cursos\n6.Cerrar Sesión.")
+            print(f"1.Ver cursos\n2.Inscripción a cursos.\n3.Promedio General.\n4.Ver perfil\n5.Trayectoria de cursos\n6.Ver notas de Cursos\n7.Cerrar Sesión.")
             option= input("Ingrese una opcion:")
 
             match option:
@@ -146,6 +146,8 @@ class Student(User):
                 case "5":
                     print("----TRAYECTORIA DE CURSOS---")
                 case "6":
+                    print("---NOTAS DE CURSOS---")
+                case "7":
                     print("Saliendo del sistema...")
                     break
                 case _:
