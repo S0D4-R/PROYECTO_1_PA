@@ -125,7 +125,6 @@ class Student(User):
                         for id_s, alumno in faculty.students_db.items():
                             archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(alumno.assigned_c)}\n")
 
-                    # Guardar cursos directamente
                     with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
                         for id_c, curso in faculty.courses_db.items():
                             archivo_c.write(f"{curso.id_course};{curso.name};{curso.teacher_assigned};{json.dumps(curso.roster_alumnos)};{json.dumps(curso.asignaciones)}\n")
@@ -133,6 +132,21 @@ class Student(User):
                     return
 
             print("Curso no encontrado...")
+
+    def promedio_general(self):
+        punteo_obtenido=0
+        posibilidad= 0
+
+        for curso in self.assigned_c.values():
+            nota,total= curso.calcular_nota(self.carnet)
+            punteo_obtenido += nota
+            posibilidad += total
+
+        try:
+            promedio= (punteo_obtenido / posibilidad) *100
+        except ZeroDivisionError:
+            promedio =0
+        return promedio
 
     def ver_notas(self):
         for course in self.assigned_c.values():
@@ -146,7 +160,7 @@ class Student(User):
         if not curso_seleccionado.asignaciones:
             print("No hay actividades en este curso...")
             return
-        print(f"---NOTAS DE ACTIVIDADES EN {curso_seleccionado}---")
+        print(f"---NOTAS DE ACTIVIDADES EN {curso_seleccionado.name}---")
         for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
             try:
                 try:
@@ -223,6 +237,8 @@ class Student(User):
 
                 case "3":
                     print("---PROMEDIO GENERAL---")
+                    promedio= self.promedio_general()
+                    print(f"Su promedio general es de:{promedio}")
                 case "4":
                     print("---PERFIL DE USUARIO---")
                 case "5":
