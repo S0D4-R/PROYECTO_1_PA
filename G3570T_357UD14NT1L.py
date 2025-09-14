@@ -118,12 +118,24 @@ class Student(User):
                     return
                 else:
                     self.assigned_c[curse.id_course] = curse
-                    curse.roster_alumnos[self.__id_s] = self
+
+                    try:
+                        curse.roster_alumnos = json.loads(curse.roster_alumnos)
+                    except Exception:
+                        curse.roster_alumnos = {}
+                    try:
+                        curse.roster_alumnos = dict(curse.roster_alumnos)
+                    except Exception:
+                        curse.roster_alumnos = {}
+
+                    curse.roster_alumnos[self.__id_s] = self.name
+
                     print(f"Inscripción al curso {curse.name} completada con éxito!")
 
                     with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
                         for id_s, alumno in faculty.students_db.items():
-                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(alumno.assigned_c)}\n")
+                            assigned_ids = list(alumno.assigned_c.keys())
+                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(assigned_ids)}\n")
 
                     with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
                         for id_c, curso in faculty.courses_db.items():
@@ -131,7 +143,7 @@ class Student(User):
 
                     return
 
-            print("Curso no encontrado...")
+        print("Curso no encontrado...")
 
     def promedio_general(self):
         punteo_obtenido=0
