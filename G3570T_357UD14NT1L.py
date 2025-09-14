@@ -22,8 +22,6 @@ init(autoreset=True)
 def menu(opciones, titulo="MENÚ"):
     seleccion = 0
     while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
-
         for caracter in f"--- {titulo} ---":
             print(Fore.CYAN + caracter, end='', flush=True)
             time.sleep(0.03)
@@ -47,6 +45,8 @@ def menu(opciones, titulo="MENÚ"):
         elif tecla == b'\r':
             time.sleep(1.5)
             return seleccion
+
+        os.system('cls' if os.name == 'nt' else 'clear')
 
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
