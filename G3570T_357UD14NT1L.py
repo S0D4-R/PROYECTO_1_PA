@@ -175,7 +175,7 @@ class Student(User):
     def deploy_s_menu(self,faculty):
         while True:
             opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Promedio General.""4.Ver perfil.","5.Trayectoria de cursos.","6.Ver notas de Cursos","7.Cerrar Sesión."]
-            seleccion = menu(opciones_menu, "MENÚ DOCENTE")
+            seleccion = menu(opciones_menu, "MENÚ ESTUDIANTE")
             option = opciones_menu[seleccion].split(":")[0]
 
             match option:
