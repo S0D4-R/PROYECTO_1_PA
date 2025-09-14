@@ -24,7 +24,12 @@ def menu(opciones, titulo="MENÚ"):
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
 
-        print(Fore.CYAN + f"--- {titulo} ---\n")
+        for caracter in f"--- {titulo} ---":
+            print(Fore.CYAN + caracter, end='', flush=True)
+            time.sleep(0.03)
+        print("\n" + Fore.CYAN + "═" * 40)
+        time.sleep(0.03)
+
         for i, opcion in enumerate(opciones):
             if i == seleccion:
                 print(Fore.LIGHTMAGENTA_EX + f"→ {opcion}")
