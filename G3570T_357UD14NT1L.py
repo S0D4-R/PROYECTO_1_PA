@@ -41,6 +41,7 @@ def menu(opciones, titulo="MENÚ"):
             elif tecla2 == b'P' and seleccion < len(opciones) - 1:
                 seleccion += 1
         elif tecla == b'\r':
+            time.sleep(1.5)
             return seleccion
 
 class User:
@@ -136,19 +137,16 @@ class Student(User):
                     estado= asignacion.submissions[self.carnet]
                 except KeyError:
                     estado= "No entregado"
-            except AtributeError:
+            except AttributeError:
                 estado= "No entregado"
             print(
                 f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date} | Estado: {estado}")
 
     def deploy_s_menu(self):
         while True:
-            opciones_menu = ["1.Ver cursos", "2.Inscripción de cursos", "3.Cerrar Sesión"]
-            opcion= menu(opciones_menu, "MENÚ ESTUDIANTE")
-            option = opciones_menu[opcion]
-            print("---MENÚ ESTUDIANTE---")
-            print(f"1.Ver cursos\n2.Inscripción a cursos.\n3.Promedio General.\n4.Ver perfil\n5.Trayectoria de cursos\n6.Ver notas de Cursos\n7.Cerrar Sesión.")
-            option= input("Ingrese una opcion:")
+            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Promedio General.""4.Ver perfil.","5.Trayectoria de cursos.","6.Ver notas de Cursos","7.Cerrar Sesión."]
+            seleccion = menu(opciones_menu, "MENÚ DOCENTE")
+            option = opciones_menu[seleccion].split(":")[0]
 
             match option:
                 case "1":
@@ -156,16 +154,6 @@ class Student(User):
                         print("No estas asignado a ningun curso...")
                         print("Presione ENTER para volver")
                     else:
-                        sub_opciones = ["1.Entregar Tareas", "2.Ver nota de curso", "3.Ver nota de actividad","4.Volver a menu principal"]
-                        print(f"{"---"*4}CURSOS{"---"*4}")
-                        sub = menu(sub_opciones, "---CURSOS---")
-                        sub_option = sub_opciones[sub].split(".")[0]
-                        match sub_option:
-                            case "1":
-                                print("---ENTREGA DE TAREAS---")
-                            case "2":
-                                print("---NOTA DE CURSO---")
-                                self.ver_notas()
                         for indice, curso in enumerate(self.assigned_c.values(), start=1):
                             print(f"{indice}. {curso.name}")
 
@@ -174,16 +162,18 @@ class Student(User):
                             curso_lista = list(self.assigned_c.values())
 
                             if 1 <= curso_seleccion <= len(curso_lista):
-                                curso_selecionado = course_list[curso_seleccion - 1]
+                                curso_selecionado = curso_lista[curso_seleccion - 1]
 
                                 while True:
-                                    print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad.\n4.Volver a menu principal")
-                                    sub_option= input("Ingrese una opcion:")
+                                    sub_opciones = ["1.Entregar Tareas", "2.Ver nota de curso",
+                                                    "3.Ver nota de actividad", "4.Volver a menu principal"]
+                                    print(f"{"---" * 4}CURSOS{"---" * 4}")
+                                    sub_option = menu(sub_opciones, "---CURSOS---")
 
                                     match sub_option:
                                         case "1":
                                             print("---ENTREGA DE TAREAS---")
-                                            self.entregar_tarea(curso_seleccion)
+                                            self.entregar_tarea(curso_selecionado)
                                         case "2":
                                             print("---NOTA DE CURSO---")
                                             nota, total = curso_selecionado.calcular_nota_final()
@@ -194,7 +184,7 @@ class Student(User):
 
                                         case "3":
                                             print("---NOTA DE ACTIVIDADES---")
-                                            self.ver_nota_actividad(curso_seleccion)
+                                            self.ver_nota_actividad(curso_selecionado)
                                         case "4":
                                             print("Volviendo a menú principal...")
                                             break
@@ -322,8 +312,8 @@ class Teacher(User):
 
 
     def deploy_t_menu(self):
-        opciones_menu = ["Ver cursos", "Crear asignación", "Subir notas", "Cerrar sesión"]
         while True:
+            opciones_menu = ["Ver cursos", "Crear asignación", "Subir notas", "Cerrar sesión"]
             seleccion = menu(opciones_menu, "MENÚ DOCENTE")
             select_cat = opciones_menu[seleccion].split(":")[0]
             match select_cat:
@@ -337,8 +327,10 @@ class Teacher(User):
                         course_select = input("Ingrese la ID del curso: ")
                         if course_select in self.assigned_courses.keys():
                             course = self.assigned_courses[course_select]
-                            print("\nOpciones\1. Crear asignación\n2. Subir notas")
-                            subselect = input("Ingrese la opción que desea elegir: ")
+
+                            opciones_menu = ["1.Crear Asignación.", "2.Subir Notas"]
+                            seleccion = menu(opciones_menu, "OPCIONES")
+                            subselect = opciones_menu[seleccion].split(":")[0]
                             match subselect:
                                 case "1":
                                     pass#self.crear_asignacion(course)
@@ -562,8 +554,9 @@ def deploy_admin_menu(faculty):
 
 
             case "7":
-                print("-"*15, "GUARDADO DE INFORMACIÓN", "-"*15)
-                save_ops = input("> 1. Alumnos...\n> 2. Maestros...\n> 3. Cursos...\n")
+                opciones_menu = ["1.Alumnos.","2.Maestros.","3.Cursos."]
+                seleccion = menu(opciones_menu, "GUARDADO DE INFORMACIÓN")
+                save_ops = opciones_menu[seleccion].split(":")[0]
                 match save_ops:
                     case "1":
                         with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
