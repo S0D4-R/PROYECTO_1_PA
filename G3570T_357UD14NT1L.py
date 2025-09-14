@@ -4,7 +4,6 @@ DEVELOPERS:
 ~ PABLO
 ~ JORGE ERNESTO
 ~ JORGE
-
 """
 import os
 import time
