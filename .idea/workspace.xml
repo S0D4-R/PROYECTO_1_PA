@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="-METODO Y OPCION PROMEDIO GENERAL">
-      <change afterPath="$PROJECT_DIR$/MANUAL DE USUARIO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="-MENÚ INTERACTIVO (corrección)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,14 +98,34 @@
       <option name="project" value="LOCAL" />
       <updated>1757827507336</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="-MENÚ INTERACTIVO (corrección)">
+      <option name="closed" value="true" />
+      <created>1757871734604</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1757871734604</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="-MENU USUARIOS INTERACTIVO" />
     <MESSAGE value="-MENU USUARIOS INTERACTIVO(corección)" />
     <MESSAGE value="-GUARDADO DE INSCRIPCION [ESTUDIANTE}" />
     <MESSAGE value="-METODO Y OPCION PROMEDIO GENERAL" />
-    <option name="LAST_COMMIT_MESSAGE" value="-METODO Y OPCION PROMEDIO GENERAL" />
+    <MESSAGE value="-MENÚ INTERACTIVO (corrección)" />
+    <option name="LAST_COMMIT_MESSAGE" value="-MENÚ INTERACTIVO (corrección)" />
   </component>
 </project>
