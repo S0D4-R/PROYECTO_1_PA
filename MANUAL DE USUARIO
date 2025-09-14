@@ -1,0 +1,125 @@
+# Manual de Usuario de Sistema
+
+## 1. Descripción General
+Este sistema está desarrollado en Python para la gestión de cursos, estudiantes y docentes.
+Permite a los administradores crear cursos y usuarios, asignar docentes, a los estudiantes inscribirse en cursos, entregar tareas y consultar sus calificaciones.
+
+El sistema se ejecuta en consola (CMD o Terminal) y utiliza archivos de texto para guardar la información de los usuarios.
+
+---
+
+## 2. Roles del Sistema
+
+### 2.1 Administrador
+- **Usuario:** ruler
+- **Contraseña:** admin01
+
+Funciones principales:
+- Crear cursos y asignar docentes.
+- Crear usuarios (estudiantes o docentes) con sus datos personales.
+- Visualizar cursos, estudiantes y docentes registrados.
+- Guardar la información en archivos .txt.
+
+### 2.2 Estudiante
+- **Acceso:** ID de estudiante y contraseña asignada.
+
+Funciones principales:
+- Consultar cursos en los que está inscrito.
+- Inscribirse en cursos disponibles.
+- Entregar tareas.
+- Consultar notas de actividades y promedio general.
+- Visualizar perfil y trayectoria académica.
+
+### 2.3 Docente
+- **Acceso:** ID de docente y contraseña asignada.
+
+Funciones principales:
+- Visualizar cursos asignados.
+- Crear asignaciones para sus cursos.
+- Registrar calificaciones de los estudiantes.
+
+---
+
+## 3. Inicio de Sesión
+Al ejecutar el programa, se solicita:
+- User: ID o ruler(para administrador).
+-Password: contraseña
+
+- Dependiendo del usuario ingresado, se accederá al menú correspondiente.
+- Para salir del sistema, se selecciona la opción "Cerrar sesión".
+
+---
+
+## 4. Navegación en los Menús
+- ↑ / ↓: Moverse entre opciones.
+- ENTER: Confirmar selección.
+
+### 4.1 Menú del Administrador
+1. **Crear Curso**: Asignar nombre y docente al curso.
+2. **Crear Usuario**: Registrar estudiantes o docentes con sus datos personales.
+3. **Ver Cursos**: Lista todos los cursos y docentes asignados.
+4. **Ver Alumnos**: Muestra todos los estudiantes registrados.
+5. **Ver Maestros**: Muestra todos los docentes registrados.
+6. **Asignar Maestros**: Vincula un docente a un curso.
+7. **Guardar**: Guarda la información en archivos .txt.
+8. **Salir**: Cierra el sistema.
+
+### 4.2 Menú del Estudiante
+1. **Ver Cursos**: Visualizar cursos inscritos y opciones de entregar tareas o ver notas.
+2. **Inscripción a Cursos**: Inscribirse en cursos disponibles.
+3. **Promedio General**: Calcular promedio de todas las asignaciones.
+4. **Ver Perfil**: Consultar información personal.
+5. **Trayectoria de Cursos**: Visualizar historial de cursos tomados.
+6. **Ver Notas de Cursos**: Consultar calificaciones por curso.
+7. **Cerrar Sesión**: Regresar a la pantalla de inicio.
+
+### 4.3 Menú del Docente
+1. **Ver Cursos**: Lista de cursos asignados y opciones de crear asignaciones o subir notas.
+2. **Crear Asignación**: Definir tarea con valor, fecha, horario y tipo.
+3. **Subir Notas**: Registrar calificaciones a los estudiantes.
+4. **Cerrar Sesión**: Regresar a la pantalla de inicio.
+
+---
+
+## 5. Gestión de Datos
+Los datos se almacenan en archivos de texto:
+
+- estudiantes.txt → Información de los estudiantes.
+- Profesores.txt → Información de los docentes.
+- Cursos.txt → Información de los cursos y asignaciones.
+
+Se recomienda guardar los datos regularmente desde el menú del administrador con la opcion correspondiente
+esto para evitar la perdida de datos.
+
+---
+
+## 6. Funcionalidades Clave
+1. **Entrega de tareas**: Marca la actividad como entregada.
+2. **Promedio general**: Calcula la media de todas las asignaciones entregadas.
+3. **Creación de asignaciones**: Permite definir fecha límite, horario, tipo y valor de la tarea.
+4. **Asignación de docentes a cursos**: Vincula un docente existente a un curso.
+
+---
+
+## 7. Requisitos del Sistema
+- Python 3.x
+- Módulos necesarios: os, time, datetime, random, json, msvcrt, colorama.
+
+---
+
+## 8. Reglas y Restricciones
+- Fecha: Formato "dd-mm-aaaa" ( dia-mes-año).
+- Hora: Formato "hh:mm" (hora-minutos).
+- Teléfono: 8 dígitos exactos.
+- El sistema solo funciona en terminal.
+- Se recomienda guardar los datos de manera regular.
+
+---
+
+## 9. Errores Comunes
+- **Usuario o contraseña incorrectos**: Verificar ID y contraseña.
+- **Número de asignación no válido**: Seleccionar un número válido de la lista.
+- **Formato de fecha u hora incorrecto**: Seguir los formatos indicados.
+- **Teléfono inválido**: Debe tener 8 dígitos exactos.
+
+---

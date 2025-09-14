@@ -174,9 +174,9 @@ class Student(User):
 
     def deploy_s_menu(self,faculty):
         while True:
-            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Promedio General.""4.Ver perfil.","5.Trayectoria de cursos.","6.Ver notas de Cursos","7.Cerrar Sesión."]
-            seleccion = menu(opciones_menu, "MENÚ DOCENTE")
-            option = opciones_menu[seleccion].split(":")[0]
+            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Promedio General.","4.Ver perfil.","5.Trayectoria de cursos.","6.Ver notas de Cursos","7.Cerrar Sesión."]
+            seleccion = menu(opciones_menu, "MENÚ ESTUDIANTE")
+            option = opciones_menu[seleccion].split(".")[0]
 
             match option:
                 case "1":
@@ -345,9 +345,9 @@ class Teacher(User):
 
     def deploy_t_menu(self):
         while True:
-            opciones_menu = ["Ver cursos", "Crear asignación", "Subir notas", "Cerrar sesión"]
+            opciones_menu = ["1.Ver cursos", "2.Cerrar sesión"]
             seleccion = menu(opciones_menu, "MENÚ DOCENTE")
-            select_cat = opciones_menu[seleccion].split(":")[0]
+            select_cat = opciones_menu[seleccion].split(".")[0]
             match select_cat:
                 case "1":
                     if not self.assigned_courses:
@@ -362,7 +362,7 @@ class Teacher(User):
 
                             opciones_menu = ["1.Crear Asignación.", "2.Subir Notas"]
                             seleccion = menu(opciones_menu, "OPCIONES")
-                            subselect = opciones_menu[seleccion].split(":")[0]
+                            subselect = opciones_menu[seleccion].split(".")[0]
                             match subselect:
                                 case "1":
                                     pass#self.crear_asignacion(course)

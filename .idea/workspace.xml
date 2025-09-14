@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="-MENU USUARIOS INTERACTIVO">
+    <list default="true" id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="-METODO Y OPCION PROMEDIO GENERAL">
+      <change afterPath="$PROJECT_DIR$/MANUAL DE USUARIO" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,11 +77,38 @@
       <option name="project" value="LOCAL" />
       <updated>1757818320888</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="-MENU USUARIOS INTERACTIVO(corección)">
+      <option name="closed" value="true" />
+      <created>1757824313620</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1757824313620</updated>
+    </task>
+    <task id="LOCAL-00003" summary="-GUARDADO DE INSCRIPCION [ESTUDIANTE}">
+      <option name="closed" value="true" />
+      <created>1757826323076</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1757826323076</updated>
+    </task>
+    <task id="LOCAL-00004" summary="-METODO Y OPCION PROMEDIO GENERAL">
+      <option name="closed" value="true" />
+      <created>1757827507336</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1757827507336</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="-MENU USUARIOS INTERACTIVO" />
-    <option name="LAST_COMMIT_MESSAGE" value="-MENU USUARIOS INTERACTIVO" />
+    <MESSAGE value="-MENU USUARIOS INTERACTIVO(corección)" />
+    <MESSAGE value="-GUARDADO DE INSCRIPCION [ESTUDIANTE}" />
+    <MESSAGE value="-METODO Y OPCION PROMEDIO GENERAL" />
+    <option name="LAST_COMMIT_MESSAGE" value="-METODO Y OPCION PROMEDIO GENERAL" />
   </component>
 </project>
