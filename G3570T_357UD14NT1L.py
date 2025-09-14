@@ -110,17 +110,29 @@ class Student(User):
     def display_info(self):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
-    def inscription(self,course_name):
-        for curse in courses_db.values():
+    def inscription(self,course_name,faculty):
+        for curse in faculty.courses_db.values():
             if curse.name == course_name:
                 if curse.id_course in self.assigned_c:
                     print("Ya te asignaste a este curso...")
+                    return
                 else:
                     self.assigned_c[curse.id_course] = curse
                     curse.roster_alumnos[self.__id_s] = self
                     print(f"Inscripción al curso {curse.name} completada con éxito!")
-                return
-        print("Curso no encontrado...")
+
+                    with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
+                        for id_s, alumno in faculty.students_db.items():
+                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(alumno.assigned_c)}\n")
+
+                    # Guardar cursos directamente
+                    with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
+                        for id_c, curso in faculty.courses_db.items():
+                            archivo_c.write(f"{curso.id_course};{curso.name};{curso.teacher_assigned};{json.dumps(curso.roster_alumnos)};{json.dumps(curso.asignaciones)}\n")
+
+                    return
+
+            print("Curso no encontrado...")
 
     def ver_notas(self):
         for course in self.assigned_c.values():
@@ -146,7 +158,7 @@ class Student(User):
             print(
                 f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date} | Estado: {estado}")
 
-    def deploy_s_menu(self):
+    def deploy_s_menu(self,faculty):
         while True:
             opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Promedio General.""4.Ver perfil.","5.Trayectoria de cursos.","6.Ver notas de Cursos","7.Cerrar Sesión."]
             seleccion = menu(opciones_menu, "MENÚ DOCENTE")
@@ -201,13 +213,13 @@ class Student(User):
                             print("Se debe ingresar un número válido...")
                 case "2":
                     print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
-                    if not courses_db:
+                    if not faculty.courses_db:
                         print("No hay cursos disponibles...")
                     print("Cursos disponibles")
-                    for course in courses_db.values():
-                        print(f"{course.name} - Docente:{course.teacher_assigned.name}")
-                    course_name= input("Ingrese nombre de curso a inscribir:")
-                    self.inscription(course_name)
+                    for curso in faculty.courses_db.values():
+                        print(f"{curso.name} - Docente: {curso.teacher_assigned}")
+                    course_name = input("Ingrese nombre del curso a inscribir: ")
+                    self.inscription(course_name, faculty)
 
                 case "3":
                     print("---PROMEDIO GENERAL---")
