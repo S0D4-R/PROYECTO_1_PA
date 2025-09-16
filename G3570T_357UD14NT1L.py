@@ -142,8 +142,13 @@ class Student(User):
         punteo_obtenido=0
         posibilidad= 0
 
+        try:
+            self.assigned_c == dict(self.assigned_c)
+        except Exception:
+            self.assigned_c ={}
+
         for curso in self.assigned_c.values():
-            nota,total= curso.calcular_nota(self.carnet)
+            nota, total = curso.calcular_nota(self.carnet)
             punteo_obtenido += nota
             posibilidad += total
 
@@ -155,7 +160,7 @@ class Student(User):
 
     def ver_notas(self):
         for course in self.assigned_c.values():
-            nota, total = course.calcular_nota_final()
+            nota, total = course.calcular_nota_final(self.carnet)
             if total == 0:
                 print(f"{course.name} | Sin actividades registradas.")
             else:
@@ -515,13 +520,14 @@ class Curso:
         else:
             print("No hay asignaciones asignadas")
 
-    def calcular_nota(self):
+    def calcular_nota(self,carnet):
         nota_final=0
         nota=0
         for asignacion in self.asignaciones:
-            if asignacion.valor_dc is not None:
-                nota_final +=asignacion.valor_dc
-            nota += asignacion.valor_dc
+            if carnet in asignacion.submission:
+                valor_entregado = asignacion.valor_dc or 0
+                nota_final += valor_entregado
+                nota += asignacion.valor_n
         return nota_final, nota
 
 
