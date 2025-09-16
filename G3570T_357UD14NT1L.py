@@ -349,6 +349,10 @@ class Student(User):
                                 mensaje = "DEBES MEJORAR TU NOTA...."
                             elif nota_promedio >= 50:
                                 mensaje = "FELICIDADES, DEBES MANTENER ESTA BUENA NOTA"
+
+                            print(f"Curso: {curso.name} | Nota Promedio: {nota_promedio} | Estado: {mensaje}")
+
+                    input("\nPresione enter Enter para volver al menú inicial...")
                 case "7": #pablo
                     print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
                     break
