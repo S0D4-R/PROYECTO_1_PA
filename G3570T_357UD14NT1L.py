@@ -397,9 +397,6 @@ class Teacher(User):
                         raise fechaFormatError("El mes debe tener 2 valores")
                     if len(secciones[2]) != 4:
                         raise fechaFormatError("El año debe tener 4 valores")
-                    secciones[0] = int(secciones[0])
-                    secciones[1] = int(secciones[1])
-                    secciones[2] = int(secciones[2])
                 else:
                     raise fechaFormatError("Debe ingresar el formato dd-mm-aaaa")
 
@@ -414,8 +411,6 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones2[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
-                    secciones2[0] = int(secciones2[0])
-                    secciones2[1] = int(secciones2[1])
                 hora_close = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
                 if ":" in hora_close:
                     secciones3 = hora_close.split(":")
@@ -427,8 +422,6 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones3[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
-                    secciones3[0] = int(secciones3[0])
-                    secciones3[1] = int(secciones3[1])
                 else:
                     raise horaFormatError("Debe ingresar el formato hh:mm")
                 tipo = input("Ingrese el tipo de asignación: ")
