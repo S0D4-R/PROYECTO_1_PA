@@ -90,8 +90,7 @@ class Teacher(User):
                 for actividad in curso.asgnaciones:
                     actividad.mostrar_datos()
                     for est in curso.roster_alumnos.values():
-                        actividades = est.assigned_c[curso.id_course][1]
-                        for act in actividades:
+                        for act in est.assigned_c[curso.id_course][1]:
                             act[0].set_status()
                             if act[1]:
                                 print("El estudiante realizó su entrega")
@@ -104,6 +103,7 @@ class Teacher(User):
                                         print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
                                     else:
                                         act[0].valor_dc = punteo
+                                        est.assigned_c[curso.id_course][2] += punteo
                                         break
                                 except ValueError:
                                     print("Solo puede ingresar números enteros")
@@ -123,8 +123,7 @@ class Teacher(User):
                     for actividad in curso.asignaciones:
                         if actividad.id == id_act:
                             for est in curso.roster_alumnos.values():
-                                actividades = est.assigned_c[curso.id_course][1]
-                                for act in actividades:
+                                for act in est.assigned_c[curso.id_course][1]:
                                     act[0].set_status()
                                     if act[0].id == id_act:
                                         if act[1]:
@@ -139,11 +138,13 @@ class Teacher(User):
                                                     print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
                                                 else:
                                                     act[0].valor_dc = punteo
+                                                    est.assigned_c[curso.id_course][2] += punteo
                                                     break
                                             except ValueError:
                                                 print("Solo puede ingresar números enteros")
                                             except Exception as e:
                                                 print("Error inesperado", e)
+
             case "3":
                 if not curso.asignaciones:
                     print("Aún no hay actividades")
@@ -158,7 +159,6 @@ class Teacher(User):
                 print(f"Estudiantes del curso {curso.name} actualizados")
                 engineering_faculty.courses_db[curso.id_course] = curso
                 print("Curso actualizado en la base de datos")
-
             case _:
                 print("Opción inválida")
 
