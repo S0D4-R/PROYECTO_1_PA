@@ -111,27 +111,19 @@ class Student(User):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
     def inscription(self,course_name,faculty):
+        course_name = course_name.lower()
         for curse in faculty.courses_db.values():
-            if curse.name == course_name:
+            if curse.name.lower() == course_name.lower():
                 if curse.id_course in self.assigned_c:
                     print("Ya te asignaste a este curso...")
                     return
                 else:
                     self.assigned_c[curse.id_course] = curse
-
                     try:
-                        curse.roster_alumnos = json.loads(curse.roster_alumnos)
+                        curse.roster_alumnos = dict(json.loads(curse.roster_alumnos))
                     except Exception:
                         curse.roster_alumnos = {}
-                    try:
-                        curse.roster_alumnos = dict(curse.roster_alumnos)
-                    except Exception:
-                        curse.roster_alumnos = {}
-
                     curse.roster_alumnos[self.__id_s] = self.name
-
-                    print(f"Inscripción al curso {curse.name} completada con éxito!")
-
                     with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
                         for id_s, alumno in faculty.students_db.items():
                             assigned_ids = list(alumno.assigned_c.keys())
@@ -141,6 +133,7 @@ class Student(User):
                         for id_c, curso in faculty.courses_db.items():
                             archivo_c.write(f"{curso.id_course};{curso.name};{curso.teacher_assigned};{json.dumps(curso.roster_alumnos)};{json.dumps(curso.asignaciones)}\n")
 
+                    print(f"Inscripción al curso {curse.name} completada con éxito!")
                     return
 
         print("Curso no encontrado...")
