@@ -222,7 +222,7 @@ class Student(User):
                             elif nota_promedio >= 50:
                                 mensaje = "FELICIDADES, DEBES MANTENER ESTA BUENA NOTA"
                 case "7": #pablo
-                    print(f"Volviendo al login inicial...........")
+                    print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
                     break
                 case _:
                     print("Opcion no válida, por favor intentelo de nuevo...........")
