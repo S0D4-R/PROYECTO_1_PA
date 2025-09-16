@@ -182,7 +182,7 @@ class Student(User):
 
                 case "5": #pablo
                     print(f"{"---"*4}TRAYECTORIA-ACADEMICA{"---"*4}")
-                    print( "Historial de cursos: ")
+                    print( "Mostrando Historial de todos los cursos: ")
                     approved_courses = []
                     failed_courses = []
 
@@ -193,25 +193,34 @@ class Student(User):
                                 approved_courses.append(curso.name)
                             else:
                                 failed_courses.append(curso.name)
-                    print("\n---CURSOS APROBADOS---")
+                    print("\n---MOSTRANDO CURSOS APROBADOS---")
                     if approved_courses:
                         for curso_nombre in approved_courses:
                             print(f" - {curso_nombre}")
                     else:
-                        print("f No has aprobado cursos.")
+                        print(f"NO HAS APROBADO NINGUN CURSO, MEJORA TU RENDIMIENTO.")
 
-                    print(f"\n---CURSOS REPROBADOS---")
+                    print(f"\n---MOSTRANDO CURSOS REPROBADOS---")
                     if failed_courses:
                         for curso_nombre in failed_courses:
                             print(f" - {curso_nombre}")
                     else:
-                        print(f" No has reprobado cursos.")
+                        print(f" NO HAS REPROBADO CURSOS, EXCELENTE RENDIMIENTO.")
 
                     input(f"\nPresiona Enter para volver al menú principal...")
 
-
                 case "6": # pablo
                     print(f"{"---"*4}VER NOTAS DE TODOS LOS CURSOS{"---"*4}")
+                    if not self.assigned_c:
+                        print("NO ESTAS INSCRITO EN NINGUN CURSO......")
+                    else:
+                        for curso_nombre, curso in self.assigned_c.items():
+                            nota_promedio, _ = curso.calcular_nota()
+                            mensaje =""
+                            if nota_promedio < 30:
+                                mensaje = "DEBES MEJORAR TU NOTA...."
+                            elif nota_promedio >= 50:
+                                mensaje = "FELICIDADES, DEBES MANTENER ESTA BUENA NOTA"
                 case "7": #pablo
                     print(f"Volviendo al login inicial...........")
                     break
