@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[15] DEBUGGING OF THE SAVING PROCESS">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="-MENÚ INTERACTIVO (corrección)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ChangesViewManager" show_ignored="true" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -21,282 +18,95 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;S0D4-R&quot;
+    &quot;assignee&quot;: &quot;Jackelin-Vasquez&quot;
   }
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/S0D4-R/PROYECTO_1_PA.git&quot;,
-    &quot;accountId&quot;: &quot;38fedd2a-bf65-47e1-97d5-2e9a047d679e&quot;
+    &quot;accountId&quot;: &quot;a5d6c4e7-3bf3-46ca-89f4-51b9f3302856&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 2
+  &quot;associatedIndex&quot;: 0
 }</component>
-  <component name="ProjectId" id="3226XRISX15U8UcxiIwCjMlhLFr" />
+  <component name="ProjectId" id="32fhi1N2BDxSWZrp4gsLBe2HQhG" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.G3570T_357UD14NT1L (2).executor": "Run",
-    "Python.G3570T_357UD14NT1L.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.G3570T_357UD14NT1L.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prubea.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Python.G3570T_357UD14NT1L">
-    <configuration name="G3570T_357UD14NT1L (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PROYECTO_1_PA" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/G3570T_357UD14NT1L.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="G3570T_357UD14NT1L" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="PROYECTO_1_PA" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/G3570T_357UD14NT1L.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.G3570T_357UD14NT1L (2)" />
-        <item itemvalue="Python.G3570T_357UD14NT1L (2)" />
-        <item itemvalue="Python.G3570T_357UD14NT1L (2)" />
-        <item itemvalue="Python.G3570T_357UD14NT1L (2)" />
-      </list>
-    </recent_temporary>
-  </component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-4c141bd692a7-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.90" />
+        <option value="bundled-python-sdk-598b0484d0b5-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.74" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="" />
-      <created>1756606358853</created>
+      <changelist id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="[15] DEBUGGING OF THE SAVING PROCESS" />
+      <created>1757817659021</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1756606358853</updated>
+      <updated>1757817659021</updated>
     </task>
-    <task id="LOCAL-00001" summary="[1] FILE CREATION">
+    <task id="LOCAL-00001" summary="-MENU USUARIOS INTERACTIVO">
       <option name="closed" value="true" />
-      <created>1756606516841</created>
+      <created>1757818320888</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1756606516841</updated>
+      <updated>1757818320888</updated>
     </task>
-    <task id="LOCAL-00002" summary="[2] CLASS CREATION">
+    <task id="LOCAL-00002" summary="-MENU USUARIOS INTERACTIVO(corección)">
       <option name="closed" value="true" />
-      <created>1756779671879</created>
+      <created>1757824313620</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1756779671879</updated>
+      <updated>1757824313620</updated>
     </task>
-    <task id="LOCAL-00003" summary="[3] MENU CREATION">
+    <task id="LOCAL-00003" summary="-GUARDADO DE INSCRIPCION [ESTUDIANTE}">
       <option name="closed" value="true" />
-      <created>1756834661221</created>
+      <created>1757826323076</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1756834661221</updated>
+      <updated>1757826323076</updated>
     </task>
-    <task id="LOCAL-00004" summary="[4] IDEA IMPLEMENTATION">
+    <task id="LOCAL-00004" summary="-METODO Y OPCION PROMEDIO GENERAL">
       <option name="closed" value="true" />
-      <created>1757038232143</created>
+      <created>1757827507336</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1757038232143</updated>
+      <updated>1757827507336</updated>
     </task>
-    <task id="LOCAL-00005" summary="[5] RANDOM ID GENERATION AND COURSE CREATION">
+    <task id="LOCAL-00005" summary="-MENÚ INTERACTIVO (corrección)">
       <option name="closed" value="true" />
-      <created>1757044513906</created>
+      <created>1757871734604</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1757044513906</updated>
+      <updated>1757871734604</updated>
     </task>
-    <task id="LOCAL-00006" summary="[6] COURSE CREATION IMPLEMENTED">
-      <option name="closed" value="true" />
-      <created>1757046203040</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1757046203040</updated>
-    </task>
-    <task id="LOCAL-00007" summary="[6.5] USER CREATION IN PROCESS">
-      <option name="closed" value="true" />
-      <created>1757048584735</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1757048584735</updated>
-    </task>
-    <task id="LOCAL-00008" summary="[6.5] USER CREATION IN PROCESS">
-      <option name="closed" value="true" />
-      <created>1757204646765</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1757204646765</updated>
-    </task>
-    <task id="LOCAL-00009" summary="[7] USER CREATION IMPLEMENTED">
-      <option name="closed" value="true" />
-      <created>1757206170912</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1757206170912</updated>
-    </task>
-    <task id="LOCAL-00010" summary="[8] DISPLAY IMPLEMENTED">
-      <option name="closed" value="true" />
-      <created>1757209566249</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1757209566249</updated>
-    </task>
-    <task id="LOCAL-00011" summary="[9] DISPLAY-PER-FUN IMPLEMENTED">
-      <option name="closed" value="true" />
-      <created>1757213143761</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1757213143761</updated>
-    </task>
-    <task id="LOCAL-00012" summary="[9] DISPLAY-PER-FUN IMPLEMENTED">
-      <option name="closed" value="true" />
-      <created>1757213335801</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1757213335801</updated>
-    </task>
-    <task id="LOCAL-00013" summary="[10.3] ASIGNACIÓN MAESTROS">
-      <option name="closed" value="true" />
-      <created>1757224581995</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1757224581995</updated>
-    </task>
-    <task id="LOCAL-00014" summary="[10.3] ASIGNACIÓN MAESTROS">
-      <option name="closed" value="true" />
-      <created>1757225056900</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1757225056900</updated>
-    </task>
-    <task id="LOCAL-00015" summary="[10.6] ASIGNACIÓN MAESTROS MOD">
-      <option name="closed" value="true" />
-      <created>1757226632947</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1757226632947</updated>
-    </task>
-    <task id="LOCAL-00016" summary="[11] VERIFICATIONS ADDED">
-      <option name="closed" value="true" />
-      <created>1757227686740</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1757227686740</updated>
-    </task>
-    <task id="LOCAL-00017" summary="[11] VERIFICATIONS ADDED">
-      <option name="closed" value="true" />
-      <created>1757265678298</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1757265678298</updated>
-    </task>
-    <task id="LOCAL-00018" summary="[12] VERIFICATIONS ADDED">
-      <option name="closed" value="true" />
-      <created>1757431023199</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1757431023199</updated>
-    </task>
-    <task id="LOCAL-00019" summary="[13] SAVING SYSTEM IMPLEMENTED">
-      <option name="closed" value="true" />
-      <created>1757566576728</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1757566576728</updated>
-    </task>
-    <task id="LOCAL-00020" summary="[14] ADMIN MENU IMPLEMENTED">
-      <option name="closed" value="true" />
-      <created>1757570056154</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1757570056154</updated>
-    </task>
-    <task id="LOCAL-00021" summary="[15] DEBUGGING OF THE SAVING PROCESS">
-      <option name="closed" value="true" />
-      <created>1757574402285</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1757574402285</updated>
-    </task>
-    <option name="localTasksCounter" value="22" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -311,34 +121,11 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[1] FILE CREATION" />
-    <MESSAGE value="[2] CLASS CREATION" />
-    <MESSAGE value="[3] MENU CREATION" />
-    <MESSAGE value="[4] IDEA IMPLEMENTATION" />
-    <MESSAGE value="[5] RANDOM ID GENERATION AND COURSE CREATION" />
-    <MESSAGE value="[6] COURSE CREATION IMPLEMENTED" />
-    <MESSAGE value="[6.5] USER CREATION IN PROCESS" />
-    <MESSAGE value="[7] USER CREATION IMPLEMENTED" />
-    <MESSAGE value="[8] DISPLAY IMPLEMENTED" />
-    <MESSAGE value="[9] DISPLAY-PER-FUN IMPLEMENTED" />
-    <MESSAGE value="[10.3] ASIGNACIÓN MAESTROS" />
-    <MESSAGE value="[10.6] ASIGNACIÓN MAESTROS MOD" />
-    <MESSAGE value="[11] VERIFICATIONS ADDED" />
-    <MESSAGE value="[12] VERIFICATIONS ADDED" />
-    <MESSAGE value="[13] SAVING SYSTEM IMPLEMENTED" />
-    <MESSAGE value="[14] ADMIN MENU IMPLEMENTED" />
-    <MESSAGE value="[15] DEBUGGING OF THE SAVING PROCESS" />
-    <option name="LAST_COMMIT_MESSAGE" value="[15] DEBUGGING OF THE SAVING PROCESS" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="-MENU USUARIOS INTERACTIVO" />
+    <MESSAGE value="-MENU USUARIOS INTERACTIVO(corección)" />
+    <MESSAGE value="-GUARDADO DE INSCRIPCION [ESTUDIANTE}" />
+    <MESSAGE value="-METODO Y OPCION PROMEDIO GENERAL" />
+    <MESSAGE value="-MENÚ INTERACTIVO (corrección)" />
+    <option name="LAST_COMMIT_MESSAGE" value="-MENÚ INTERACTIVO (corrección)" />
   </component>
 </project>

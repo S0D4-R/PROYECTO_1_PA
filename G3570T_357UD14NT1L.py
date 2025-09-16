@@ -2,6 +2,7 @@
 DEVELOPERS:
 ~ JACKY
 ~ PABLO
+~ JORGE ERNESTO
 ~ JORGE
 """
 import os
@@ -9,12 +10,44 @@ import time
 import datetime
 import random
 import json
-from unittest import case
+import msvcrt
+from colorama import Fore, init
+from unittest import case #Pa que sirve este import tmr
 def courseError(exception): pass
 def nameDupeError(exception): pass
 def fechaFormatError(exception): pass
 def horaFormatError(exception): pass
+init(autoreset=True)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def menu(opciones, titulo="MENÚ"):
+    seleccion = 0
+    while True:
+        for caracter in f"--- {titulo} ---":
+            print(Fore.CYAN + caracter, end='', flush=True)
+            time.sleep(0.03)
+        print("\n" + Fore.CYAN + "═" * 40)
+        time.sleep(0.03)
+
+        for i, opcion in enumerate(opciones):
+            if i == seleccion:
+                print(Fore.LIGHTMAGENTA_EX + f"→ {opcion}")
+            else:
+                print(f"  {opcion}")
+        print("\nUsa ↑/↓ para mover, ENTER para seleccionar.")
+
+        tecla = msvcrt.getch()
+        if tecla == b'\xe0':
+            tecla2 = msvcrt.getch()
+            if tecla2 == b'H' and seleccion > 0:
+                seleccion -= 1
+            elif tecla2 == b'P' and seleccion < len(opciones) - 1:
+                seleccion += 1
+        elif tecla == b'\r':
+            time.sleep(1.5)
+            return seleccion
+
+        os.system('cls' if os.name == 'nt' else 'clear')
+
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
         self.name = name
@@ -53,22 +86,79 @@ class Student(User):
     def carnet(self):
         return self.__id_s
 
-    def entregar_tarea(self):
-        pass
+    def entregar_tarea(self, curso_seleccionado):
+        if not curso_seleccionado.asignaciones:
+            print("No hay actividades en este curso...")
+            return
+
+        print("---ACTIVIDADES DEL CURSO---")
+        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+            print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date}")
+
+        try:
+            seleccion = int(input("Ingrese el número de la actividad a entregar: "))
+            if not 1 <= seleccion <= len(curso_seleccionado.asignaciones):
+                print("Número de asignación no válido.")
+                return
+
+            actividad = curso_seleccionado.asignaciones[seleccion - 1]
+            actividad.submissions[self.carnet] = "Entregado"
+            print("Actividad entregada con éxito!")
+        except ValueError:
+            print("Debe ingresar un número válido...")
 
     def display_info(self):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
-    def inscription(self):
-        for curse in courses_db.values():
+    def inscription(self,course_name,faculty):
+        for curse in faculty.courses_db.values():
             if curse.name == course_name:
                 if curse.id_course in self.assigned_c:
                     print("Ya te asignaste a este curso...")
+                    return
                 else:
                     self.assigned_c[curse.id_course] = curse
-                    curse.roster_alumnos[self.__id_s] = self
-                    print(f"Inscripción al curso {curse.name} compeltada con exito!")
+
+                    try:
+                        curse.roster_alumnos = json.loads(curse.roster_alumnos)
+                    except Exception:
+                        curse.roster_alumnos = {}
+                    try:
+                        curse.roster_alumnos = dict(curse.roster_alumnos)
+                    except Exception:
+                        curse.roster_alumnos = {}
+
+                    curse.roster_alumnos[self.__id_s] = self.name
+
+                    print(f"Inscripción al curso {curse.name} completada con éxito!")
+
+                    with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
+                        for id_s, alumno in faculty.students_db.items():
+                            assigned_ids = list(alumno.assigned_c.keys())
+                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(assigned_ids)}\n")
+
+                    with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
+                        for id_c, curso in faculty.courses_db.items():
+                            archivo_c.write(f"{curso.id_course};{curso.name};{curso.teacher_assigned};{json.dumps(curso.roster_alumnos)};{json.dumps(curso.asignaciones)}\n")
+
+                    return
+
         print("Curso no encontrado...")
+
+    def promedio_general(self):
+        punteo_obtenido=0
+        posibilidad= 0
+
+        for curso in self.assigned_c.values():
+            nota,total= curso.calcular_nota(self.carnet)
+            punteo_obtenido += nota
+            posibilidad += total
+
+        try:
+            promedio= (punteo_obtenido / posibilidad) *100
+        except ZeroDivisionError:
+            promedio =0
+        return promedio
 
     def ver_notas(self):
         for course in self.assigned_c.values():
@@ -78,46 +168,97 @@ class Student(User):
             else:
                 print(f"{course.name} | Nota global: {nota}/{total}")
 
-    def deploy_s_menu(self):
+    def ver_nota_actividad(self,curso_seleccionado):
+        if not curso_seleccionado.asignaciones:
+            print("No hay actividades en este curso...")
+            return
+        print(f"---NOTAS DE ACTIVIDADES EN {curso_seleccionado.name}---")
+        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+            try:
+                try:
+                    estado= asignacion.submissions[self.carnet]
+                except KeyError:
+                    estado= "No entregado"
+            except AttributeError:
+                estado= "No entregado"
+            print(
+                f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date} | Estado: {estado}")
+
+    def deploy_s_menu(self,faculty):
         while True:
-            print("---MENÚ ESTUDIANTE---")
-            print(f"1.Ver cursos\n2.Inscrición de cursos.\n3.Cerrar Sesión.")
-            option= input("Ingrese una opcion:")
+            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Promedio General.","4.Ver perfil.","5.Trayectoria de cursos.","6.Ver notas de Cursos","7.Cerrar Sesión."]
+            seleccion = menu(opciones_menu, "MENÚ ESTUDIANTE")
+            option = opciones_menu[seleccion].split(".")[0]
 
             match option:
                 case "1":
                     if not self.assigned_c:
                         print("No estas asignado a ningun curso...")
+                        print("Presione ENTER para volver")
                     else:
-                        print(f"{"---"*4}CURSOS{"---"*4}")
-                        print(f"1.Entregar Tareas\n2.Ver nota de curso\n3.Ver nota de actividad\n4.Volver a menu principal")
-                        sub_option= input("Ingrese una opcion:")
-                        match sub_option:
-                            case "1":
-                                print("---ENTREGA DE TAREAS---")
-                            case "2":
-                                print("---NOTA DE CURSO---")
-                                self.ver_notas()
+                        for indice, curso in enumerate(self.assigned_c.values(), start=1):
+                            print(f"{indice}. {curso.name}")
 
-                            case "3":
-                                print("---NOTA DE ACTIVIDADES---")
-                            case "4":
-                                print("Saliendo del sistema....")
-                                break
-                            case _:
-                                print("Opcion no valida...")
+                        try:
+                            curso_seleccion = int(input("Seleccione el número del curso: "))
+                            curso_lista = list(self.assigned_c.values())
+
+                            if 1 <= curso_seleccion <= len(curso_lista):
+                                curso_selecionado = curso_lista[curso_seleccion - 1]
+
+                                while True:
+                                    sub_opciones = ["1.Entregar Tareas", "2.Ver nota de curso",
+                                                    "3.Ver nota de actividad", "4.Volver a menu principal"]
+                                    print(f"{"---" * 4}CURSOS{"---" * 4}")
+                                    sub_option = menu(sub_opciones, "---CURSOS---")
+
+                                    match sub_option:
+                                        case "1":
+                                            print("---ENTREGA DE TAREAS---")
+                                            self.entregar_tarea(curso_selecionado)
+                                        case "2":
+                                            print("---NOTA DE CURSO---")
+                                            nota, total = curso_selecionado.calcular_nota_final()
+                                            if total == 0:
+                                                print("Sin actividades registradas.")
+                                            else:
+                                                print(f"Nota global: {nota}/{total}")
+
+                                        case "3":
+                                            print("---NOTA DE ACTIVIDADES---")
+                                            self.ver_nota_actividad(curso_selecionado)
+                                        case "4":
+                                            print("Volviendo a menú principal...")
+                                            break
+                                        case _:
+                                            print("Opcion no valida...")
+                            else:
+                                print("Número de curso no válido...")
+
+                        except ValueError:
+                            print("Se debe ingresar un número válido...")
                 case "2":
                     print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
-                    if not courses_db:
+                    if not faculty.courses_db:
                         print("No hay cursos disponibles...")
                     print("Cursos disponibles")
-                    for course in courses_db.values():
-                        print(f"{course.name} - Docente:{course.teacher_assigned.name}")
-                    course_name= input("Ingrese nombre de curso a inscribir:")
-                    self.inscription(course_name)
+                    for curso in faculty.courses_db.values():
+                        print(f"{curso.name} - Docente: {curso.teacher_assigned}")
+                    course_name = input("Ingrese nombre del curso a inscribir: ")
+                    self.inscription(course_name, faculty)
 
                 case "3":
-                    print("Salieno del sistema...")
+                    print("---PROMEDIO GENERAL---")
+                    promedio= self.promedio_general()
+                    print(f"Su promedio general es de:{promedio}")
+                case "4":
+                    print("---PERFIL DE USUARIO---")
+                case "5":
+                    print("----TRAYECTORIA DE CURSOS---")
+                case "6":
+                    print("---NOTAS DE CURSOS---")
+                case "7":
+                    print("Saliendo del sistema...")
                     break
                 case _:
                     print("Opcion no valida...")
@@ -256,6 +397,9 @@ class Teacher(User):
                         raise fechaFormatError("El mes debe tener 2 valores")
                     if len(secciones[2]) != 4:
                         raise fechaFormatError("El año debe tener 4 valores")
+                    secciones[0] = int(secciones[0])
+                    secciones[1] = int(secciones[1])
+                    secciones[2] = int(secciones[2])
                 else:
                     raise fechaFormatError("Debe ingresar el formato dd-mm-aaaa")
 
@@ -270,6 +414,8 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones2[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
+                    secciones2[0] = int(secciones2[0])
+                    secciones2[1] = int(secciones2[1])
                 hora_close = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
                 if ":" in hora_close:
                     secciones3 = hora_close.split(":")
@@ -281,6 +427,8 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones3[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
+                    secciones3[0] = int(secciones3[0])
+                    secciones3[1] = int(secciones3[1])
                 else:
                     raise horaFormatError("Debe ingresar el formato hh:mm")
                 tipo = input("Ingrese el tipo de asignación: ")
@@ -311,8 +459,9 @@ class Teacher(User):
 
     def deploy_t_menu(self):
         while True:
-            print("\n\n========== MENÚ DE CATEDRÁTICOS ==========\n1. Ver cursos\n2. Salir")
-            select_cat = input("Seleccione una opción")
+            opciones_menu = ["1.Ver cursos", "2.Cerrar sesión"]
+            seleccion = menu(opciones_menu, "MENÚ DOCENTE")
+            select_cat = opciones_menu[seleccion].split(".")[0]
             match select_cat:
                 case "1":
                     if not self.assigned_courses:
@@ -325,8 +474,9 @@ class Teacher(User):
                         if any(course_select == course.id_course for course in self.assigned_courses):
                             for course_find in self.assigned_courses:
                                 if course_find.id_course == course_select:
-                                    print("\nOpciones\1. Crear asignación\n2. Subir notas")
-                                    subselect = input("Ingrese la opción que desea elegir: ")
+                                    opciones_menu = ["1.Crear Asignación.", "2.Subir Notas"]
+                                    seleccion = menu(opciones_menu, "OPCIONES")
+                                    subselect = opciones_menu[seleccion].split(".")[0]
                                     match subselect:
                                         case "1":
                                             self.crear_asignacion(course_find)
@@ -374,6 +524,15 @@ class Curso:
         else:
             print("No hay asignaciones asignadas")
 
+    def calcular_nota(self):
+        nota_final=0
+        nota=0
+        for asignacion in self.asignaciones:
+            if asignacion.valor_dc is not None:
+                nota_final +=asignacion.valor_dc
+            nota += asignacion.valor_dc
+        return nota_final, nota
+
 
 class Actividad:
     def __init__(self,act_id, name, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
@@ -386,6 +545,7 @@ class Actividad:
         self.h_cierre = datetime.datetime.strptime(h_cierre, "%H:%M").time()
         self.type_a = type_a
         self.status = False
+        self.submission={}
 
     @property
     def act_id(self):
@@ -439,7 +599,10 @@ def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
         print("\n", "~"*15, "BIENVENIDO", "~"*15)
-        admin_ops = input("\n\n1. Crear Curso\n2. Crear Usuario\n3. Ver cursos\n4. Ver alumnos\n5. Ver maestros\n6. Asignar Maestros\n7. Guardar\n8. Salir\n")
+        ops = ["1. Crear Curso","2. Crear Usuario","3. Ver cursos","4. Ver alumnos","5. Ver maestros",
+               "6. Asignar Maestros","7. Guardar","8. Salir"]
+        seleccion = menu(ops, "MENÚ ADMIN")
+        admin_ops = ops[seleccion].split(".")[0]
         match admin_ops:
 
 
@@ -550,8 +713,9 @@ def deploy_admin_menu(faculty):
 
 
             case "7":
-                print("-"*15, "GUARDADO DE INFORMACIÓN", "-"*15)
-                save_ops = input("> 1. Alumnos...\n> 2. Maestros...\n> 3. Cursos...\n")
+                opciones_menu = ["1.Alumnos.","2.Maestros.","3.Cursos."]
+                seleccion = menu(opciones_menu, "GUARDADO DE INFORMACIÓN")
+                save_ops = opciones_menu[seleccion].split(":")[0]
                 match save_ops:
                     case "1":
                         with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
@@ -575,7 +739,7 @@ def deploy_admin_menu(faculty):
                                 courses_file.write(f"{course_x.id_course};{course_x.name};{course_x.teacher_assigned};{json.dumps(course_x.roster_alumnos)};{json.dumps(course_x.asignaciones)}")
                     case _:
                         pass
-
+                        time.sleep(1)
 
 
             case "8":
@@ -654,10 +818,14 @@ while key:
         password_pass = input("> Password: ")
         if user_pass == "ruler" and password_pass == "admin01":
             key = deploy_admin_menu(engineering_faculty)
+
+
         elif user_pass in engineering_faculty.students_db and password_pass == engineering_faculty.students_db[user_pass].pass_ward:
-            engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
+            key = engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
+
+
         elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[user_pass].pass_ward:
-            engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
+            key = engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
         elif user_pass == "0" and password_pass == "0":
             key = False
         else:
