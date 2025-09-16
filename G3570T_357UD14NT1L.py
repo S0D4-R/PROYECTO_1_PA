@@ -684,7 +684,7 @@ def deploy_admin_menu(faculty):
                     calss_conmf = False
                     while not  calss_conmf:
                         class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
-                        if class_assignment not in faculty.courses_db:
+                        if class_assignment not in faculty.courses_db.keys():
                             print("> Ese ID no es válido...")
                         else:
                             calss_conmf = True
@@ -697,12 +697,12 @@ def deploy_admin_menu(faculty):
                     teach_conf = False
                     while not  teach_conf:
                         teacher_assignment = input("> Coloque el ID del maestro al que quiere agregar: ")
-                        if teacher_assignment not in faculty.teachers_db:
+                        if teacher_assignment not in faculty.teachers_db.keys():
                             print("> Ese ID no es válido...")
                         else:
                             teach_conf = True
                     faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment].codigo_catredatico
-                    faculty.teachers_db[teacher_assignment].assigned_courses.append(class_assignment)
+                    faculty.teachers_db[teacher_assignment].assigned_courses.append(engineering_faculty.courses_db[class_assignment])
                     print("Maestro asignado con éxito...\n\n")
 
 
