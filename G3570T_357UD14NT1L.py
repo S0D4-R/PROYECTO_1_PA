@@ -10,10 +10,10 @@ import datetime
 import random
 import json
 from unittest import case
-def courseError(Exception): pass
-def fechaFormatError(Exception): pass
-def horaFormatError(Exception): pass
-
+def courseError(exception): pass
+def nameDupeError(exception): pass
+def fechaFormatError(exception): pass
+def horaFormatError(exception): pass
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class User:
     def __init__(self, name, dpi, address, phone, dob, password_u):
@@ -123,34 +123,125 @@ class Student(User):
                     print("Opcion no valida...")
 
 class Teacher(User):
-    def __init__(self, name, dpi, address, phone, dob, password_u, id_cat): # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
+    def __init__(self, name, dpi, address, phone, dob, password_u, id_cat):
         super().__init__(name, dpi, address, phone, dob, password_u)
         self.__id_cat = id_cat
         self.assigned_courses = []
     @property
-    def codigo_catredatico(self):
+    def id_cat(self):
         return self.__id_cat
-
-    def display_info(self):
-        return f"{self.name}|Código de catedrático:{self.__id_cat} | DPI: {self.documento_personal} | tel:{self.phone_u}"
-
-    def subir_notas(self):
+    @id_cat.setter
+    def id_cat(self, id_cat):
         pass
-    def crear_asignacion(self, curso=None):
-        if not self.assigned_courses.values():
+
+    def subir_notas(self, curso):
+        print("\n\n---------SUBIR NOTAS----------\n1. Actualizar las notas de todas las actividades\n2. Actualizar notas de una actividad\n3. Actualizar curso")
+        option = input("Seleccione una opción: ")
+        match option:
+            case "1":
+                if not curso.asignaciones:
+                    print("Aún no hay actividades")
+                    return
+                for actividad in curso.asgnaciones:
+                    actividad.mostrar_datos()
+                    for est in curso.roster_alumnos.values():
+                        for act in est.assigned_c[curso.id_course][1]:
+                            act[0].set_status()
+                            if act[1]:
+                                print("El estudiante realizó su entrega")
+                            else:
+                                print("El estudiante aún no ha entregado nada")
+                            while True:
+                                try:
+                                    punteo = int(input("Ingrese el punteo: "))
+                                    if punteo <1 or punteo > act[0].valor_n:
+                                        print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
+                                    else:
+                                        act[0].valor_dc = punteo
+                                        est.assigned_c[curso.id_course][2] += punteo
+                                        break
+                                except ValueError:
+                                    print("Solo puede ingresar números enteros")
+                                except Exception as e:
+                                    print("Error inesperado", e)
+
+            case "2":
+                if not curso.asignaciones:
+                    print("Aún no hay actividades")
+                    return
+                for actividad in curso.asgnaciones:
+                    actividad.mostrar_datos()
+                id_act = input("Ingrese la ID de la actividad: ")
+                if not any(id_act == actividad.act_id for actividad in curso.asignaciones):
+                    print("No se encontro la actividad")
+                else:
+                    for actividad in curso.asignaciones:
+                        if actividad.id == id_act:
+                            for est in curso.roster_alumnos.values():
+                                for act in est.assigned_c[curso.id_course][1]:
+                                    act[0].set_status()
+                                    if act[0].id == id_act:
+                                        if act[1]:
+                                            print("El estudiante realizó su entrega")
+                                        else:
+                                            print("El estudiante aún no ha entregado nada")
+
+                                        while True:
+                                            try:
+                                                punteo = int(input("Ingrese el punteo: "))
+                                                if punteo < 0 or punteo > act[0].valor_n:
+                                                    print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
+                                                else:
+                                                    act[0].valor_dc = punteo
+                                                    est.assigned_c[curso.id_course][2] += punteo
+                                                    break
+                                            except ValueError:
+                                                print("Solo puede ingresar números enteros")
+                                            except Exception as e:
+                                                print("Error inesperado", e)
+
+            case "3":
+                if not curso.asignaciones:
+                    print("Aún no hay actividades")
+                    return
+                for id, est in curso.roster_alumnos.values():
+                    actividades_upd = est.assigned_c[curso.id_course][1]
+                    est_base = engineering_faculty.students_db.get(id, False)
+                    if est_base == False:
+                        print(f"Estudiante con ID {id} no encontrado en la base de datos")
+                    else:
+                        est_base.assigned_c[curso.id_course][1] = actividades_upd
+                print(f"Estudiantes del curso {curso.name} actualizados")
+                engineering_faculty.courses_db[curso.id_course] = curso
+                print("Curso actualizado en la base de datos")
+            case _:
+                print("Opción inválida")
+
+    def crear_asignacion(self, curso):
+        if not self.assigned_courses:
             print("Aún no está a cargo de un curso, no puede crear actividades")
         else:
             try:
-                if not curso:
-                    curso = input("Ingrese el nombre del curso de la asignación: ")
-                if not any(curso == course.name for course in self.assigned_courses.values()):
+                curso_search = None
+                if not any(curso = course.name for course in self.assigned_courses):
                     raise courseError("El curso asignado no existe")
-                for id, curso_option in self.assigned_courses.items():
+                for i, curso_option in enumerate(self.assigned_courses):
                     if curso_option.name == curso:
-                        curso_search = self.assigned_courses[id]
+                        curso_search = self.assigned_courses[i]
 
-
+                act_id = input("Ingrese la ID de la actividad: ")
+                act_name = input("Ingrese el nombre de la actividad: ")
+                if any(act_name.lower() == act.name.lower() for act in self.assigned_courses.asignaciones):
+                    raise nameDupeError("Ya hay una actividad con ese nombre")
                 val_net = int(input("Ingrese el valor neto de la asignación:"))
+                if val_net<1 or val_net>100:
+                    raise ValueError("El valor de la nota debe estar entre 0 y 100")
+                nota_total = 0
+                for actividad in curso.asignaciones:
+                    nota_total += actividad.valor_n
+                if (nota_total + val_net) > 100:
+                    raise ValueError(f"La ponderación de esta actividad debe ser de {100-nota_total} puntos como máximo para evitar sobrepasar los 100 puntos")
+
                 val_clasif = 0
                 fecha = input("Ingrese la fecha límite (formato dd-mm-aaaa): ")
                 if "-" in fecha:
@@ -165,9 +256,6 @@ class Teacher(User):
                         raise fechaFormatError("El mes debe tener 2 valores")
                     if len(secciones[2]) != 4:
                         raise fechaFormatError("El año debe tener 4 valores")
-                    secciones[0] = int(secciones[0])
-                    secciones[1] = int(secciones[1])
-                    secciones[2] = int(secciones[2])
                 else:
                     raise fechaFormatError("Debe ingresar el formato dd-mm-aaaa")
 
@@ -182,8 +270,6 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones2[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
-                    secciones2[0] = int(secciones2[0])
-                    secciones2[1] = int(secciones2[1])
                 hora_close = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
                 if ":" in hora_close:
                     secciones3 = hora_close.split(":")
@@ -195,23 +281,32 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones3[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
-                    secciones3[0] = int(secciones3[0])
-                    secciones3[1] = int(secciones3[1])
                 else:
                     raise horaFormatError("Debe ingresar el formato hh:mm")
                 tipo = input("Ingrese el tipo de asignación: ")
-                assign = Actividad(val_net, val_clasif, fecha, hora_open, hora_close, tipo)
+                assign = Actividad(act_id,act_name,val_net, val_clasif, fecha, hora_open, hora_close, tipo)
                 curso_search.asignaciones.append(assign)
-
+                for estudiante in curso_search.roster_alumnos.items():
+                    estudiante.assigned_c[curso_search.id_course] = {
+                        "nombre" : curso_search.name,
+                        "actividades": [],
+                        "nota": 0
+                    }
+                    actividad = [assign,False]
+                    estudiante.assigned_c[curso_search.id_course]["actividades"].append(actividad)
 
             except ValueError:
                 print("Ingrese solo números enteros")
+            except nameDupeError as e:
+                print(e)
             except fechaFormatError as e:
                 print(e)
             except horaFormatError as e:
                 print(e)
             except courseError as e:
                 print(e)
+            except Exception as e:
+                print("Error inesperado", e)
 
 
     def deploy_t_menu(self):
@@ -223,21 +318,22 @@ class Teacher(User):
                     if not self.assigned_courses:
                         print("No hay cursos asignados")
                     else:
-                        for clave, data in self.assigned_courses.items():
-                            print(f"{clave}, {data.id_course}, {data.name}")
+                        for clave, data in enumerate(self.assigned_courses):
+                            print(f"{clave}.", end = "")
                             data.mostrar_datos()
-                        course_select = input("Ingrese la ID del curso: ")
-                        if course_select in self.assigned_courses.keys():
-                            course = self.assigned_courses[course_select]
-                            print("\nOpciones\1. Crear asignación\n2. Subir notas")
-                            subselect = input("Ingrese la opción que desea elegir: ")
-                            match subselect:
-                                case "1":
-                                    pass#self.crear_asignacion(course)
-                                case "2":
-                                    self.subir_notas(course)
-                                case _:
-                                    print("Opción inválida")
+                        course_select = input("Ingrese la ID del curso: ").upper()
+                        if any(course_select == course.id_course for course in self.assigned_courses):
+                            for course_find in self.assigned_courses:
+                                if course_find.id_course == course_select:
+                                    print("\nOpciones\1. Crear asignación\n2. Subir notas")
+                                    subselect = input("Ingrese la opción que desea elegir: ")
+                                    match subselect:
+                                        case "1":
+                                            self.crear_asignacion(course_find)
+                                        case "2":
+                                            self.subir_notas(course_find)
+                                        case _:
+                                            print("Opción inválida")
                         else:
                             print("La clave del curso no existe")
                 case "2":
@@ -245,6 +341,14 @@ class Teacher(User):
                     break
                 case _:
                     print("Opción inválida")
+    def display_info(self):
+        print(f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.dpi}\nNúmero telefónico: {self.phone}\nCursos:")
+        if self.assigned_courses:
+            for course in self.assigned_courses:
+                print(f"\nID: {course.id_course}, Nombre: {course.name}")
+        else:
+            print("No hay cursos asignados")
+
 
 class Curso:
     def __init__(self, id_course, name, docente):
@@ -270,18 +374,11 @@ class Curso:
         else:
             print("No hay asignaciones asignadas")
 
-    def calcular_nota(self):
-        nota_final=0
-        nota=0
-        for asignacion in self.asignaciones:
-            if asignacion.valor_dc is not None:
-                nota_final +=asignacion.valor_dc
-            nota += asignacion.valor_dc
-        return nota_final, nota
-
 
 class Actividad:
-    def __init__(self, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
+    def __init__(self,act_id, name, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
+        self.__act_id = act_id
+        self.name = name
         self.valor_n = valor_neto
         self.valor_dc = valor_de_calificacion
         self.date = datetime.datetime.strptime(date, "%d/%m/%Y").date()
@@ -290,6 +387,9 @@ class Actividad:
         self.type_a = type_a
         self.status = False
 
+    @property
+    def act_id(self):
+        return self.__act_id
     def set_status(self):
         ahora = datetime.datetime.now()
         ahora_fecha = ahora.date()
