@@ -191,24 +191,28 @@ class Student(User):
             match option:
                 case "1":
                     if not self.assigned_c:
-                        print("No estas asignado a ningun curso...")
-                        print("Presione ENTER para volver")
+                        print("No estás asignado a ningún curso...")
                     else:
-                        for indice, curso in enumerate(self.assigned_c.values(), start=1):
-                            print(f"{indice}. {curso.name}")
+                        print("--- CURSOS ASIGNADOS ---")
+                        for indice, curso_id in enumerate(self.assigned_c, start=1):
+                            curso = faculty.courses_db.get(curso_id)
+                            if curso:
+                                print(f"{indice}. {curso.name}")
 
                         try:
                             curso_seleccion = int(input("Seleccione el número del curso: "))
-                            curso_lista = list(self.assigned_c.values())
+                            curso_lista_ids = self.assigned_c
 
-                            if 1 <= curso_seleccion <= len(curso_lista):
-                                curso_selecionado = curso_lista[curso_seleccion - 1]
+                            if 1 <= curso_seleccion <= len(curso_lista_ids):
+                                curso_id_seleccionado = curso_lista_ids[curso_seleccion - 1]
+                                curso_selecionado = faculty.courses_db.get(curso_id_seleccionado)
 
                                 while True:
                                     sub_opciones = ["1.Entregar Tareas", "2.Ver nota de curso",
                                                     "3.Ver nota de actividad", "4.Volver a menu principal"]
                                     print(f"{"---" * 4}CURSOS{"---" * 4}")
-                                    sub_option = menu(sub_opciones, "---CURSOS---")
+                                    sub_options = menu(sub_opciones, "---CURSOS---")
+                                    sub_option = sub_opciones[sub_options].split(".")[0]
 
                                     match sub_option:
                                         case "1":
