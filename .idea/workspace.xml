@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[15] DEBUGGING OF THE SAVING PROCESS">
-      <change beforePath="$PROJECT_DIR$/.idea/PROYECTO_1_PA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PROYECTO_1_PA.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="a5667a7e-2247-483a-b571-ee6ad60266c6" name="Changes" comment="[4.5] student menu completed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +34,12 @@
     &quot;assignee&quot;: &quot;S0D4-R&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/S0D4-R/PROYECTO_1_PA.git",
-    "accountId": "9a7d253b-fc58-4675-8fbc-e22bdd272cab"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/S0D4-R/PROYECTO_1_PA.git&quot;,
+    &quot;accountId&quot;: &quot;9a7d253b-fc58-4675-8fbc-e22bdd272cab&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -57,8 +54,10 @@
     "Python.G3570T_357UD14NT1L (2).executor": "Run",
     "Python.G3570T_357UD14NT1L.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "Student-restructuring",
+    "last_opened_file_path": "D:/Ingeniera en Sistemas URL 2025/2do semestre 2025/Programación Avanzada/PROYECTO_1_PA",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
@@ -299,7 +298,63 @@
       <option name="project" value="LOCAL" />
       <updated>1757574402285</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="[4]-[7] students start">
+      <option name="closed" value="true" />
+      <created>1757790833740</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1757790833740</updated>
+    </task>
+    <task id="LOCAL-00023" summary="[4]-[7].1 MODIFIED STUDENT MENU">
+      <option name="closed" value="true" />
+      <created>1757793235502</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1757793235502</updated>
+    </task>
+    <task id="LOCAL-00024" summary="[4.1] modified menu student">
+      <option name="closed" value="true" />
+      <created>1757803060294</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1757803060294</updated>
+    </task>
+    <task id="LOCAL-00025" summary="[4.2] student menu option 4 completed">
+      <option name="closed" value="true" />
+      <created>1757804107855</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1757804107855</updated>
+    </task>
+    <task id="LOCAL-00026" summary="[4.3] student menu option 5 completed">
+      <option name="closed" value="true" />
+      <created>1757990168310</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1757990168310</updated>
+    </task>
+    <task id="LOCAL-00027" summary="[4.4] student menu option 6 start">
+      <option name="closed" value="true" />
+      <created>1757994174012</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1757994174012</updated>
+    </task>
+    <task id="LOCAL-00028" summary="[4.5] student menu completed">
+      <option name="closed" value="true" />
+      <created>1758006229121</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1758006229121</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -358,7 +413,14 @@
     <MESSAGE value="[13] SAVING SYSTEM IMPLEMENTED" />
     <MESSAGE value="[14] ADMIN MENU IMPLEMENTED" />
     <MESSAGE value="[15] DEBUGGING OF THE SAVING PROCESS" />
-    <option name="LAST_COMMIT_MESSAGE" value="[15] DEBUGGING OF THE SAVING PROCESS" />
+    <MESSAGE value="[4]-[7] students start" />
+    <MESSAGE value="[4]-[7].1 MODIFIED STUDENT MENU" />
+    <MESSAGE value="[4.1] modified menu student" />
+    <MESSAGE value="[4.2] student menu option 4 completed" />
+    <MESSAGE value="[4.3] student menu option 5 completed" />
+    <MESSAGE value="[4.4] student menu option 6 start" />
+    <MESSAGE value="[4.5] student menu completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="[4.5] student menu completed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
