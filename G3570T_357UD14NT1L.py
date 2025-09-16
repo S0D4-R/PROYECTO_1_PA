@@ -451,7 +451,7 @@ class Teacher(User):
                 print("Error inesperado", e)
 
 
-    def deploy_t_menu(self):
+    def deploy_t_menu(self, faculty):
         while True:
             opciones_menu = ["1.Ver cursos", "2.Cerrar sesión"]
             seleccion = menu(opciones_menu, "MENÚ DOCENTE")
