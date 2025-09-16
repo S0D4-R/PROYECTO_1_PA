@@ -82,7 +82,7 @@ class Teacher(User):
     def subir_notas(self, curso):
         print("\n\n---------SUBIR NOTAS----------\n1. Actualizar las notas de todas las actividades\n2. Actualizar notas de una actividad\n3. Actualizar curso")
         option = input("Seleccione una opción: ")
-        match option: #Crear función en Cursos() para añadir cualquier nueva actividad al repositorio de los alumnos asignados al curso
+        match option:
             case "1":
                 if not curso.asignaciones:
                     print("Aún no hay actividades")
@@ -232,9 +232,13 @@ class Teacher(User):
                 assign = Actividad(act_id,act_name,val_net, val_clasif, fecha, hora_open, hora_close, tipo)
                 curso_search.asignaciones.append(assign)
                 for estudiante in curso_search.roster_alumnos.items():
-                    actividades = estudiante.assigned_c[curso_search.id_course][1]
+                    estudiante.assigned_c[curso_search.id_course] = {
+                        "nombre" : curso_search.name,
+                        "actividades": [],
+                        "nota": 0
+                    }
                     actividad = [assign,False]
-                    actividades.append(actividad)
+                    estudiante.assigned_c[curso_search.id_course]["actividades"].append(actividad)
 
             except ValueError:
                 print("Ingrese solo números enteros")
@@ -262,21 +266,19 @@ class Teacher(User):
                         for clave, data in enumerate(self.assigned_courses):
                             print(f"{clave}.", end = "")
                             data.mostrar_datos()
-                        course_select = input("Ingrese la ID del curso: ")
+                        course_select = input("Ingrese la ID del curso: ").upper()
                         if any(course_select == course.id_course for course in self.assigned_courses):
-                            course = None
                             for course_find in self.assigned_courses:
                                 if course_find.id_course == course_select:
-                                    course = course_find
-                            print("\nOpciones\1. Crear asignación\n2. Subir notas")
-                            subselect = input("Ingrese la opción que desea elegir: ")
-                            match subselect:
-                                case "1":
-                                    self.crear_asignacion(course)
-                                case "2":
-                                    self.subir_notas(course)
-                                case _:
-                                    print("Opción inválida")
+                                    print("\nOpciones\1. Crear asignación\n2. Subir notas")
+                                    subselect = input("Ingrese la opción que desea elegir: ")
+                                    match subselect:
+                                        case "1":
+                                            self.crear_asignacion(course_find)
+                                        case "2":
+                                            self.subir_notas(course_find)
+                                        case _:
+                                            print("Opción inválida")
                         else:
                             print("La clave del curso no existe")
                 case "2":
