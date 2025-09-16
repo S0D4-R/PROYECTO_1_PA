@@ -289,6 +289,8 @@ class Teacher(User):
                     for est in curso.roster_alumnos.values():
                         for act in est.assigned_c[curso.id_course][1]:
                             act[0].set_status()
+                            if act[0].submission.values():
+                                act[1] = True
                             if act[1]:
                                 print("El estudiante realizó su entrega")
                             else:
@@ -322,6 +324,8 @@ class Teacher(User):
                             for est in curso.roster_alumnos.values():
                                 for act in est.assigned_c[curso.id_course][1]:
                                     act[0].set_status()
+                                    if act[0].submission.values():
+                                        act[1] = True
                                     if act[0].id == id_act:
                                         if act[1]:
                                             print("El estudiante realizó su entrega")
