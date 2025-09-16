@@ -223,7 +223,7 @@ class Teacher(User):
         else:
             try:
                 curso_search = None
-                if not any(curso = course.name for course in self.assigned_courses):
+                if not any(curso == course.name for course in self.assigned_courses):
                     raise courseError("El curso asignado no existe")
                 for i, curso_option in enumerate(self.assigned_courses):
                     if curso_option.name == curso:
