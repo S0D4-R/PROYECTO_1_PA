@@ -182,6 +182,34 @@ class Student(User):
 
                 case "5": #pablo
                     print(f"{"---"*4}TRAYECTORIA-ACADEMICA{"---"*4}")
+                    print( "Historial de cursos: ")
+                    approved_courses = []
+                    failed_courses = []
+
+                    if self.assigned_c:
+                        for curso in self.assigned_c.values():
+                            nota_promedio, _ = curso.calcular_nota()
+                            if nota_promedio >= 65:
+                                approved_courses.append(curso.name)
+                            else:
+                                failed_courses.append(curso.name)
+                    print("\n---CURSOS APROBADOS---")
+                    if approved_courses:
+                        for curso_nombre in approved_courses:
+                            print(f" - {curso_nombre}")
+                    else:
+                        print("f No has aprobado cursos.")
+
+                    print(f"\n---CURSOS REPROBADOS---")
+                    if failed_courses:
+                        for curso_nombre in failed_courses:
+                            print(f" - {curso_nombre}")
+                    else:
+                        print(f" No has reprobado cursos.")
+
+                    input(f"\nPresiona Enter para volver al menú principal...")
+
+
                 case "6": # pablo
                     print(f"{"---"*4}VER NOTAS DE TODOS LOS CURSOS{"---"*4}")
                 case "7": #pablo
