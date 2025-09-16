@@ -276,8 +276,9 @@ class Teacher(User):
         pass
 
     def subir_notas(self, curso):
-        print("\n\n---------SUBIR NOTAS----------\n1. Actualizar las notas de todas las actividades\n2. Actualizar notas de una actividad\n3. Actualizar curso")
-        option = input("Seleccione una opción: ")
+        rig = ["1. Actualizar las notas de todas las actividades","2. Actualizar notas de una actividad","3. Actualizar curso"]
+        opciones = menu(rig, "SUBIR NOTAS")
+        option = rig[opciones].split(".")[0]
         match option:
             case "1":
                 if not curso.asignaciones:
