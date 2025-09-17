@@ -667,7 +667,7 @@ def deploy_admin_menu(faculty):
                     while not chose_teach:
                         search_work_id = input("> Coloque el ID del maestro que desea asignar: ")
                         if search_work_id in faculty.teachers_db:
-                            teacher = faculty.teachers_db[search_work_id]
+                            teacher = faculty.teachers_db[search_work_id].id_cat
                             chose_teach = True
                         elif search_work_id == "0":
                             print("> Ningún maestro seleccionado...\n> Curso ha sido creado con éxito...")
@@ -677,7 +677,7 @@ def deploy_admin_menu(faculty):
                 course_id = id_creation(course_name, "C")
                 faculty.courses_db[course_id] = Curso(course_id, course_name, teacher)
                 if teacher is not None:
-                    teacher.assigned_courses.append(course_id)
+                    faculty.teachers_db[teacher].assigned_courses.append(course_id)
 
 
             # Creación de usuarios ; dpi, address, phone, dob, password_u
@@ -766,8 +766,8 @@ def deploy_admin_menu(faculty):
                 """
                 with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
                     for id_s, alumni in faculty.students_db.items():
-                        courses_file.write(f"{id_s}:{alumni.name}:{alumni.documento_personal}:{alumni.address}:{alumni.phone_u}:{alumni.dob}"
-                                           f":{alumni.pass_ward}:{alumni.carnet}:{alumni.gen}:{json.dumps(alumni.assigned_c)}\n"
+                        courses_file.write(f"{id_s}||{alumni.name}||{alumni.documento_personal}||{alumni.address}||{alumni.phone_u}||{alumni.dob}"
+                                           f"||{alumni.pass_ward}||{alumni.carnet}||{alumni.gen}||{json.dumps(alumni.assigned_c)}\n"
                                            )
                         #id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
 
@@ -775,14 +775,14 @@ def deploy_admin_menu(faculty):
                     for id_t, teacher_temp in faculty.teachers_db.items():
                         # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
                         teachers_file.write(
-                            f"{id_t}:{teacher_temp.name}:{teacher_temp.documento_personal}:{teacher_temp.address}:{teacher_temp.phone_u}:{teacher_temp.dob}"
-                            f":{teacher_temp.pass_ward}:{teacher_temp.id_cat}:{json.dumps(teacher_temp.assigned_courses)}\n"
+                            f"{id_t}||{teacher_temp.name}||{teacher_temp.documento_personal}||{teacher_temp.address}||{teacher_temp.phone_u}||{teacher_temp.dob}"
+                            f"||{teacher_temp.pass_ward}||{teacher_temp.id_cat}||{json.dumps(teacher_temp.assigned_courses)}\n"
                         )
 
                 with open("Cursos.txt","w",encoding="utf-8") as courses_file:
                     for id_cs, course_x in faculty.courses_db.items():
                         #id_course, name, docente, roster_alumnos, asignaciones
-                        courses_file.write(f"{course_x.id_course};{course_x.name};{course_x.teacher_assigned};{json.dumps(course_x.roster_alumnos)};{json.dumps(course_x.asignaciones)}")
+                        courses_file.write(f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps(course_x.asignaciones)}\n")
 
                 time.sleep(1)
                 print("> Datos Guardados con éxito")
@@ -808,7 +808,7 @@ class Database:
                     linea= linea.strip()
                     if linea:
                         # id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
-                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split(":",9)
+                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split("||",9)
                         assigned_cl = json.loads(assigned_c_file)
                         alumno= Student(name,dpi,address,phone,dob,password,carnet, gen)
                         alumno.assigned_c = assigned_cl
@@ -824,7 +824,7 @@ class Database:
                     linea = linea.strip()
                     if linea:
                         # id_t, name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
-                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split(":",8)
+                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split("||",8)
                         maestro = Teacher(name, dpi, address, phone, dob, password, id_t)
                         maestro.assigned_courses = json.loads(assigned_courses)
                         self.teachers_db[id_t]=maestro
@@ -839,7 +839,7 @@ class Database:
                     linea = linea.strip()
                     if linea:
                         #id_course, name, docente, roster_alumnos, asignaciones
-                        id_c, name, teacher_id, roster_alumnos, asignaciones = linea.split(";")
+                        id_c, name, teacher_id, roster_alumnos, asignaciones = linea.split("||")
                         #teacher = self.teachers_db.get(teacher_id)
                         curso = Curso(id_c, name, teacher_id)
                         curso.roster_alumnos = roster_alumnos

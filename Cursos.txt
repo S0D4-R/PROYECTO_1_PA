@@ -1,1 +1,3 @@
-PRE11165;PRECALCULO;DOC21955;{"STU85543": "Andrea L\u00f3pez"};"\"\\\"[]\\\"\""
+PRE11165||PRECALCULO||DOC21955||"\"{}\""||"\"[]\""
+PRO35522||PROGRAMACIÓN AVANZADA||DOC60256||"\"{}\""||"\"[]\""
+MAT52563||MATEMÁTICA||DOC24206||"\"{}\""||"\"[]\""
