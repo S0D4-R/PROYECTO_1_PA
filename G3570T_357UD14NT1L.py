@@ -485,11 +485,11 @@ class Teacher(User):
                     break
                 case _:
                     print("Opción inválida")
-    def display_info(self):
-        print(f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.dpi}\nNúmero telefónico: {self.phone}\nCursos:")
+    def display_info(self, faculty):
+        print(f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.documento_personal}\nNúmero telefónico: {self.phone_u}\nCursos:")
         if self.assigned_courses:
             for course in self.assigned_courses:
-                print(f"\nID: {course.id_course}, Nombre: {course.name}")
+                print(f"\nID: {course}, Nombre: {faculty.courses_db[course].name}")
         else:
             print("No hay cursos asignados")
 
@@ -589,6 +589,21 @@ def id_creation(name_x, typeP):
     else:
         return  None
 
+
+def b_day_check(bday):
+    check = bday.split("/")
+    if len(check) == 3:
+        if (int(check[0]) > 31 or int(check[0]) < 0) or (int(check[1]) > 12 or int(check[1]) < 0) or (int(check[2]) > 9999 or int(check[2]) < 0):
+            print("Formato de fecha inválido.")
+            new_bday = input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: ")
+        else:
+            return bday
+    else:
+        print("Formato de fecha inválido.")
+        new_bday = input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: ")
+        return b_day_check(new_bday)
+
+
 def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
@@ -616,12 +631,16 @@ def deploy_admin_menu(faculty):
 
                 else:
                     for temp_cont, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
-                        print(f"{temp_cont}|{teacher_x.name}|{teacher_x.codigo_catredatico} ~ ID")
+                        print(f"{temp_cont}|{teacher_x.name}|{teacher_x.id_cat} ~ ID")
                     chose_teach = False
                     while not chose_teach:
                         search_work_id = input("> Coloque el ID del maestro que desea asignar: ")
-                        teacher = faculty.teachers_db[search_work_id]
-                        chose_teach = True
+                        if search_work_id in faculty.teachers_db:
+                            teacher = faculty.teachers_db[search_work_id]
+                            chose_teach = True
+                        elif search_work_id == "0":
+                            print("> Ningún maestro seleccionado...\n> Curso ha sido creado con éxito...")
+                            chose_teach = True
 
 
                 course_id = id_creation(course_name, "C")
@@ -636,7 +655,7 @@ def deploy_admin_menu(faculty):
                 user_name = input("> Coloque el nombre del Usuario: ")
                 user_address = input("> Coloque la dirección del Usuario: ")
                 user_phone = input("> Coloque el teléfono del Usuario: ")
-                user_dob = input("> Coloque la fecha de nacimiento del Usuario: ")
+                user_dob = b_day_check(input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: "))
                 user_pass = input("> Coloque la contraseña del Usuario: ")
                 user_dpi = input("> Coloque el DPI del Usuario: ")
                 user_inscr_year = input("> Coloque el año de inscripción: ")
@@ -670,7 +689,7 @@ def deploy_admin_menu(faculty):
             case "5":
                 print("-" * 15, "MAESTROS REGISTRADOS", "-" * 15)
                 for index, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
-                    print(teacher_x.display_info())
+                    print(teacher_x.display_info(faculty))
 
             case "6":
                 if not faculty.teachers_db:
@@ -692,7 +711,7 @@ def deploy_admin_menu(faculty):
                     print("-"*15, f"{faculty.courses_db[class_assignment].name}", "-"*15)
                     print("> Lista de maestros disponibles: ")
                     for index_x, teacher_y in enumerate(faculty.teachers_db.values(), start=1):
-                        print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.codigo_catredatico}")
+                        print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.id_cat}")
 
                     teach_conf = False
                     while not  teach_conf:
@@ -707,33 +726,35 @@ def deploy_admin_menu(faculty):
 
 
             case "7":
+                """
                 opciones_menu = ["1.Alumnos.","2.Maestros.","3.Cursos."]
                 seleccion = menu(opciones_menu, "GUARDADO DE INFORMACIÓN")
                 save_ops = opciones_menu[seleccion].split(":")[0]
                 match save_ops:
                     case "1":
-                        with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
-                            for id_s, alumni in faculty.students_db.items():
-                                courses_file.write(f"{id_s}:{alumni.name}:{alumni.documento_personal}:{alumni.address}:{alumni.phone_u}:{alumni.dob}"
-                                                   f":{alumni.pass_ward}:{alumni.carnet}:{alumni.gen}:{json.dumps(alumni.assigned_c)}\n"
-                                                   )
-                                #id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
-                    case "2":
-                        with open("Profesores.txt","w",encoding="utf-8") as teachers_file:
-                            for id_t, teacher_temp in faculty.teachers_db.items():
-                                # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
-                                teachers_file.write(
-                                    f"{id_t}:{teacher_temp.name}:{teacher_temp.documento_personal}:{teacher_temp.address}:{teacher_temp.phone_u}:{teacher_temp.dob}"
-                                    f":{teacher_temp.pass_ward}:{teacher_temp.codigo_catredatico}:{json.dumps(teacher_temp.assigned_courses)}\n"
-                                )
-                    case "3":
-                        with open("Cursos.txt","w",encoding="utf-8") as courses_file:
-                            for id_cs, course_x in faculty.courses_db.items():
-                                #id_course, name, docente, roster_alumnos, asignaciones
-                                courses_file.write(f"{course_x.id_course};{course_x.name};{course_x.teacher_assigned};{json.dumps(course_x.roster_alumnos)};{json.dumps(course_x.asignaciones)}")
-                    case _:
-                        pass
-                        time.sleep(1)
+                """
+                with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
+                    for id_s, alumni in faculty.students_db.items():
+                        courses_file.write(f"{id_s}:{alumni.name}:{alumni.documento_personal}:{alumni.address}:{alumni.phone_u}:{alumni.dob}"
+                                           f":{alumni.pass_ward}:{alumni.carnet}:{alumni.gen}:{json.dumps(alumni.assigned_c)}\n"
+                                           )
+                        #id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
+
+                with open("Profesores.txt","w",encoding="utf-8") as teachers_file:
+                    for id_t, teacher_temp in faculty.teachers_db.items():
+                        # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
+                        teachers_file.write(
+                            f"{id_t}:{teacher_temp.name}:{teacher_temp.documento_personal}:{teacher_temp.address}:{teacher_temp.phone_u}:{teacher_temp.dob}"
+                            f":{teacher_temp.pass_ward}:{teacher_temp.id_cat}:{json.dumps(teacher_temp.assigned_courses)}\n"
+                        )
+
+                with open("Cursos.txt","w",encoding="utf-8") as courses_file:
+                    for id_cs, course_x in faculty.courses_db.items():
+                        #id_course, name, docente, roster_alumnos, asignaciones
+                        courses_file.write(f"{course_x.id_course};{course_x.name};{course_x.teacher_assigned};{json.dumps(course_x.roster_alumnos)};{json.dumps(course_x.asignaciones)}")
+
+                time.sleep(1)
+                print("> Datos Guardados con éxito")
 
 
             case "8":
