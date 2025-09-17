@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="Merge branch 'main' into Student-restructuring&#10;&#10;resolving merger conflict in'Student-restructuring'&#10;&quot;Se agregan las funcionalidades restantes y se resuelve el conflicto&quot;.">
-      <change afterPath="$PROJECT_DIR$/MANUAL DE USUARIO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PROYECTO_1_PA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PROYECTO_1_PA.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="Modificación en opción 7 de 'deploy_s_menu'">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cursos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cursos.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estudiantes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/estudiantes.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +31,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/S0D4-R/PROYECTO_1_PA.git&quot;,
-    &quot;accountId&quot;: &quot;a5d6c4e7-3bf3-46ca-89f4-51b9f3302856&quot;
+    &quot;accountId&quot;: &quot;9a7d253b-fc58-4675-8fbc-e22bdd272cab&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -48,21 +42,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.G3570T_357UD14NT1L.executor": "Run",
-    "Python.prubea.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging Student-restructuring",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.G3570T_357UD14NT1L.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prubea.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#1 on Student-restructuring&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Ingeniera en Sistemas URL 2025/2do semestre 2025/Programación Avanzada/PROYECTO_1_PA&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-598b0484d0b5-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.74" />
+        <option value="bundled-python-sdk-4c141bd692a7-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.90" />
       </set>
     </attachedChunks>
   </component>
@@ -114,15 +109,68 @@
       <option name="project" value="LOCAL" />
       <updated>1757871734604</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Merge branch 'main' into Student-restructuring&#10;resolving merger conflict in Student-restructuring">
+      <option name="closed" value="true" />
+      <created>1758014666007</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1758014666007</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Modificación en opción 7 de 'deploy_s_menu'">
+      <option name="closed" value="true" />
+      <created>1758018031416</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1758018031416</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/Student-restructuring" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="Student-restructuring" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -134,6 +182,8 @@
     <MESSAGE value="-GUARDADO DE INSCRIPCION [ESTUDIANTE}" />
     <MESSAGE value="-METODO Y OPCION PROMEDIO GENERAL" />
     <MESSAGE value="-MENÚ INTERACTIVO (corrección)" />
-    <option name="LAST_COMMIT_MESSAGE" value="-MENÚ INTERACTIVO (corrección)" />
+    <MESSAGE value="Merge branch 'main' into Student-restructuring&#10;resolving merger conflict in Student-restructuring" />
+    <MESSAGE value="Modificación en opción 7 de 'deploy_s_menu'" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modificación en opción 7 de 'deploy_s_menu'" />
   </component>
 </project>
