@@ -81,6 +81,9 @@ class Student(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_student, gen):
         super().__init__(name, dpi, address, phone, dob, password_u) #atributos heredados de user
         self.__id_s = id_student
+        self.gen = gen
+        self.assigned_c = {}
+        self.reports = []
         self.gen = gen #anio de ingreso del estudiante
         self.assigned_c = {} # diccionario en donde se almacenaran las clases (en las que el estudiante este inscrito)
     @property
@@ -298,7 +301,7 @@ class Student(User):
                             print(f"Asignaciones")
 
                             #mostrar las actividades y sus notas (ya calificados por el maestro)
-                            if course.asignaciones:
+                            if curso.asignaciones:
                                 for actividad in curso.asignaciones:
                                     print(f""
                                           f" - Tarea: {actividad.type_a}, Nota: {actividad.valor_dc} / {actividad.valor_n}"
@@ -576,6 +579,8 @@ class Teacher(User):
             except Exception as e:
                 print("Error inesperado", e)
 
+    def crear_reporte(self, curso):
+        pass
 
     def deploy_t_menu(self, faculty):
         while True:
@@ -591,10 +596,10 @@ class Teacher(User):
                             print(f"{clave}.", end="")
                             faculty.courses_db[data].mostrar_datos()
                         course_select = input("Ingrese la ID del curso: ").upper()
-                        if any(course_select == course.id_course for course in self.assigned_courses):
-                            for course_find in self.assigned_courses:
+                        if any(course_select == course.id_course for course in faculty.courses_db.values()):
+                            for course_find in faculty.courses_db.values():
                                 if course_find.id_course == course_select:
-                                    opciones_menu = ["1.Crear Asignación.", "2.Subir Notas"]
+                                    opciones_menu = ["1. Crear Asignación.", "2. Subir Notas", "3. Generar reporte"]
                                     seleccion = menu(opciones_menu, "OPCIONES")
                                     subselect = opciones_menu[seleccion].split(".")[0]
                                     match subselect:
@@ -602,6 +607,8 @@ class Teacher(User):
                                             self.crear_asignacion(course_find)
                                         case "2":
                                             self.subir_notas(course_find)
+                                        case "3":
+                                            self.crear_reporte(course_find)
                                         case _:
                                             print("Opción inválida")
                         else:
