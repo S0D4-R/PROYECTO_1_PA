@@ -4,6 +4,7 @@ DEVELOPERS:
 ~ PABLO
 ~ JORGE ERNESTO
 ~ JORGE
+
 """
 import os
 import time
@@ -65,7 +66,7 @@ class User:
     @phone_u.setter
     def phone_u(self, new_phone):
         if len(new_phone) > 8 or len(new_phone) < 8:
-            print("Ese número no es válido...")
+            print("Este número de telefono no es válido...")
         else:
             self.__phone = new_phone
     @property
@@ -78,10 +79,10 @@ class User:
 
 class Student(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_student, gen):
-        super().__init__(name, dpi, address, phone, dob, password_u)
+        super().__init__(name, dpi, address, phone, dob, password_u) #atributos heredados de user
         self.__id_s = id_student
-        self.gen = gen
-        self.assigned_c = {}
+        self.gen = gen #anio de ingreso del estudiante
+        self.assigned_c = {} # diccionario en donde se almacenaran las clases (en las que el estudiante este inscrito)
     @property
     def carnet(self):
         return self.__id_s
@@ -248,20 +249,115 @@ class Student(User):
                     self.inscription(course_name, faculty)
 
                 case "3":
-                    print("---PROMEDIO GENERAL---")
-                    promedio= self.promedio_general()
-                    print(f"Su promedio general es de:{promedio}")
-                case "4":
-                    print("---PERFIL DE USUARIO---")
-                case "5":
-                    print("----TRAYECTORIA DE CURSOS---")
-                case "6":
-                    print("---NOTAS DE CURSOS---")
-                case "7":
-                    print("Saliendo del sistema...")
+                    print(f"{"---" * 4}PROMEDIO GENERAL{"---" * 4}")
+                    promedio = self.promedio_general()
+
+                case "4": # pablo
+                    print(f"{"---"*4}VER PERFIL{"---"*4}")
+                    print(f"{"--"*3}DATOS PERSONALES DEL ESTUDIANTE{"--"*3}")
+                    print(f"Nombre:{self.name}")
+                    print(f"DPI/CUI: {self.documento_personal}")
+                    print(f"Dirección: {self.address}")
+                    print(f"Número de Teléfono:{self.phone_u} ")
+                    print(f"Fecha de Nacimiento: {self.dob}") #atributo dob: fehca de nacimineto del usuario
+                    print(f"Canet:{self.carnet}")
+                    print(f"Año de ingreso al establecimiento: {self.gen}")# atributo gen ´año de ingreso del usuario al sistema o estblecimiento´
+
+                    print(f"\n{"--"*2}CURSOS EN LOS QUE ESTOY INSCRITO{"--"*2}")
+                    approved_courses = [] #lista de cursos ganados
+                    failed_courses =[] #lista de cursos reprobados
+                    if self.assigned_c:
+                        for course_id, curso in self.assigned_c.items():
+                            print(f"Curso: {curso.name}")
+                            print(f"Asignaciones")
+
+                            #mostrar las actividades y sus notas (ya calificados por el maestro)
+                            if course.asignaciones:
+                                for actividad in curso.asignaciones:
+                                    print(f""
+                                          f" - Tarea: {actividad.type_a}, Nota: {actividad.valor_dc} / {actividad.valor_n}"
+                                          )
+                            else:
+                                print(f"---SIN ACTIVIDADES REGISTRADAS---")
+
+                            # Calculando y clasificando el promedio del curso
+                            nota_promedio, _= curso.calcular_nota()
+                            if nota_promedio >=65:
+                                approved_courses.append(curso.name)
+                            else:
+                                failed_courses.append(curso.name)
+                            print("-"*20)
+                        else:
+                            print(----"NO ESTAS REGISTRADO A NINGUN CURSO, CONSULTA ESTO CON TU ENCARGADO-------")
+
+                            print(f"\n{"--"*5}RESUMEN DE MIS NOTAS{"--"*5}")
+                            print(f"Cursos Ganados (mayores a un 65% de la nota)")
+                            if approved_courses:
+                                for curso in approved_courses:
+                                    print(f" - {curso}")
+                            else:
+                                print("Aún no has ganado ningun curso...........")
+
+                            print(f"Cursos Perdidos(menores a un 65% de la nota)")
+                            if failed_courses:
+                                for failed in failed_courses:
+                                    print(f" - {curso}")
+                            else:
+                                print(f"No tienes cursos perdidos, ¡Muchas felicidades sigue así!")
+                            input("\nPresiona Enter para volver al menú principal...")
+
+
+
+                case "5": #pablo
+                    print(f"{"---"*4}TRAYECTORIA-ACADEMICA{"---"*4}")
+                    print( "Mostrando Historial de todos los cursos: ")
+                    approved_courses = []
+                    failed_courses = []
+
+                    if self.assigned_c:
+                        for curso in self.assigned_c.values():
+                            nota_promedio, _ = curso.calcular_nota()
+                            if nota_promedio >= 65:
+                                approved_courses.append(curso.name)
+                            else:
+                                failed_courses.append(curso.name)
+                    print("\n---MOSTRANDO CURSOS APROBADOS---")
+                    if approved_courses:
+                        for curso_nombre in approved_courses:
+                            print(f" - {curso_nombre}")
+                    else:
+                        print(f"NO HAS APROBADO NINGUN CURSO, MEJORA TU RENDIMIENTO.")
+
+                    print(f"\n---MOSTRANDO CURSOS REPROBADOS---")
+                    if failed_courses:
+                        for curso_nombre in failed_courses:
+                            print(f" - {curso_nombre}")
+                    else:
+                        print(f" NO HAS REPROBADO CURSOS, EXCELENTE RENDIMIENTO.")
+
+                    input(f"\nPresiona Enter para volver al menú principal...")
+
+                case "6": # pablo
+                    print(f"{"---"*4}VER NOTAS DE TODOS LOS CURSOS{"---"*4}")
+                    if not self.assigned_c:
+                        print("NO ESTAS INSCRITO EN NINGUN CURSO......")
+                    else:
+                        for curso_nombre, curso in self.assigned_c.items():
+                            nota_promedio, _ = curso.calcular_nota()
+                            mensaje =""
+                            if nota_promedio < 30:
+                                mensaje = "DEBES MEJORAR TU NOTA...."
+                            elif nota_promedio >= 50:
+                                mensaje = "FELICIDADES, DEBES MANTENER ESTA BUENA NOTA"
+
+                            print(f"Curso: {curso.name} | Nota Promedio: {nota_promedio} | Estado: {mensaje}")
+
+                    input("\nPresione enter Enter para volver al menú inicial...")
+                case "7": #pablo
+                    print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
                     break
                 case _:
-                    print("Opcion no valida...")
+                    print("Opcion no válida, por favor intentelo de nuevo...........")
 
 class Teacher(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_cat):
