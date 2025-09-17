@@ -93,17 +93,29 @@ class Student(User):
             return
 
         print("---ACTIVIDADES DEL CURSO---")
-        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+        actividades_validas = []
+        for asignacion in curso_seleccionado.asignaciones:
+            try:
+                asignacion.type_a
+                actividades_validas.append(asignacion)
+            except AttributeError:
+                continue
+
+        if not actividades_validas:
+            print("No hay actividades válidas para entregar.")
+            return
+
+        for indice, asignacion in enumerate(actividades_validas, start=1):
             print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date}")
 
         try:
             seleccion = int(input("Ingrese el número de la actividad a entregar: "))
-            if not 1 <= seleccion <= len(curso_seleccionado.asignaciones):
+            if not 1 <= seleccion <= len(actividades_validas):
                 print("Número de asignación no válido.")
                 return
 
-            actividad = curso_seleccionado.asignaciones[seleccion - 1]
-            actividad.submissions[self.carnet] = "Entregado"
+            actividad = actividades_validas[seleccion - 1]
+            actividad.submission[self.carnet] = "Entregado"
             print("Actividad entregada con éxito!")
         except ValueError:
             print("Debe ingresar un número válido...")
@@ -112,46 +124,46 @@ class Student(User):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
     def inscription(self,course_name,faculty):
+        course_name = course_name.lower()
         for curse in faculty.courses_db.values():
-            if curse.name == course_name:
+            if curse.name.lower() == course_name.lower():
                 if curse.id_course in self.assigned_c:
                     print("Ya te asignaste a este curso...")
                     return
                 else:
                     self.assigned_c[curse.id_course] = curse
-
                     try:
-                        curse.roster_alumnos = json.loads(curse.roster_alumnos)
-                    except Exception:
-                        curse.roster_alumnos = {}
-                    try:
-                        curse.roster_alumnos = dict(curse.roster_alumnos)
+                        curse.roster_alumnos = dict(json.loads(curse.roster_alumnos))
                     except Exception:
                         curse.roster_alumnos = {}
 
                     curse.roster_alumnos[self.__id_s] = self.name
 
-                    print(f"Inscripción al curso {curse.name} completada con éxito!")
-
                     with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
                         for id_s, alumno in faculty.students_db.items():
-                            assigned_ids = list(alumno.assigned_c.keys())
-                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(assigned_ids)}\n")
+                            assigned_c_dict = {}
+                            for cid in alumno.assigned_c:
+                                assigned_c_dict[cid] = True
+                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(assigned_c_dict)}\n")
 
                     with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
                         for id_c, curso in faculty.courses_db.items():
                             archivo_c.write(f"{curso.id_course};{curso.name};{curso.teacher_assigned};{json.dumps(curso.roster_alumnos)};{json.dumps(curso.asignaciones)}\n")
 
+                    print(f"Inscripción a {curse.name} realizada correctamente.")
                     return
-
-        print("Curso no encontrado...")
-
+        print("Curso no encontrado.")
     def promedio_general(self):
         punteo_obtenido=0
         posibilidad= 0
 
+        try:
+            self.assigned_c == dict(self.assigned_c)
+        except Exception:
+            self.assigned_c ={}
+
         for curso in self.assigned_c.values():
-            nota,total= curso.calcular_nota(self.carnet)
+            nota, total = curso.calcular_nota(self.carnet)
             punteo_obtenido += nota
             posibilidad += total
 
@@ -163,7 +175,7 @@ class Student(User):
 
     def ver_notas(self):
         for course in self.assigned_c.values():
-            nota, total = course.calcular_nota_final()
+            nota, total = course.calcular_nota(self.carnet)
             if total == 0:
                 print(f"{course.name} | Sin actividades registradas.")
             else:
@@ -173,15 +185,25 @@ class Student(User):
         if not curso_seleccionado.asignaciones:
             print("No hay actividades en este curso...")
             return
+
         print(f"---NOTAS DE ACTIVIDADES EN {curso_seleccionado.name}---")
-        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+        actividades_validas = []
+        for asignacion in curso_seleccionado.asignaciones:
             try:
-                try:
-                    estado= asignacion.submissions[self.carnet]
-                except KeyError:
-                    estado= "No entregado"
+                asignacion.type_a
+                actividades_validas.append(asignacion)
             except AttributeError:
-                estado= "No entregado"
+                continue
+
+        if not actividades_validas:
+            print("No hay actividades para mostrar.")
+            return
+
+        for indice, asignacion in enumerate(actividades_validas, start=1):
+            try:
+                estado = asignacion.submission.get(self.carnet, "No entregado")
+            except AttributeError:
+                estado = "No entregado"
             print(
                 f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date} | Estado: {estado}")
 
@@ -194,24 +216,28 @@ class Student(User):
             match option:
                 case "1":
                     if not self.assigned_c:
-                        print("No estas asignado a ningun curso...")
-                        print("Presione ENTER para volver")
+                        print("No estás asignado a ningún curso...")
                     else:
-                        for indice, curso in enumerate(self.assigned_c.values(), start=1):
-                            print(f"{indice}. {curso.name}")
+                        print("--- CURSOS ASIGNADOS ---")
+                        for indice, curso_id in enumerate(self.assigned_c, start=1):
+                            curso = faculty.courses_db.get(curso_id)
+                            if curso:
+                                print(f"{indice}. {curso.name}")
 
                         try:
                             curso_seleccion = int(input("Seleccione el número del curso: "))
-                            curso_lista = list(self.assigned_c.values())
+                            curso_lista_ids = self.assigned_c
 
-                            if 1 <= curso_seleccion <= len(curso_lista):
-                                curso_selecionado = curso_lista[curso_seleccion - 1]
+                            if 1 <= curso_seleccion <= len(curso_lista_ids):
+                                curso_id_seleccionado = curso_lista_ids[curso_seleccion - 1]
+                                curso_selecionado = faculty.courses_db.get(curso_id_seleccionado)
 
                                 while True:
                                     sub_opciones = ["1.Entregar Tareas", "2.Ver nota de curso",
                                                     "3.Ver nota de actividad", "4.Volver a menu principal"]
                                     print(f"{"---" * 4}CURSOS{"---" * 4}")
-                                    sub_option = menu(sub_opciones, "---CURSOS---")
+                                    sub_options = menu(sub_opciones, "---CURSOS---")
+                                    sub_option = sub_opciones[sub_options].split(".")[0]
 
                                     match sub_option:
                                         case "1":
@@ -219,7 +245,7 @@ class Student(User):
                                             self.entregar_tarea(curso_selecionado)
                                         case "2":
                                             print("---NOTA DE CURSO---")
-                                            nota, total = curso_selecionado.calcular_nota_final()
+                                            nota, total = curso_selecionado.calcular_nota(self.carnet)
                                             if total == 0:
                                                 print("Sin actividades registradas.")
                                             else:
@@ -385,6 +411,8 @@ class Teacher(User):
                     for est in curso.roster_alumnos.values():
                         for act in est.assigned_c[curso.id_course][1]:
                             act[0].set_status()
+                            if act[0].submission.values():
+                                act[1] = True
                             if act[1]:
                                 print("El estudiante realizó su entrega")
                             else:
@@ -418,6 +446,8 @@ class Teacher(User):
                             for est in curso.roster_alumnos.values():
                                 for act in est.assigned_c[curso.id_course][1]:
                                     act[0].set_status()
+                                    if act[0].submission.values():
+                                        act[1] = True
                                     if act[0].id == id_act:
                                         if act[1]:
                                             print("El estudiante realizó su entrega")
@@ -547,7 +577,7 @@ class Teacher(User):
                 print("Error inesperado", e)
 
 
-    def deploy_t_menu(self):
+    def deploy_t_menu(self, faculty):
         while True:
             opciones_menu = ["1.Ver cursos", "2.Cerrar sesión"]
             seleccion = menu(opciones_menu, "MENÚ DOCENTE")
@@ -557,9 +587,9 @@ class Teacher(User):
                     if not self.assigned_courses:
                         print("No hay cursos asignados")
                     else:
-                        for clave, data in enumerate(self.assigned_courses):
-                            print(f"{clave}.", end = "")
-                            data.mostrar_datos()
+                        for clave, data in enumerate(self.assigned_courses, start=1):
+                            print(f"{clave}.", end="")
+                            faculty.courses_db[data].mostrar_datos()
                         course_select = input("Ingrese la ID del curso: ").upper()
                         if any(course_select == course.id_course for course in self.assigned_courses):
                             for course_find in self.assigned_courses:
@@ -581,11 +611,11 @@ class Teacher(User):
                     break
                 case _:
                     print("Opción inválida")
-    def display_info(self):
-        print(f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.dpi}\nNúmero telefónico: {self.phone}\nCursos:")
+    def display_info(self, faculty):
+        print(f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.documento_personal}\nNúmero telefónico: {self.phone_u}\nCursos:")
         if self.assigned_courses:
             for course in self.assigned_courses:
-                print(f"\nID: {course.id_course}, Nombre: {course.name}")
+                print(f"\nID: {course}, Nombre: {faculty.courses_db[course].name}")
         else:
             print("No hay cursos asignados")
 
@@ -614,13 +644,14 @@ class Curso:
         else:
             print("No hay asignaciones asignadas")
 
-    def calcular_nota(self):
+    def calcular_nota(self,carnet):
         nota_final=0
         nota=0
         for asignacion in self.asignaciones:
-            if asignacion.valor_dc is not None:
-                nota_final +=asignacion.valor_dc
-            nota += asignacion.valor_dc
+            if carnet in asignacion.submission:
+                valor_entregado = asignacion.valor_dc or 0
+                nota_final += valor_entregado
+                nota += asignacion.valor_n
         return nota_final, nota
 
 
@@ -685,6 +716,21 @@ def id_creation(name_x, typeP):
     else:
         return  None
 
+
+def b_day_check(bday):
+    check = bday.split("/")
+    if len(check) == 3:
+        if (int(check[0]) > 31 or int(check[0]) < 0) or (int(check[1]) > 12 or int(check[1]) < 0) or (int(check[2]) > 9999 or int(check[2]) < 0):
+            print("Formato de fecha inválido.")
+            new_bday = input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: ")
+        else:
+            return bday
+    else:
+        print("Formato de fecha inválido.")
+        new_bday = input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: ")
+        return b_day_check(new_bday)
+
+
 def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
@@ -712,18 +758,22 @@ def deploy_admin_menu(faculty):
 
                 else:
                     for temp_cont, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
-                        print(f"{temp_cont}|{teacher_x.name}|{teacher_x.codigo_catredatico} ~ ID")
+                        print(f"{temp_cont}|{teacher_x.name}|{teacher_x.id_cat} ~ ID")
                     chose_teach = False
                     while not chose_teach:
                         search_work_id = input("> Coloque el ID del maestro que desea asignar: ")
-                        teacher = faculty.teachers_db[search_work_id]
-                        chose_teach = True
+                        if search_work_id in faculty.teachers_db:
+                            teacher = faculty.teachers_db[search_work_id].id_cat
+                            chose_teach = True
+                        elif search_work_id == "0":
+                            print("> Ningún maestro seleccionado...\n> Curso ha sido creado con éxito...")
+                            chose_teach = True
 
 
                 course_id = id_creation(course_name, "C")
                 faculty.courses_db[course_id] = Curso(course_id, course_name, teacher)
                 if teacher is not None:
-                    teacher.assigned_courses.append(course_id)
+                    faculty.teachers_db[teacher].assigned_courses.append(course_id)
 
 
             # Creación de usuarios ; dpi, address, phone, dob, password_u
@@ -732,7 +782,7 @@ def deploy_admin_menu(faculty):
                 user_name = input("> Coloque el nombre del Usuario: ")
                 user_address = input("> Coloque la dirección del Usuario: ")
                 user_phone = input("> Coloque el teléfono del Usuario: ")
-                user_dob = input("> Coloque la fecha de nacimiento del Usuario: ")
+                user_dob = b_day_check(input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: "))
                 user_pass = input("> Coloque la contraseña del Usuario: ")
                 user_dpi = input("> Coloque el DPI del Usuario: ")
                 user_inscr_year = input("> Coloque el año de inscripción: ")
@@ -766,7 +816,7 @@ def deploy_admin_menu(faculty):
             case "5":
                 print("-" * 15, "MAESTROS REGISTRADOS", "-" * 15)
                 for index, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
-                    print(teacher_x.display_info())
+                    print(teacher_x.display_info(faculty))
 
             case "6":
                 if not faculty.teachers_db:
@@ -780,7 +830,7 @@ def deploy_admin_menu(faculty):
                     calss_conmf = False
                     while not  calss_conmf:
                         class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
-                        if class_assignment not in faculty.courses_db:
+                        if class_assignment not in faculty.courses_db.keys():
                             print("> Ese ID no es válido...")
                         else:
                             calss_conmf = True
@@ -788,48 +838,50 @@ def deploy_admin_menu(faculty):
                     print("-"*15, f"{faculty.courses_db[class_assignment].name}", "-"*15)
                     print("> Lista de maestros disponibles: ")
                     for index_x, teacher_y in enumerate(faculty.teachers_db.values(), start=1):
-                        print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.codigo_catredatico}")
+                        print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.id_cat}")
 
                     teach_conf = False
                     while not  teach_conf:
                         teacher_assignment = input("> Coloque el ID del maestro al que quiere agregar: ")
-                        if teacher_assignment not in faculty.teachers_db:
+                        if teacher_assignment not in faculty.teachers_db.keys():
                             print("> Ese ID no es válido...")
                         else:
                             teach_conf = True
                     faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment].codigo_catredatico
-                    faculty.teachers_db[teacher_assignment].assigned_courses.append(class_assignment)
+                    faculty.teachers_db[teacher_assignment].assigned_courses.append(engineering_faculty.courses_db[class_assignment])
                     print("Maestro asignado con éxito...\n\n")
 
 
             case "7":
+                """
                 opciones_menu = ["1.Alumnos.","2.Maestros.","3.Cursos."]
                 seleccion = menu(opciones_menu, "GUARDADO DE INFORMACIÓN")
                 save_ops = opciones_menu[seleccion].split(":")[0]
                 match save_ops:
                     case "1":
-                        with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
-                            for id_s, alumni in faculty.students_db.items():
-                                courses_file.write(f"{id_s}:{alumni.name}:{alumni.documento_personal}:{alumni.address}:{alumni.phone_u}:{alumni.dob}"
-                                                   f":{alumni.pass_ward}:{alumni.carnet}:{alumni.gen}:{json.dumps(alumni.assigned_c)}\n"
-                                                   )
-                                #id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
-                    case "2":
-                        with open("Profesores.txt","w",encoding="utf-8") as teachers_file:
-                            for id_t, teacher_temp in faculty.teachers_db.items():
-                                # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
-                                teachers_file.write(
-                                    f"{id_t}:{teacher_temp.name}:{teacher_temp.documento_personal}:{teacher_temp.address}:{teacher_temp.phone_u}:{teacher_temp.dob}"
-                                    f":{teacher_temp.pass_ward}:{teacher_temp.codigo_catredatico}:{json.dumps(teacher_temp.assigned_courses)}\n"
-                                )
-                    case "3":
-                        with open("Cursos.txt","w",encoding="utf-8") as courses_file:
-                            for id_cs, course_x in faculty.courses_db.items():
-                                #id_course, name, docente, roster_alumnos, asignaciones
-                                courses_file.write(f"{course_x.id_course};{course_x.name};{course_x.teacher_assigned};{json.dumps(course_x.roster_alumnos)};{json.dumps(course_x.asignaciones)}")
-                    case _:
-                        pass
-                        time.sleep(1)
+                """
+                with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
+                    for id_s, alumni in faculty.students_db.items():
+                        courses_file.write(f"{id_s}||{alumni.name}||{alumni.documento_personal}||{alumni.address}||{alumni.phone_u}||{alumni.dob}"
+                                           f"||{alumni.pass_ward}||{alumni.carnet}||{alumni.gen}||{json.dumps(alumni.assigned_c)}\n"
+                                           )
+                        #id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
+
+                with open("Profesores.txt","w",encoding="utf-8") as teachers_file:
+                    for id_t, teacher_temp in faculty.teachers_db.items():
+                        # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
+                        teachers_file.write(
+                            f"{id_t}||{teacher_temp.name}||{teacher_temp.documento_personal}||{teacher_temp.address}||{teacher_temp.phone_u}||{teacher_temp.dob}"
+                            f"||{teacher_temp.pass_ward}||{teacher_temp.id_cat}||{json.dumps(teacher_temp.assigned_courses)}\n"
+                        )
+
+                with open("Cursos.txt","w",encoding="utf-8") as courses_file:
+                    for id_cs, course_x in faculty.courses_db.items():
+                        #id_course, name, docente, roster_alumnos, asignaciones
+                        courses_file.write(f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps(course_x.asignaciones)}\n")
+
+                time.sleep(1)
+                print("> Datos Guardados con éxito")
 
 
             case "8":
@@ -852,7 +904,7 @@ class Database:
                     linea= linea.strip()
                     if linea:
                         # id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
-                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split(":",9)
+                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split("||",9)
                         assigned_cl = json.loads(assigned_c_file)
                         alumno= Student(name,dpi,address,phone,dob,password,carnet, gen)
                         alumno.assigned_c = assigned_cl
@@ -868,7 +920,7 @@ class Database:
                     linea = linea.strip()
                     if linea:
                         # id_t, name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
-                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split(":",8)
+                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split("||",8)
                         maestro = Teacher(name, dpi, address, phone, dob, password, id_t)
                         maestro.assigned_courses = json.loads(assigned_courses)
                         self.teachers_db[id_t]=maestro
@@ -883,7 +935,7 @@ class Database:
                     linea = linea.strip()
                     if linea:
                         #id_course, name, docente, roster_alumnos, asignaciones
-                        id_c, name, teacher_id, roster_alumnos, asignaciones = linea.split(";")
+                        id_c, name, teacher_id, roster_alumnos, asignaciones = linea.split("||")
                         #teacher = self.teachers_db.get(teacher_id)
                         curso = Curso(id_c, name, teacher_id)
                         curso.roster_alumnos = roster_alumnos
@@ -894,7 +946,7 @@ class Database:
             print("No existe Cursos.txt, se creara al guardar...")
 
 
-#OlA
+#Ol
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
 engineering_faculty.cargar_cursos()
