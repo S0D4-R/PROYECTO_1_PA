@@ -401,7 +401,7 @@ class Teacher(User):
         pass
 
     def subir_notas(self, curso):
-        rig = ["1. Actualizar las notas de todas las actividades","2. Actualizar notas de una actividad","3. Actualizar curso"]
+        rig = ["1. Actualizar las notas de todas las actividades","2. Actualizar notas de una actividad"]
         opciones = menu(rig, "SUBIR NOTAS")
         option = rig[opciones].split(".")[0]
         match option:
@@ -411,8 +411,8 @@ class Teacher(User):
                     return
                 for actividad in curso.asgnaciones:
                     actividad.mostrar_datos()
-                    for est in curso.roster_alumnos.values():
-                        for act in est.assigned_c[curso.id_course][1]:
+                    for id_est in curso.roster_alumnos:
+                        for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
                             act[0].set_status()
                             if act[0].submission.values():
                                 act[1] = True
@@ -423,16 +423,17 @@ class Teacher(User):
                             while True:
                                 try:
                                     punteo = int(input("Ingrese el punteo: "))
-                                    if punteo <1 or punteo > act[0].valor_n:
+                                    if punteo < 1 or punteo > act[0].valor_n:
                                         print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
                                     else:
                                         act[0].valor_dc = punteo
-                                        est.assigned_c[curso.id_course][2] += punteo
+                                        engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["nota"] += punteo
                                         break
                                 except ValueError:
                                     print("Solo puede ingresar números enteros")
                                 except Exception as e:
                                     print("Error inesperado", e)
+
 
             case "2":
                 if not curso.asignaciones:
@@ -446,45 +447,29 @@ class Teacher(User):
                 else:
                     for actividad in curso.asignaciones:
                         if actividad.id == id_act:
-                            for est in curso.roster_alumnos.values():
-                                for act in est.assigned_c[curso.id_course][1]:
-                                    act[0].set_status()
-                                    if act[0].submission.values():
-                                        act[1] = True
-                                    if act[0].id == id_act:
+                            for id_est in curso.roster_alumnos:
+                                for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
+                                    if act[0].act_id == id_act:
+                                        act[0].set_status()
+                                        if act[0].submission.values():
+                                            act[1] = True
                                         if act[1]:
                                             print("El estudiante realizó su entrega")
                                         else:
                                             print("El estudiante aún no ha entregado nada")
-
                                         while True:
                                             try:
                                                 punteo = int(input("Ingrese el punteo: "))
-                                                if punteo < 0 or punteo > act[0].valor_n:
+                                                if punteo < 1 or punteo > act[0].valor_n:
                                                     print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
                                                 else:
                                                     act[0].valor_dc = punteo
-                                                    est.assigned_c[curso.id_course][2] += punteo
-                                                    break
+                                                    engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["nota"] += punteo
+                                                break
                                             except ValueError:
                                                 print("Solo puede ingresar números enteros")
                                             except Exception as e:
                                                 print("Error inesperado", e)
-
-            case "3":
-                if not curso.asignaciones:
-                    print("Aún no hay actividades")
-                    return
-                for id, est in curso.roster_alumnos.values():
-                    actividades_upd = est.assigned_c[curso.id_course][1]
-                    est_base = engineering_faculty.students_db.get(id, False)
-                    if est_base == False:
-                        print(f"Estudiante con ID {id} no encontrado en la base de datos")
-                    else:
-                        est_base.assigned_c[curso.id_course][1] = actividades_upd
-                print(f"Estudiantes del curso {curso.name} actualizados")
-                engineering_faculty.courses_db[curso.id_course] = curso
-                print("Curso actualizado en la base de datos")
             case _:
                 print("Opción inválida")
 
@@ -557,14 +542,19 @@ class Teacher(User):
                 tipo = input("Ingrese el tipo de asignación: ")
                 assign = Actividad(act_id,act_name,val_net, val_clasif, fecha, hora_open, hora_close, tipo)
                 curso_search.asignaciones.append(assign)
-                for estudiante in curso_search.roster_alumnos.items():
-                    estudiante.assigned_c[curso_search.id_course] = {
-                        "nombre" : curso_search.name,
-                        "actividades": [],
-                        "nota": 0
-                    }
-                    actividad = [assign,False]
-                    estudiante.assigned_c[curso_search.id_course]["actividades"].append(actividad)
+                actividad = [assign, False]
+                for id in curso_search.roster_alumnos:
+                    engineering_faculty.students_db[id].assigned_c[curso_search.id_course]["actividades"].append(actividad)
+                engineering_faculty.courses_db[curso_search.id_course].asignaciones.append(assign)
+
+                #for estudiante in curso_search.roster_alumnos.items():
+                    #estudiante.assigned_c[curso_search.id_course] = {
+                        #"nombre": curso_search.name,
+                        #"actividades": [],
+                        #"nota": 0
+                    #}
+                    #actividad = [assign, False]
+                    #estudiante.assigned_c[curso_search.id_course]["actividades"].append(actividad)
 
             except ValueError:
                 print("Ingrese solo números enteros")
@@ -618,8 +608,10 @@ class Teacher(User):
                     break
                 case _:
                     print("Opción inválida")
+
     def display_info(self, faculty):
-        print(f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.documento_personal}\nNúmero telefónico: {self.phone_u}\nCursos:")
+        print(
+            f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.documento_personal}\nNúmero telefónico: {self.phone_u}\nCursos:")
         if self.assigned_courses:
             for course in self.assigned_courses:
                 print(f"\nID: {course}, Nombre: {faculty.courses_db[course].name}")
@@ -632,28 +624,30 @@ class Curso:
         self.id_course = id_course
         self.name = name
         self.teacher_assigned = docente
-        self.roster_alumnos = {}
+        self.roster_alumnos = []
         self.asignaciones = []
 
     def reporte_x(self):
         pass
+
     def mostrar_datos(self):
-        print(f"=========================\nID: {self.id_course}\n Nombre: {self.name}\n Docente: {self.teacher_assigned}\n Alumnos:")
+        print(
+            f"=========================\nID: {self.id_course}\n Nombre: {self.name}\n Docente: {self.teacher_assigned}\n Alumnos:")
         if self.roster_alumnos:
-            for id, alumno in self.roster_alumnos.items():
-                pass # Se llama a una función para mostrar los datos de cada alumno
+            for id in self.roster_alumnos:
+                engineering_faculty.students_db[id].mostrar_datos()
         else:
             print("No hay alumnos asignados")
         print("\nAsignaciones: ")
         if self.asignaciones:
             for asignacion in self.asignaciones:
-                asignacion.mostrar_datos()
+                asignacion.display_info()
         else:
             print("No hay asignaciones asignadas")
 
-    def calcular_nota(self,carnet):
-        nota_final=0
-        nota=0
+    def calcular_nota(self, carnet):
+        nota_final = 0
+        nota = 0
         for asignacion in self.asignaciones:
             if carnet in asignacion.submission:
                 valor_entregado = asignacion.valor_dc or 0
@@ -663,7 +657,7 @@ class Curso:
 
 
 class Actividad:
-    def __init__(self,act_id, name, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
+    def __init__(self, act_id, name, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
         self.__act_id = act_id
         self.name = name
         self.valor_n = valor_neto
@@ -673,11 +667,12 @@ class Actividad:
         self.h_cierre = datetime.datetime.strptime(h_cierre, "%H:%M").time()
         self.type_a = type_a
         self.status = False
-        self.submission={}
+        self.submission = {}
 
     @property
     def act_id(self):
         return self.__act_id
+
     def set_status(self):
         ahora = datetime.datetime.now()
         ahora_fecha = ahora.date()
@@ -695,15 +690,18 @@ class Actividad:
             else:
                 self.status = False
 
-
     def auto_cierre(self):
         pass
+
     def asignar_punteo(self):
         pass
+
     def assignment_modification(self):
         pass
+
     def mostrar_datos(self):
-        print(f"------------------------------\nValor: {self.valor_n}\n fecha: {self.date}\n apertura: {self.h_apertura}\n cierre: {self.h_cierre}\n tipo: {self.type_a}\n status: {self.status}")
+        print(
+            f"------------------------------\nValor: {self.valor_n}\n fecha: {self.date}\n apertura: {self.h_apertura}\n cierre: {self.h_cierre}\n tipo: {self.type_a}\n status: {self.status}")
 
 
 def id_creation(name_x, typeP):
@@ -721,13 +719,14 @@ def id_creation(name_x, typeP):
         id_gen = "DOC" + str(ran_code1) + str(ran_code2)
         return id_gen
     else:
-        return  None
+        return None
 
 
 def b_day_check(bday):
     check = bday.split("/")
     if len(check) == 3:
-        if (int(check[0]) > 31 or int(check[0]) < 0) or (int(check[1]) > 12 or int(check[1]) < 0) or (int(check[2]) > 9999 or int(check[2]) < 0):
+        if (int(check[0]) > 31 or int(check[0]) < 0) or (int(check[1]) > 12 or int(check[1]) < 0) or (
+                int(check[2]) > 9999 or int(check[2]) < 0):
             print("Formato de fecha inválido.")
             new_bday = input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: ")
         else:
@@ -741,17 +740,17 @@ def b_day_check(bday):
 def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
-        print("\n", "~"*15, "BIENVENIDO", "~"*15)
-        ops = ["1. Crear Curso","2. Crear Usuario","3. Ver cursos","4. Ver alumnos","5. Ver maestros",
-               "6. Asignar Maestros","7. Guardar","8. Salir"]
+        print("\n", "~" * 15, "BIENVENIDO", "~" * 15)
+        ops = ["1. Crear Curso", "2. Crear Usuario", "3. Ver cursos", "4. Ver alumnos", "5. Ver maestros",
+               "6. Asignar Maestros", "7. Guardar", "8. Salir"]
         seleccion = menu(ops, "MENÚ ADMIN")
         admin_ops = ops[seleccion].split(".")[0]
         match admin_ops:
 
 
-            #Creación de cursos
+            # Creación de cursos
             case "1":
-                print("-"*15, "COURSE CREATION", "-"*15)
+                print("-" * 15, "COURSE CREATION", "-" * 15)
                 name_ver = False
                 while not name_ver:
                     course_name = input("> Nombre del curso: ")
@@ -759,7 +758,7 @@ def deploy_admin_menu(faculty):
                         print("> El nombre no es válido")
                     else:
                         name_ver = True
-                teacher= "N/A"
+                teacher = "N/A"
                 if not faculty.teachers_db:
                     print("> No hay maestros disponibles...\n> Curso ha sido creado con éxito...")
 
@@ -776,12 +775,10 @@ def deploy_admin_menu(faculty):
                             print("> Ningún maestro seleccionado...\n> Curso ha sido creado con éxito...")
                             chose_teach = True
 
-
                 course_id = id_creation(course_name, "C")
                 faculty.courses_db[course_id] = Curso(course_id, course_name, teacher)
                 if teacher is not None:
                     faculty.teachers_db[teacher].assigned_courses.append(course_id)
-
 
             # Creación de usuarios ; dpi, address, phone, dob, password_u
             case "2":
@@ -795,25 +792,26 @@ def deploy_admin_menu(faculty):
                 user_inscr_year = input("> Coloque el año de inscripción: ")
 
                 type_conf = False
-                while not  type_conf:
+                while not type_conf:
                     user_type = input("> Seleccione el tipo de usuario:\n1. Estudiante\n2. Docente\n")
                     if user_type == "1":
                         user_type = "S"
                         user_id = id_creation("", user_type)
-                        faculty.students_db[user_id] = Student(user_name,user_dpi,user_address,user_phone,user_dob,user_pass,user_id,user_inscr_year)
+                        faculty.students_db[user_id] = Student(user_name, user_dpi, user_address, user_phone, user_dob,
+                                                               user_pass, user_id, user_inscr_year)
 
                     elif user_type == "2":
                         user_type = "T"
                         user_id = id_creation("", user_type)
-                        faculty.teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob, user_pass, user_id)
+                        faculty.teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob,
+                                                               user_pass, user_id)
                     type_conf = True
 
-
             case "3":
-                print("-"*15, "CURSOS DISPONIBLES", "-"*15)
+                print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
                 for index, course in enumerate(faculty.courses_db.values(), start=1):
-                    print(f"> {index}. {course.name}|Maestro asignado: {faculty.teachers_db[course.teacher_assigned].name}")
-
+                    print(
+                        f"> {index}. {course.name}|Maestro asignado: {faculty.teachers_db[course.teacher_assigned].name}")
 
             case "4":
                 print("-" * 15, "ALUMNOS REGISTRADOS", "-" * 15)
@@ -835,29 +833,30 @@ def deploy_admin_menu(faculty):
                             print(f"> {index}. {course.name}|ID: {course.id_course}")
 
                     calss_conmf = False
-                    while not  calss_conmf:
+                    while not calss_conmf:
                         class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
                         if class_assignment not in faculty.courses_db.keys():
                             print("> Ese ID no es válido...")
                         else:
                             calss_conmf = True
 
-                    print("-"*15, f"{faculty.courses_db[class_assignment].name}", "-"*15)
+                    print("-" * 15, f"{faculty.courses_db[class_assignment].name}", "-" * 15)
                     print("> Lista de maestros disponibles: ")
                     for index_x, teacher_y in enumerate(faculty.teachers_db.values(), start=1):
                         print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.id_cat}")
 
                     teach_conf = False
-                    while not  teach_conf:
+                    while not teach_conf:
                         teacher_assignment = input("> Coloque el ID del maestro al que quiere agregar: ")
                         if teacher_assignment not in faculty.teachers_db.keys():
                             print("> Ese ID no es válido...")
                         else:
                             teach_conf = True
-                    faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment].codigo_catredatico
-                    faculty.teachers_db[teacher_assignment].assigned_courses.append(engineering_faculty.courses_db[class_assignment])
+                    faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[
+                        teacher_assignment].codigo_catredatico
+                    faculty.teachers_db[teacher_assignment].assigned_courses.append(
+                        engineering_faculty.courses_db[class_assignment])
                     print("Maestro asignado con éxito...\n\n")
-
 
             case "7":
                 """
@@ -867,14 +866,15 @@ def deploy_admin_menu(faculty):
                 match save_ops:
                     case "1":
                 """
-                with open("estudiantes.txt","w",encoding="utf-8") as courses_file:
+                with open("estudiantes.txt", "w", encoding="utf-8") as courses_file:
                     for id_s, alumni in faculty.students_db.items():
-                        courses_file.write(f"{id_s}||{alumni.name}||{alumni.documento_personal}||{alumni.address}||{alumni.phone_u}||{alumni.dob}"
-                                           f"||{alumni.pass_ward}||{alumni.carnet}||{alumni.gen}||{json.dumps(alumni.assigned_c)}\n"
-                                           )
-                        #id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
+                        courses_file.write(
+                            f"{id_s}||{alumni.name}||{alumni.documento_personal}||{alumni.address}||{alumni.phone_u}||{alumni.dob}"
+                            f"||{alumni.pass_ward}||{alumni.carnet}||{alumni.gen}||{json.dumps(alumni.assigned_c)}\n"
+                            )
+                        # id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
 
-                with open("Profesores.txt","w",encoding="utf-8") as teachers_file:
+                with open("Profesores.txt", "w", encoding="utf-8") as teachers_file:
                     for id_t, teacher_temp in faculty.teachers_db.items():
                         # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
                         teachers_file.write(
@@ -882,14 +882,14 @@ def deploy_admin_menu(faculty):
                             f"||{teacher_temp.pass_ward}||{teacher_temp.id_cat}||{json.dumps(teacher_temp.assigned_courses)}\n"
                         )
 
-                with open("Cursos.txt","w",encoding="utf-8") as courses_file:
+                with open("Cursos.txt", "w", encoding="utf-8") as courses_file:
                     for id_cs, course_x in faculty.courses_db.items():
-                        #id_course, name, docente, roster_alumnos, asignaciones
-                        courses_file.write(f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps(course_x.asignaciones)}\n")
+                        # id_course, name, docente, roster_alumnos, asignaciones
+                        courses_file.write(
+                            f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps(course_x.asignaciones)}\n")
 
                 time.sleep(1)
                 print("> Datos Guardados con éxito")
-
 
             case "8":
                 print("> Gracias por usar el programa...")
@@ -903,17 +903,17 @@ class Database:
         self.teachers_db = {}
         self.courses_db = {}
 
-
     def cargar_estudiantes(self):
         try:
-            with open("estudiantes.txt","r",encoding="utf-8") as archivo_estudiantes:
+            with open("estudiantes.txt", "r", encoding="utf-8") as archivo_estudiantes:
                 for linea in archivo_estudiantes:
-                    linea= linea.strip()
+                    linea = linea.strip()
                     if linea:
                         # id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
-                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split("||",9)
+                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split("||",
+                                                                                                                   9)
                         assigned_cl = json.loads(assigned_c_file)
-                        alumno= Student(name,dpi,address,phone,dob,password,carnet, gen)
+                        alumno = Student(name, dpi, address, phone, dob, password, carnet, gen)
                         alumno.assigned_c = assigned_cl
                         self.students_db[id_s] = alumno
                 print("Estudiantes importados desde el archivo estudiantes.txt")
@@ -922,28 +922,28 @@ class Database:
 
     def cargar_profesores(self):
         try:
-            with open("Profesores.txt","r",encoding="utf-8" ) as archivo_profesores:
+            with open("Profesores.txt", "r", encoding="utf-8") as archivo_profesores:
                 for linea in archivo_profesores:
                     linea = linea.strip()
                     if linea:
                         # id_t, name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
-                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split("||",8)
+                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split("||", 8)
                         maestro = Teacher(name, dpi, address, phone, dob, password, id_t)
                         maestro.assigned_courses = json.loads(assigned_courses)
-                        self.teachers_db[id_t]=maestro
+                        self.teachers_db[id_t] = maestro
                 print("Maestros inportados desde el archivo profesores.txt")
         except FileNotFoundError:
             print("No existe profesores.txt, se creara al guardar")
 
     def cargar_cursos(self):
         try:
-            with open("Cursos.txt","r",encoding="utf-8") as archivo_cursos:
+            with open("Cursos.txt", "r", encoding="utf-8") as archivo_cursos:
                 for linea in archivo_cursos:
                     linea = linea.strip()
                     if linea:
-                        #id_course, name, docente, roster_alumnos, asignaciones
+                        # id_course, name, docente, roster_alumnos, asignaciones
                         id_c, name, teacher_id, roster_alumnos, asignaciones = linea.split("||")
-                        #teacher = self.teachers_db.get(teacher_id)
+                        # teacher = self.teachers_db.get(teacher_id)
                         curso = Curso(id_c, name, teacher_id)
                         curso.roster_alumnos = roster_alumnos
                         curso.asignaciones = asignaciones
@@ -953,8 +953,8 @@ class Database:
             print("No existe Cursos.txt, se creara al guardar...")
 
 
-#Ol
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Ol
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 engineering_faculty = Database()
 engineering_faculty.cargar_cursos()
 engineering_faculty.cargar_profesores()
@@ -969,11 +969,13 @@ while key:
             key = deploy_admin_menu(engineering_faculty)
 
 
-        elif user_pass in engineering_faculty.students_db and password_pass == engineering_faculty.students_db[user_pass].pass_ward:
+        elif user_pass in engineering_faculty.students_db and password_pass == engineering_faculty.students_db[
+            user_pass].pass_ward:
             key = engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
 
 
-        elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[user_pass].pass_ward:
+        elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[
+            user_pass].pass_ward:
             key = engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
         elif user_pass == "0" and password_pass == "0":
             key = False
