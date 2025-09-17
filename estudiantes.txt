@@ -1,1 +1,1 @@
-STU75978||Sofia Morales||3987456120345||9 Avenida 4-67, Zona 1, Antigua Guatemala||66778899||25/07/2000||sofia_m2000||STU75978||2008||{}
+STU75978||Sofia Morales||3987456120345||9 Avenida 4-67, Zona 1, Antigua Guatemala||66778899||25/07/2000||sofia_m2000||STU75978||2008||{"PRE11165": true, "PRO35522": true}
