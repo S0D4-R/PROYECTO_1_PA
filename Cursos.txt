@@ -1,1 +1,1 @@
-PRE11165;PRECALCULO;DOC21955;"{\"STU85543\": \"Andrea L\\u00f3pez\"}";"\"\\\"[]\\\"\""
+PRE11165;PRECALCULO;DOC21955;{"STU85543": "Andrea L\u00f3pez"};"\"\\\"[]\\\"\""
