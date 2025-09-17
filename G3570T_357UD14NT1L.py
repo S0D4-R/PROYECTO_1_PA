@@ -99,14 +99,19 @@ class Student(User):
                 asignacion.type_a
                 actividades_validas.append(asignacion)
             except AttributeError:
-                continue
+                if 'type_a' in asignacion:
+                    actividades_validas.append(asignacion)
 
         if not actividades_validas:
-            print("No hay actividades válidas para entregar.")
+            print("No hay actividades para entregar.")
             return
 
         for indice, asignacion in enumerate(actividades_validas, start=1):
-            print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date}")
+            try:
+                print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date}")
+            except AttributeError:
+                print(
+                    f"{indice}. Tipo: {asignacion['type_a']} | Valor: {asignacion['valor_n']} | Fecha: {asignacion['date']}")
 
         try:
             seleccion = int(input("Ingrese el número de la actividad a entregar: "))
@@ -115,7 +120,11 @@ class Student(User):
                 return
 
             actividad = actividades_validas[seleccion - 1]
-            actividad.submission[self.carnet] = "Entregado"
+            try:
+                actividad.submission[self.carnet] = "Entregado"
+            except AttributeError:
+                actividad['submission'][self.carnet] = "Entregado"
+
             print("Actividad entregada con éxito!")
         except ValueError:
             print("Debe ingresar un número válido...")
@@ -144,11 +153,11 @@ class Student(User):
                             assigned_c_dict = {}
                             for cid in alumno.assigned_c:
                                 assigned_c_dict[cid] = True
-                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(assigned_c_dict)}\n")
+                            archivo.write(f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_dict)}\n")
 
                     with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
                         for id_c, curso in faculty.courses_db.items():
-                            archivo_c.write(f"{curso.id_course};{curso.name};{curso.teacher_assigned};{json.dumps(curso.roster_alumnos)};{json.dumps(curso.asignaciones)}\n")
+                            archivo_c.write(f"{curso.id_course}||{curso.name}||{curso.teacher_assigned}||{json.dumps(curso.roster_alumnos)}||{json.dumps(curso.asignaciones)}\n")
 
                     print(f"Inscripción a {curse.name} realizada correctamente.")
                     return
@@ -173,13 +182,8 @@ class Student(User):
             promedio =0
         return promedio
 
-    def ver_notas(self):
-        for course in self.assigned_c.values():
-            nota, total = course.calcular_nota(self.carnet)
-            if total == 0:
-                print(f"{course.name} | Sin actividades registradas.")
-            else:
-                print(f"{course.name} | Nota global: {nota}/{total}")
+    def ver_nota(self,curso_id,faculty):
+        pass
 
     def ver_nota_actividad(self,curso_seleccionado):
         if not curso_seleccionado.asignaciones:
@@ -219,14 +223,15 @@ class Student(User):
                         print("No estás asignado a ningún curso...")
                     else:
                         print("--- CURSOS ASIGNADOS ---")
-                        for indice, curso_id in enumerate(self.assigned_c, start=1):
+                        curso_lista_ids = list(self.assigned_c.keys())
+
+                        for indice, curso_id in enumerate(curso_lista_ids, start=1):
                             curso = faculty.courses_db.get(curso_id)
                             if curso:
                                 print(f"{indice}. {curso.name}")
 
                         try:
                             curso_seleccion = int(input("Seleccione el número del curso: "))
-                            curso_lista_ids = self.assigned_c
 
                             if 1 <= curso_seleccion <= len(curso_lista_ids):
                                 curso_id_seleccionado = curso_lista_ids[curso_seleccion - 1]
@@ -245,11 +250,7 @@ class Student(User):
                                             self.entregar_tarea(curso_selecionado)
                                         case "2":
                                             print("---NOTA DE CURSO---")
-                                            nota, total = curso_selecionado.calcular_nota(self.carnet)
-                                            if total == 0:
-                                                print("Sin actividades registradas.")
-                                            else:
-                                                print(f"Nota global: {nota}/{total}")
+                                            self.ver_nota(curso_selecionado.id_course, faculty)
 
                                         case "3":
                                             print("---NOTA DE ACTIVIDADES---")

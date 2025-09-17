@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="f8ddeeab-97f9-4713-859e-2558dc8e570c" name="Changes" comment="Modificación en opción 7 de 'deploy_s_menu'">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cursos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cursos.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" beforeDir="false" afterPath="$PROJECT_DIR$/G3570T_357UD14NT1L.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Profesores.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estudiantes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/estudiantes.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,12 +32,12 @@
     &quot;assignee&quot;: &quot;Jackelin-Vasquez&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/S0D4-R/PROYECTO_1_PA.git&quot;,
-    &quot;accountId&quot;: &quot;9a7d253b-fc58-4675-8fbc-e22bdd272cab&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/S0D4-R/PROYECTO_1_PA.git",
+    "accountId": "a5d6c4e7-3bf3-46ca-89f4-51b9f3302856"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -42,18 +46,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.G3570T_357UD14NT1L.executor&quot;: &quot;Run&quot;,
-    &quot;Python.prubea.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#1 on Student-restructuring&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Ingeniera en Sistemas URL 2025/2do semestre 2025/Programación Avanzada/PROYECTO_1_PA&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.G3570T_357UD14NT1L.executor": "Run",
+    "Python.prubea.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/Ingeniera en Sistemas URL 2025/2do semestre 2025/Programación Avanzada/PROYECTO_1_PA",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="G3570T_357UD14NT1L (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PROYECTO_1_PA" />
@@ -86,7 +90,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-4c141bd692a7-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.90" />
+        <option value="bundled-python-sdk-598b0484d0b5-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.74" />
       </set>
     </attachedChunks>
   </component>
