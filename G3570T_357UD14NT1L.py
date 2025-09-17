@@ -182,15 +182,25 @@ class Student(User):
         if not curso_seleccionado.asignaciones:
             print("No hay actividades en este curso...")
             return
+
         print(f"---NOTAS DE ACTIVIDADES EN {curso_seleccionado.name}---")
-        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+        actividades_validas = []
+        for asignacion in curso_seleccionado.asignaciones:
             try:
-                try:
-                    estado= asignacion.submissions[self.carnet]
-                except KeyError:
-                    estado= "No entregado"
+                asignacion.type_a
+                actividades_validas.append(asignacion)
             except AttributeError:
-                estado= "No entregado"
+                continue
+
+        if not actividades_validas:
+            print("No hay actividades válidas para mostrar.")
+            return
+
+        for indice, asignacion in enumerate(actividades_validas, start=1):
+            try:
+                estado = asignacion.submission.get(self.carnet, "No entregado")
+            except AttributeError:
+                estado = "No entregado"
             print(
                 f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date} | Estado: {estado}")
 
