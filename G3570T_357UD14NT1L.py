@@ -135,21 +135,23 @@ class Student(User):
                         curse.roster_alumnos = dict(json.loads(curse.roster_alumnos))
                     except Exception:
                         curse.roster_alumnos = {}
+
                     curse.roster_alumnos[self.__id_s] = self.name
+
                     with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
                         for id_s, alumno in faculty.students_db.items():
-                            assigned_ids = list(alumno.assigned_c.keys())
-                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(assigned_ids)}\n")
+                            assigned_c_dict = {}
+                            for cid in alumno.assigned_c:
+                                assigned_c_dict[cid] = True
+                            archivo.write(f"{id_s}:{alumno.name}:{alumno.documento_personal}:{alumno.address}:{alumno.phone_u}:{alumno.dob}:{alumno.pass_ward}:{alumno.carnet}:{alumno.gen}:{json.dumps(assigned_c_dict)}\n")
 
                     with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
                         for id_c, curso in faculty.courses_db.items():
                             archivo_c.write(f"{curso.id_course};{curso.name};{curso.teacher_assigned};{json.dumps(curso.roster_alumnos)};{json.dumps(curso.asignaciones)}\n")
 
-                    print(f"Inscripción al curso {curse.name} completada con éxito!")
+                    print(f"Inscripción a {curse.name} realizada correctamente.")
                     return
-
-        print("Curso no encontrado...")
-
+        print("Curso no encontrado.")
     def promedio_general(self):
         punteo_obtenido=0
         posibilidad= 0
@@ -172,7 +174,7 @@ class Student(User):
 
     def ver_notas(self):
         for course in self.assigned_c.values():
-            nota, total = course.calcular_nota_final(self.carnet)
+            nota, total = course.calcular_nota(self.carnet)
             if total == 0:
                 print(f"{course.name} | Sin actividades registradas.")
             else:
@@ -193,7 +195,7 @@ class Student(User):
                 continue
 
         if not actividades_validas:
-            print("No hay actividades válidas para mostrar.")
+            print("No hay actividades para mostrar.")
             return
 
         for indice, asignacion in enumerate(actividades_validas, start=1):
@@ -242,7 +244,7 @@ class Student(User):
                                             self.entregar_tarea(curso_selecionado)
                                         case "2":
                                             print("---NOTA DE CURSO---")
-                                            nota, total = curso_selecionado.calcular_nota_final()
+                                            nota, total = curso_selecionado.calcular_nota(self.carnet)
                                             if total == 0:
                                                 print("Sin actividades registradas.")
                                             else:
