@@ -186,7 +186,41 @@ class Student(User):
         return promedio
 
     def ver_nota(self,curso_id,faculty):
-        pass
+        curso = faculty.courses_db.get(curso_id)
+        if not curso:
+            print("Curso no encontrado...")
+            return
+
+        actividades = []
+        try:
+            if self.assigned_c.get(curso_id) and type(self.assigned_c[curso_id]) == dict:
+                actividades = self.assigned_c[curso_id].get("actividades", [])
+        except Exception:
+            actividades = []
+
+        if not actividades:
+            print("No hay actividades registradas en este curso...")
+            return
+
+        print(f"\nCurso: {curso.name}\n-----------")
+        nota_final = 0
+        nota_total = 0
+
+        for indice, act in enumerate(actividades, start=1):
+            try:
+                actividad_obj = act[0]
+                entregado = "Entregado" if act[1] else "No entregado"
+                print(f"{indice}. {actividad_obj.name} - Valor: {actividad_obj.valor_n} - Estado: {entregado}")
+                nota_final += actividad_obj.valor_dc or 0
+                nota_total += actividad_obj.valor_n or 0
+            except Exception:
+                continue
+        if nota_total == 0:
+            print("No se han registrado calificaciones todavía.")
+        else:
+            porcentaje = (nota_final / nota_total) * 100
+            print("Nota obtenida:", nota_final, "/", nota_total, f"({porcentaje}%)")
+            print(f"Nota obtenida: {nota_final}/{nota_total} ({(nota_final / nota_total) * 100}%)")
 
     def ver_nota_actividad(self,curso_seleccionado):
         if not curso_seleccionado.asignaciones:
