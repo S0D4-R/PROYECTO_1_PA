@@ -491,9 +491,9 @@ class Teacher(User):
                     if not self.assigned_courses:
                         print("No hay cursos asignados")
                     else:
-                        for clave, data in enumerate(self.assigned_courses):
-                            print(f"{clave}.", end = "")
-                            data.mostrar_datos()
+                        for clave, data in enumerate(self.assigned_courses, start=1):
+                            print(f"{clave}.", end="")
+                            faculty.courses_db[data].mostrar_datos()
                         course_select = input("Ingrese la ID del curso: ").upper()
                         if any(course_select == course.id_course for course in self.assigned_courses):
                             for course_find in self.assigned_courses:
