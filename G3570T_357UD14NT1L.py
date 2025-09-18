@@ -820,11 +820,10 @@ def deploy_admin_menu(faculty):
                 if user_type == "1":
                     user_type = "S"
                     user_id = id_creation("", user_type)
-                    faculty.students_db[user_id] = Student(user_name, user_dpi, user_address, user_phone, user_dob,
-                                                           user_pass, user_id, user_inscr_year)
+                    faculty.students_db[user_id] = Student(user_name, user_dpi, user_address, user_phone, user_dob,user_pass, user_id, user_inscr_year)
                     print(f"Estudiante {user_name} creado con ID: {user_id}")
 
-                 elif user_type == "2":
+                elif user_type == "2":
                     user_type = "T"
                     user_id = id_creation("", user_type)
                     faculty.teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob,
@@ -1018,7 +1017,7 @@ def doc_check(dpi, faculty):
         print(f"El DPI no es valido, Debe contener 13 dígitos, intente de nuevo.....")
         new_dpi = input("> Coloque el DPI del Usuario: ")
         return doc_check(new_dpi, faculty)
-    if any(dpi= teacher.documento_personal for teacher in faculty.teachers_db.values()) or \
+    if any(dpi== teacher.documento_personal for teacher in faculty.teachers_db.values()) or \
             any(dpi == student.documento_personal for student in faculty.students_db.values()):
         print("> El DPI ya existe. Por favor, intente de nuevo.")
         new_dpi = input("> Coloque el DPI del Usuario: ")
@@ -1044,7 +1043,6 @@ while key:
         elif user_pass in engineering_faculty.students_db and password_pass == engineering_faculty.students_db[
             user_pass].pass_ward:
             key = engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
-
 
         elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[
             user_pass].pass_ward:
