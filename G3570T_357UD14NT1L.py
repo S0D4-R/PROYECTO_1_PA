@@ -605,7 +605,36 @@ class Teacher(User):
                 print("Error inesperado", e)
 
     def crear_reporte(self, curso):
-        pass
+        print("\n" + "-" * 10 + " CREAR REPORTE " + "-" * 10)
+        try:
+            while True:
+                for id_est in curso.roster_alumnos:
+                    engineering_faculty.students_db[id_est].display_info()
+                id_search = input("Ingrese la ID del estudiante: ")
+                if id_search not in id_search not in curso.roster_alumnos:
+                    print("El estudiante no está en el curso")
+                else:
+                    break
+            for id_est, est in engineering_faculty.students_db.items():
+                if id_est == id_search:
+                    while True:
+                        desc = input("\nIngrese la descripción del reporte: ")
+                        if len(desc) < 10:
+                            print("El reporte es muy corto")
+                        else:
+                            break
+
+                    report = {
+                        "curso": curso.name,
+                        "profesor": self.name,
+                        "fecha": datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+                        "descripcion": desc
+                    }
+                    est.reports.append(report)
+        except ValueError as e:
+            print(e)
+        except Exception as e:
+            print("Error inesperado: ", e)
 
     def deploy_t_menu(self, faculty):
         while True:
