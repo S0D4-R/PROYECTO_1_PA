@@ -392,10 +392,9 @@ class Student(User):
                     input("\nPresione enter Enter para volver al menú inicial...")
 
                 case "6":
-                    print(f"-----------MOSTRANDO MIS REPOTES------------")
+                    print(f"-----------MOSTRANDO MIS REPORTES------------")
                     print()
                     self.ver_reportes()
-
 
                 case "7": #pablo
                     print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
@@ -835,6 +834,7 @@ def deploy_admin_menu(faculty):
                 else:
                     for temp_cont, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
                         print(f"{temp_cont}|{teacher_x.name}|{teacher_x.id_cat} ~ ID")
+
                     search_work_id = input("> Coloque el ID del maestro que desea asignar (o '0' para ninguno): ")
                     if search_work_id in faculty.teachers_db:
                         teacher_id = search_work_id
@@ -845,9 +845,9 @@ def deploy_admin_menu(faculty):
 
 
                 course_id = id_creation(course_name, "C")
-                faculty.courses_db[course_id] = Curso(course_id, course_name, teacher)
-                if teacher_id != "N/A":
-                    faculty.teachers_db[teacher].assigned_courses.append(course_id)
+                faculty.courses_db[course_id] = Curso(course_id, course_name, teacher_id)
+                if teacher_id != "N/A": #error corregido
+                    faculty.teachers_db[teacher_id].assigned_courses.append(course_id)
                 print(f"Curso '{course_name}' creado con ID: {course_id}")
 
             # Creación de usuarios ; dpi, address, phone, dob, password_u
@@ -897,7 +897,8 @@ def deploy_admin_menu(faculty):
             case "5":
                 print("-" * 15, "MAESTROS REGISTRADOS", "-" * 15)
                 for index, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
-                    print(f"{index}.{teacher_x.display_info(faculty)})")
+                    print(f"{index}. {teacher_x.display_info(faculty)}")
+                    print("-" * 40)
 
             case "6":
                 if not faculty.teachers_db or not faculty.courses_db:
@@ -980,7 +981,8 @@ class Database:
                 for linea in archivo_profesores:
                     linea = linea.strip()
                     if linea:
-                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses_str = linea.split("||", 8)
+                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses_str = linea.split("||",
+                                                                                                                   8)
                         dob_date = datetime.datetime.strptime(dob, "%Y-%m-%d %H:%M:%S")
                         maestro = Teacher(name, dpi, address, phone, dob_date, password, id_t)
                         maestro.assigned_courses = json.loads(assigned_courses_str)
