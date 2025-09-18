@@ -808,6 +808,19 @@ def b_day_check(bday):
         return b_day_check(new_bday)
 
 
+def doc_check(dpi, faculty):
+    if any(dpi == teacher.documento_personal for teacher in faculty.teachers_db.values()):
+        print("> El DPI ya existe. Por favor, intente de nuevo.")
+        new_dpi = input("> Coloque el DPI del Usuario: ")
+        return doc_check(new_dpi, faculty)
+    elif any(dpi == student.documento_personal for student in faculty.students_db.values()):
+        print("> El DPI ya existe. Por favor, intente de nuevo.")
+        new_dpi = input("> Coloque el DPI del Usuario: ")
+        return doc_check(new_dpi, faculty)
+    else:
+        return dpi
+
+
 def deploy_admin_menu(faculty):
     admin_key = True
     while admin_key:
@@ -859,7 +872,7 @@ def deploy_admin_menu(faculty):
                 user_phone = input("> Coloque el teléfono del Usuario: ")
                 user_dob = b_day_check(input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: "))
                 user_pass = input("> Coloque la contraseña del Usuario: ")
-                user_dpi = input("> Coloque el DPI del Usuario: ")
+                user_dpi = doc_check(input("> Coloque el DPI del Usuario: "), faculty)
                 user_inscr_year = input("> Coloque el año de inscripción: ")
 
                 type_conf = False
