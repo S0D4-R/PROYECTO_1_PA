@@ -682,6 +682,24 @@ class Curso:
         self.roster_alumnos = []
         self.asignaciones = []
 
+        '''
+        Este método se encarga de convertir el objeto y sus atributos en un diccionario de Python. 
+        ya que no se puede guardar un objeto como tal en un archivo 'json'
+        entonces los objetos los convertimos en 'diccionarios' que si se puedan almacenar
+        como clave valor.
+        '''
+
+    def to_dict(self): #pablo_ implementacion de un nuevo método
+        return {
+            "id_course":self.id_course,
+            "name":self.name,
+            "teacher_assigned":self.teacher_assigned,
+            "roster_alumnos":self.roster_alumnos,
+            "asignaciones":[a.to_dict() for a in self.asignaciones]
+
+        }
+
+
 
     def mostrar_datos(self):
         print(
