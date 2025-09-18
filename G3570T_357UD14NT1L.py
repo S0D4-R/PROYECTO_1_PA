@@ -378,7 +378,7 @@ class Student(User):
                     input("\nPresione enter Enter para volver al menú inicial...")
 
                 case "6":
-                    print(f"-----------MOSTRANDO MIS REPOTES"------------)
+                    print(f"-----------MOSTRANDO MIS REPOTES------------")
                     print()
                     self.ver_reportes
 
@@ -550,7 +550,7 @@ class Teacher(User):
                         courses_file.write(
                             f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps([a.to_dict() for a in course_x.asignaciones])}\n")
 
-                print(f"Asignación '{act_name}' creada con éxito.")
+                print(f"Asignación '{act_name}' creada con éxito!")
 
             except ValueError:
                 print("Ingrese solo números enteros")
