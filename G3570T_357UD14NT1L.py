@@ -940,31 +940,26 @@ def deploy_admin_menu(faculty):
                 match save_ops:
                     case "1":
                 """
-                with open("estudiantes.txt", "w", encoding="utf-8") as courses_file:
-                    for id_s, alumni in faculty.students_db.items():
-                        courses_file.write(
-                            f"{id_s}||{alumni.name}||{alumni.documento_personal}||{alumni.address}||{alumni.phone_u}||{alumni.dob}"
-                            f"||{alumni.pass_ward}||{alumni.carnet}||{alumni.gen}||{json.dumps(alumni.assigned_c)}\n"
-                            )
-                        # id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
+                try:
+                    with open("estudiantes.txt", "w", encoding="utf-8") as courses_file:
+                        for id_s, alumni in faculty.students_db.items():
+                            assigned_c_data = {}
+                            for cid, course_obj in alumni.assigned_c.items():
+                                assigned_c_data[cid] = course_obj.name
+                            courses_file.write(f"{id_s}||{alumni.name}||{alumni.documento_personal}||{alumni.address}||{alumni.phone_u}||{alumni.dob}||{alumni.pass_ward}||{alumni.carnet}||{alumni.gen}||{json.dumps(assigned_c_data)}\n")
 
-                with open("Profesores.txt", "w", encoding="utf-8") as teachers_file:
-                    for id_t, teacher_temp in faculty.teachers_db.items():
-                        # name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
-                        teachers_file.write(
-                            f"{id_t}||{teacher_temp.name}||{teacher_temp.documento_personal}||{teacher_temp.address}||{teacher_temp.phone_u}||{teacher_temp.dob}"
-                            f"||{teacher_temp.pass_ward}||{teacher_temp.id_cat}||{json.dumps(teacher_temp.assigned_courses)}\n"
-                        )
+                    with open("Profesores.txt", "w", encoding="utf-8") as teachers_file:
+                        for id_t, teacher_temp in faculty.teachers_db.items():
+                            teachers_file.write(f"{id_t}||{teacher_temp.name}||{teacher_temp.documento_personal}||{teacher_temp.address}||{teacher_temp.phone_u}||{teacher_temp.dob}||{teacher_temp.pass_ward}||{teacher_temp.id_cat}||{json.dumps(teacher_temp.assigned_courses)}\n")
 
-                with open("Cursos.txt", "w", encoding="utf-8") as courses_file:
-                    for id_cs, course_x in faculty.courses_db.items():
-                        # id_course, name, docente, roster_alumnos, asignaciones
-                        courses_file.write(
-                            f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps(course_x.asignaciones)}\n")
+                    with open("Cursos.txt", "w", encoding="utf-8") as courses_file:
+                        for course_id, course_x in faculty.courses_db.items():
+                            courses_file.write(
+                                f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps([a.to_dict() for a in course_x.asignaciones])}\n")
 
-                time.sleep(1)
-                print("> Datos Guardados con éxito")
-
+                    print("> Datos Guardados con éxito")
+                except Exception as e:
+                    print(f"Error al guardar datos: {e}")
             case "8":
                 print("> Gracias por usar el programa...")
                 admin_key = False
