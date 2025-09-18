@@ -339,7 +339,7 @@ class Student(User):
 
                     if self.assigned_c:
                         for curso in self.assigned_c.values():
-                            nota_promedio, _ = curso.calcular_nota()
+                            nota_promedio, _ = curso.calcular_nota(self.carnet)
                             if nota_promedio >= 65:
                                 approved_courses.append(curso.name)
                             else:
