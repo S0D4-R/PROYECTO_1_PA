@@ -14,10 +14,10 @@ import json
 import msvcrt
 from colorama import Fore, init
 from unittest import case #Pa que sirve este import tmr
-def courseError(exception): pass
-def nameDupeError(exception): pass
-def fechaFormatError(exception): pass
-def horaFormatError(exception): pass
+class courseError(Exception): pass
+class nameDupeError(Exception): pass
+class fechaFormatError(Exception): pass
+class horaFormatError(Exception): pass
 init(autoreset=True)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def menu(opciones, titulo="MENÚ"):
@@ -277,7 +277,7 @@ class Student(User):
                                 while True:
                                     sub_opciones = ["1.Entregar Tareas", "2.Ver nota de curso",
                                                     "3.Ver nota de actividad", "4.Volver a menu principal"]
-                                    print(f"{"---" * 4}CURSOS{"---" * 4}")
+                                    print("---" * 4 + "CURSOS" + "---" * 4)
                                     sub_options = menu(sub_opciones, "---CURSOS---")
                                     sub_option = sub_opciones[sub_options].split(".")[0]
 
@@ -303,7 +303,7 @@ class Student(User):
                         except ValueError:
                             print("Se debe ingresar un número válido...")
                 case "2":
-                    print(f"{"---"*4}INSCRIPCION A CURSOS{"---"*4}")
+                    print("---" * 4 + "INSCRIPCIÓN A CURSOS" + "---" * 4)
                     if not faculty.courses_db:
                         print("No hay cursos disponibles...")
                     print("Cursos disponibles")
@@ -313,8 +313,8 @@ class Student(User):
                     self.inscription(course_name, faculty)
 
                 case "3": # pablo
-                    print(f"{"---"*4}VER PERFIL{"---"*4}")
-                    print(f"{"--"*3}DATOS PERSONALES DEL ESTUDIANTE{"--"*3}")
+                    print("---" * 4 + "VER PERFIL" + "---" * 4)
+                    print(f"---" * 3 + "DATOS PERSONALES DEL ESTUDIANTE" + "---" * 3)
                     print(f"Nombre:{self.name}")
                     print(f"DPI/CUI: {self.documento_personal}")
                     print(f"Dirección: {self.address}")
@@ -341,7 +341,7 @@ class Student(User):
                                 print(f"---SIN ACTIVIDADES REGISTRADAS---")
 
                             # Calculando y clasificando el promedio del curso
-                            nota_promedio, _= curso.calcular_nota()
+                            nota_promedio, _= curso.calcular_nota(self.carnet)
                             if nota_promedio >=65:
                                 approved_courses.append(curso.name)
                             else:
@@ -350,7 +350,7 @@ class Student(User):
                         else:
                             print(----"NO ESTAS REGISTRADO A NINGUN CURSO, CONSULTA ESTO CON TU ENCARGADO-------")
 
-                            print(f"\n{"--"*5}RESUMEN DE MIS NOTAS{"--"*5}")
+                            print("\n"+"---" * 5 + "RESUMEN DE MIS NOTAS" + "---" * 5)
                             print(f"Cursos Ganados (mayores a un 65% de la nota)")
                             if approved_courses:
                                 for curso in approved_courses:
@@ -369,7 +369,7 @@ class Student(User):
 
 
                 case "4": #pablo
-                    print(f"{"---"*4}TRAYECTORIA-ACADEMICA{"---"*4}")
+                    print("---" * 4 + "TRAYECTORIA ACADÉMICA" + "---" * 4)
                     print( "Mostrando Historial de todos los cursos: ")
                     approved_courses = []
                     failed_courses = []
@@ -398,7 +398,7 @@ class Student(User):
                     input(f"\nPresiona Enter para volver al menú principal...")
 
                 case "5": # pablo
-                    print(f"{"---"*4}VER NOTAS DE TODOS LOS CURSOS{"---"*4}")
+                    print("---" * 4 + "VER NOTAS DE TODOS LOS CURSOS" + "---" * 4)
                     if not self.assigned_c:
                         print("NO ESTAS INSCRITO EN NINGUN CURSO......")
                     else:
@@ -415,11 +415,10 @@ class Student(User):
                     input("\nPresione enter Enter para volver al menú inicial...")
 
                 case "6": #mostrando en pantalla los reportes del estudiante que el profesor creo0
-                    print(f"{"---" * 4}MOSTRANDO MIS REPORTES {"---" * 4}")
-                    self.crear_reporte(self, curso)
+                    print("---" * 4 + "MOSTRANDO MIS REPORTES" + "---" * 4)
                     for i, reporte in enumerate(self.reports, 1):
-                        print(f"\n{"---" * 4}MOSTRANDO MIS REPORTES ENUMERADOS{"---" * 4}")
-                        print(f"\n{"---" * 4} REPORTE {i} {"---" * 4}")
+                        print("\n"+"---" * 4 + "ENUMERACIÓN" + "---" * 4)
+                        print("\n"+"---" * 4 + f"REPORTE {i}" + "---" * 4)
                         print(f" Curso: {reporte['curso']} | Profesor: {reporte['profesor']} | Fecha : {reporte['fecha']} | Descripción : {reporte['descripcion']} ")
                         print("-"*10)
                         input("\nPresione enter Enter para volver al menú inicial...")
@@ -529,7 +528,7 @@ class Teacher(User):
 
                 act_id = input("Ingrese la ID de la actividad: ")
                 act_name = input("Ingrese el nombre de la actividad: ")
-                if any(act_name.lower() == act.name.lower() for act in self.assigned_courses.asignaciones):
+                if any(act_name.lower() == act.name.lower() for act in curso_search.asignaciones):
                     raise nameDupeError("Ya hay una actividad con ese nombre")
                 val_net = int(input("Ingrese el valor neto de la asignación:"))
                 if val_net<1 or val_net>100:
@@ -734,7 +733,7 @@ class Actividad:
         self.name = name
         self.valor_n = valor_neto
         self.valor_dc = valor_de_calificacion
-        self.date = datetime.datetime.strptime(date, "%d/%m/%Y").date()
+        self.date = datetime.datetime.strptime(date, "%d-%m-%Y").date()
         self.h_apertura = datetime.datetime.strptime(h_apertura, "%H:%M").time()
         self.h_cierre = datetime.datetime.strptime(h_cierre, "%H:%M").time()
         self.type_a = type_a
@@ -937,8 +936,7 @@ def deploy_admin_menu(faculty):
                             print("> Ese ID no es válido...")
                         else:
                             teach_conf = True
-                    faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[
-                        teacher_assignment].codigo_catredatico
+                    faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment].id_cat
                     faculty.teachers_db[teacher_assignment].assigned_courses.append(
                         class_assignment)
                     print("Maestro asignado con éxito...\n\n")
