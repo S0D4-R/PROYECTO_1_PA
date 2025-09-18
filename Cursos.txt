@@ -1,4 +1,0 @@
-MER36987||Mercadoctenia||DOC60256||[]||[]
-VEN87031||Venta de cocteles||DOC21955||[]||[]
-CIB46027||Ciberseguridad||DOC21955||{"STU59833": "Joven Maynor"}||[]
-VEN30838||Venta de helados||DOC24206||[]||[]
