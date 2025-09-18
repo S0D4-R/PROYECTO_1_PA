@@ -295,14 +295,13 @@ class Student(User):
                     if self.assigned_c:
                         for course_id, curso in self.assigned_c.items():
                             print(f"Curso: {curso.name}")
-                            print(f"Asignaciones")
+                            print(f"Asignaciones: ")
 
                             #mostrar las actividades y sus notas (ya calificados por el maestro)
                             if curso.asignaciones:
                                 for actividad in curso.asignaciones:
-                                    print(f""
-                                          f" - Tarea: {actividad.type_a}, Nota: {actividad.valor_dc} / {actividad.valor_n}"
-                                          )
+                                    punteo_obtenido = actividad.submission.get(self.carnet, "Sin nota")
+                                    print(f" - Tarea: {actividad.type_a}, Nota: {actividad.valor_dc} / {actividad.valor_n}")
                             else:
                                 print(f"---SIN ACTIVIDADES REGISTRADAS---")
 
@@ -326,7 +325,7 @@ class Student(User):
 
                             print(f"Cursos Perdidos(menores a un 65% de la nota)")
                             if failed_courses:
-                                for failed in failed_courses:
+                                for  curso in failed_courses:
                                     print(f" - {curso}")
                             else:
                                 print(f"No tienes cursos perdidos, ¡Muchas felicidades sigue así!")
