@@ -605,7 +605,7 @@ class Teacher(User):
                     else:
                         for clave, data in enumerate(self.assigned_courses, start=1):
                             print(f"{clave}.", end="")
-                            faculty.courses_db[data].mostrar_datos()
+                            faculty.courses_db[data].mostrar_datos(engineering_faculty)
                         course_select = input("Ingrese la ID del curso: ").upper()
                         if any(course_select == course.id_course for course in faculty.courses_db.values()):
                             for course_find in faculty.courses_db.values():
@@ -640,6 +640,7 @@ class Teacher(User):
         else:
             print("No hay cursos asignados")
             return ""
+
 
 
 class Curso:
@@ -865,7 +866,7 @@ def deploy_admin_menu(faculty):
 
 
                 class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
-                course_to_assign =faculty.courses_deb.get(class_assignment)
+                course_to_assign =faculty.courses_db.get(class_assignment)
                 if not course_to_assign or course_to_assign.teacher_assigned != "N/A":
                     print("> Ese ID no es válido o el curso ya tiene un maestro asignado.")
 
