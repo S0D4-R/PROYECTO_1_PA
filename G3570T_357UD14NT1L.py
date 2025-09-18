@@ -848,46 +848,43 @@ def deploy_admin_menu(faculty):
             case "4":
                 print("-" * 15, "ALUMNOS REGISTRADOS", "-" * 15)
                 for index, student in enumerate(faculty.students_db.values(), start=1):
-                    print(student.display_info())
+                    print(f"{index} , {student.display_info()}")
 
             case "5":
                 print("-" * 15, "MAESTROS REGISTRADOS", "-" * 15)
                 for index, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
-                    print(teacher_x.display_info(faculty))
+                    print(f"{index}.{teacher_x.display_info(faculty)})")
 
             case "6":
-                if not faculty.teachers_db:
-                    print("> No hay maestros disponibles...")
-                else:
-                    print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
-                    for index, course in enumerate(faculty.courses_db.values(), start=1):
-                        if course.teacher_assigned == "N/A":
-                            print(f"> {index}. {course.name}|ID: {course.id_course}")
+                if not faculty.teachers_db or not faculty.courses_db:
+                    print("> No hay maestros disponibles para asignar...")
 
-                    calss_conmf = False
-                    while not calss_conmf:
-                        class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
-                        if class_assignment not in faculty.courses_db.keys():
-                            print("> Ese ID no es válido...")
-                        else:
-                            calss_conmf = True
 
-                    print("-" * 15, f"{faculty.courses_db[class_assignment].name}", "-" * 15)
-                    print("> Lista de maestros disponibles: ")
-                    for index_x, teacher_y in enumerate(faculty.teachers_db.values(), start=1):
-                        print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.id_cat}")
+                print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
+                for index, course in enumerate(faculty.courses_db.values(), start=1):
+                    if course.teacher_assigned == "N/A":
+                        print(f"> {index}. {course.name}|ID: {course.id_course}")
 
-                    teach_conf = False
-                    while not teach_conf:
-                        teacher_assignment = input("> Coloque el ID del maestro al que quiere agregar: ")
-                        if teacher_assignment not in faculty.teachers_db.keys():
-                            print("> Ese ID no es válido...")
-                        else:
-                            teach_conf = True
-                    faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[teacher_assignment].id_cat
-                    faculty.teachers_db[teacher_assignment].assigned_courses.append(
-                        class_assignment)
-                    print("Maestro asignado con éxito...\n\n")
+
+                class_assignment = input("> Coloque el ID del curso al que quieres asignar un maestro: ")
+                course_to_assign =faculty.courses_deb.get(class_assignment)
+                if not course_to_assign or course_to_assign.teacher_assigned != "N/A":
+                    print("> Ese ID no es válido o el curso ya tiene un maestro asignado.")
+
+                print("-" * 15, f"{course_to_assign.name}", "-" * 15)
+                print("> Lista de maestros disponibles: ")
+                for index_x, teacher_y in enumerate(faculty.teachers_db.values(), start=1):
+                     print(f"{index_x}. {teacher_y.name}|ID: {teacher_y.id_cat}")
+
+                teacher_assignment = input("> Coloque el ID del maestro que quiere agregar: ")
+                teacher_to_assign = faculty.teachers_db.get(teacher_assignment)
+                if not teacher_to_assign:
+                    print("> Ese ID no es válido.")
+                    # break
+
+                course_to_assign.teacher_assigned = teacher_to_assign.id_cat
+                teacher_to_assign.assigned_courses.append(class_assignment)
+                print("Maestro asignado con éxito.\n\n")
 
             case "7":
                 """
