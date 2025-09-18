@@ -124,25 +124,22 @@ class Student(User):
         if curse.id_course in self.assigned_c:
             print("Ya te asignaste a este curso...")
             return
-        else:
-            self.assigned_c[curse.id_course] = curse
-            try:
-                curse.roster_alumnos = dict(json.loads(curse.roster_alumnos))
-            except Exception:
-                curse.roster_alumnos = {}
+        self.assigned_c[curse.id_course] = curse
 
-            curse.roster_alumnos[self.__id_s] = self.name
+        if not curse.roster_alumnos:
+            curse.roster_alumnos = {}
+        curse.roster_alumnos[self.carnet] = self.name
 
-            with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
-                for id_s, alumno in faculty.students_db.items():
-                    assigned_c_dict = {}
-                    for cid in alumno.assigned_c:
-                        assigned_c_dict[cid] = True
-                    archivo.write(f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_dict)}\n")
-
-            with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
-                for id_c, curso in faculty.courses_db.items():
-                    archivo_c.write(f"{curso.id_course}||{curso.name}||{curso.teacher_assigned}||{json.dumps(curso.roster_alumnos)}||{json.dumps(curso.asignaciones)}\n")
+        with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
+            for id_s, alumno in faculty.students_db.items():
+                assigned_c_data = {}
+                for cid, course_obj in alumno.assigned_c.items():
+                    assigned_c_data[cid] = course_obj.name
+                archivo.write(f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_data)}\n")
+        with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
+            for id_c, curso in faculty.courses_db.items():
+                archivo_c.write(
+                    f"{curso.id_course}||{curso.name}||{curso.teacher_assigned}||{json.dumps(curso.roster_alumnos)}||{json.dumps([a.to_dict() for a in curso.asignaciones])}\n")
 
             print(f"Inscripción al curso con ID {curse.id_course} realizada correctamente.")
 
@@ -172,14 +169,7 @@ class Student(User):
             print("Curso no encontrado...")
             return
 
-        actividades = []
-        try:
-            if self.assigned_c.get(curso_id) and type(self.assigned_c[curso_id]) == dict:
-                actividades = self.assigned_c[curso_id].get("actividades", [])
-        except Exception:
-            actividades = []
-
-        if not actividades:
+        if not curso.asignaciones:
             print("No hay actividades registradas en este curso...")
             return
 
@@ -187,21 +177,20 @@ class Student(User):
         nota_final = 0
         nota_total = 0
 
-        for indice, act in enumerate(actividades, start=1):
-            try:
-                actividad_obj = act[0]
-                entregado = "Entregado" if act[1] else "No entregado"
-                print(f"{indice}. {actividad_obj.name} - Valor: {actividad_obj.valor_n} - Estado: {entregado}")
-                nota_final += actividad_obj.valor_dc or 0
-                nota_total += actividad_obj.valor_n or 0
-            except Exception:
-                continue
+        for indice, actividad in enumerate(curso.asignaciones, start=1):
+            valor_obtenido = actividad.submission.get(self.carnet, 0)
+            if valor_obtenido != 0:
+                print(f"{indice}. {actividad.name} - Valor: {actividad.valor_n} - Nota obtenida: {valor_obtenido}")
+                nota_final += valor_obtenido
+            else:
+                print(f"{indice}. {actividad.name} - Valor: {actividad.valor_n} - Nota: Pendiente")
+            nota_total += actividad.valor_n
+
         if nota_total == 0:
             print("No se han registrado calificaciones todavía.")
         else:
             porcentaje = (nota_final / nota_total) * 100
-            print("Nota obtenida:", nota_final, "/", nota_total, f"({porcentaje}%)")
-            print(f"Nota obtenida: {nota_final}/{nota_total} ({(nota_final / nota_total) * 100}%)")
+            print(f"Nota obtenida: {nota_final}/{nota_total} ({porcentaje}%)")
 
     def ver_nota_actividad(self,curso_seleccionado):
         if not curso_seleccionado.asignaciones:
@@ -346,6 +335,22 @@ class Student(User):
                             else:
                                 print(f"No tienes cursos perdidos, ¡Muchas felicidades sigue así!")
                             input("\nPresiona Enter para volver al menú principal...")
+
+    '''
+    este metodo se encarga de revertir el metodo de "to_dict" que convierte los objetos en 'clave/valor'
+    para poder guardarlos en el json, ahora debemos revertir esto para poder utilizar nuestros objetos
+    o convertir estas string en objetos de la clase curso o actividad con 
+    sus atributos de manera funcional.
+    '''
+
+    @staticmethod
+    def from_dict(data):
+        curso = Curso(data['id_course'], data['name'], data['teacher_assigned'])
+        curso.roster_alumnos= data ['roster_alumnos']
+        for act_data in data ['asignaciones']:
+            actividad = Actividad.from_dict(act_data)
+            curso.asignaciones.append(actividad)
+        return curso
 
 
 
@@ -699,31 +704,45 @@ class Curso:
             "asignaciones":[a.to_dict() for a in self.asignaciones]
         }
 
-    def mostrar_datos(self):
+    '''
+    Este método se encarga propiamente de revertir el metodo de 'to_dict'
+    ya que como un archivo json guarda los objetos por clave/valor 
+    necesitamos volver a convertir estos objetos almacenados en atributos de la 
+    clase 'cuso' y 'actividad'
+    '''
+    @staticmethod
+    def from_dict(data):
+        curso = Curso(data['id_course'], data['name'], data['teacher_assigned'])
+        curso.roster_alumnos = data['roster_alumnos']
+        for act_data in data['asignaciones']:
+            actividad = Actividad.from_dict(act_data)
+            curso.asignaciones.append(actividad)
+        return curso
+
+    def mostrar_datos(self, faculty):
         print(
             f"=========================\nID: {self.id_course}\n Nombre: {self.name}\n Docente: {self.teacher_assigned}\n Alumnos:")
         if self.roster_alumnos:
             for id in self.roster_alumnos:
-                engineering_faculty.students_db[id].mostrar_datos()
+                student = faculty.students_db.get(id)
+                if student:
+                    print(student.display_info())
         else:
             print("No hay alumnos asignados")
         print("\nAsignaciones: ")
         if self.asignaciones:
             for asignacion in self.asignaciones:
-                asignacion.display_info()
+                asignacion.mostrar_datos()
         else:
             print("No hay asignaciones asignadas")
 
     def calcular_nota(self, carnet):
-        nota_final = 0
-        nota = 0
+        nota_obtenida = 0
+        nota_posible = 0
         for asignacion in self.asignaciones:
-            if carnet in asignacion.submission:
-                valor_entregado = asignacion.valor_dc or 0
-                nota_final += valor_entregado
-                nota += asignacion.valor_n
-        return nota_final, nota
-
+            nota_obtenida += asignacion.submission.get(carnet, 0)
+            nota_total_posible += asignacion.valor_n
+        return nota_obtenida, nota_posible
 
 class Actividad:
     def __init__(self, act_id, name, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
