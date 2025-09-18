@@ -684,7 +684,7 @@ class Teacher(User):
     def display_info(self, faculty):
         print(
             f"ID: {self.id_cat}\nNombre: {self.name}\nDPI: {self.documento_personal}\nNúmero telefónico: {self.phone_u}\nCursos:")
-        if self.assigned_courses:
+        if len(self.assigned_courses)>=1:
             for course in self.assigned_courses:
                 print(f"\nID: {course}, Nombre: {faculty.courses_db[course].name}")
         else:
@@ -700,8 +700,6 @@ class Curso:
         self.roster_alumnos = []
         self.asignaciones = []
 
-    def reporte_x(self):
-        pass
 
     def mostrar_datos(self):
         print(
@@ -762,15 +760,6 @@ class Actividad:
                 self.status = True
             else:
                 self.status = False
-
-    def auto_cierre(self):
-        pass
-
-    def asignar_punteo(self):
-        pass
-
-    def assignment_modification(self):
-        pass
 
     def mostrar_datos(self):
         print(
