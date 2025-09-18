@@ -198,25 +198,14 @@ class Student(User):
             return
 
         print(f"---NOTAS DE ACTIVIDADES EN {curso_seleccionado.name}---")
-        actividades_validas = []
-        for asignacion in curso_seleccionado.asignaciones:
-            try:
-                asignacion.type_a
-                actividades_validas.append(asignacion)
-            except AttributeError:
-                continue
-
-        if not actividades_validas:
-            print("No hay actividades para mostrar.")
-            return
-
-        for indice, asignacion in enumerate(actividades_validas, start=1):
-            try:
-                estado = asignacion.submission.get(self.carnet, "No entregado")
-            except AttributeError:
+        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+            if self.carnet in asignacion.submission:
+                estado = "Entregado"
+            else:
                 estado = "No entregado"
-            print(
-                f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date} | Estado: {estado}")
+
+            punteo_obtenido = asignacion.submission.get(self.carnet, "N/A")
+            print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Nota: {punteo_obtenido} | Estado: {estado}")
 
     def deploy_s_menu(self,faculty):
         while True:
