@@ -726,18 +726,20 @@ class Curso:
             curso.asignaciones.append(actividad)
         return curso
 
-    def mostrar_datos(self):
+    def mostrar_datos(self, faculty):
         print(
             f"=========================\nID: {self.id_course}\n Nombre: {self.name}\n Docente: {self.teacher_assigned}\n Alumnos:")
         if self.roster_alumnos:
             for id in self.roster_alumnos:
-                engineering_faculty.students_db[id].mostrar_datos()
+                student = faculty.students_db.get(id)
+                if student:
+                    print(student.display_info())
         else:
             print("No hay alumnos asignados")
         print("\nAsignaciones: ")
         if self.asignaciones:
             for asignacion in self.asignaciones:
-                asignacion.display_info()
+                asignacion.mostrar_datos()
         else:
             print("No hay asignaciones asignadas")
 
