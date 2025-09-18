@@ -392,10 +392,9 @@ class Student(User):
                     input("\nPresione enter Enter para volver al menú inicial...")
 
                 case "6":
-                    print(f"-----------MOSTRANDO MIS REPOTES------------")
+                    print(f"-----------MOSTRANDO MIS REPORTES------------")
                     print()
                     self.ver_reportes()
-
 
                 case "7": #pablo
                     print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
@@ -914,8 +913,10 @@ def deploy_admin_menu(faculty):
                 try:
                     with open("estudiantes.txt", "w", encoding="utf-8") as students_file:
                         for id_s, alumno in faculty.students_db.items():
-                            assigned_c_data = {cid: course_obj.name for cid, course_obj in alumno.assigned_c.items()}
-                            students_file.write(
+                            assigned_c_data = {}
+                            for cid, course_obj in alumno.assigned_c.items():
+                                assigned_c_data[cid] = course_obj.name
+                            courses_file.write(
                                 f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_data)}\n")
 
                     with open("Profesores.txt", "w", encoding="utf-8") as teachers_file:
