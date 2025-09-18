@@ -220,15 +220,12 @@ class Student(User):
                     else:
                         print("--- CURSOS ASIGNADOS ---")
                         curso_lista_ids = list(self.assigned_c.keys())
-
                         for indice, curso_id in enumerate(curso_lista_ids, start=1):
                             curso = faculty.courses_db.get(curso_id)
                             if curso:
                                 print(f"{indice}. {curso.name}")
-
                         try:
                             curso_seleccion = int(input("Seleccione el número del curso: "))
-
                             if 1 <= curso_seleccion <= len(curso_lista_ids):
                                 curso_id_seleccionado = curso_lista_ids[curso_seleccion - 1]
                                 curso_selecionado = faculty.courses_db.get(curso_id_seleccionado)
