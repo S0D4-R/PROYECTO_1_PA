@@ -250,7 +250,7 @@ class Student(User):
 
     def deploy_s_menu(self,faculty):
         while True:
-            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Promedio General.","4.Ver perfil.","5.Trayectoria de cursos.","6.Ver notas de Cursos","7.Cerrar Sesión."]
+            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Ver perfil.","4.Trayectoria de cursos.","5.Ver notas de Cursos","6.Cerrar Sesión."]
             seleccion = menu(opciones_menu, "MENÚ ESTUDIANTE")
             option = opciones_menu[seleccion].split(".")[0]
 
@@ -312,11 +312,7 @@ class Student(User):
                     course_name = input("Ingrese nombre del curso a inscribir: ")
                     self.inscription(course_name, faculty)
 
-                case "3":
-                    print(f"{"---" * 4}PROMEDIO GENERAL{"---" * 4}")
-                    promedio = self.promedio_general()
-
-                case "4": # pablo
+                case "3": # pablo
                     print(f"{"---"*4}VER PERFIL{"---"*4}")
                     print(f"{"--"*3}DATOS PERSONALES DEL ESTUDIANTE{"--"*3}")
                     print(f"Nombre:{self.name}")
@@ -372,7 +368,7 @@ class Student(User):
 
 
 
-                case "5": #pablo
+                case "4": #pablo
                     print(f"{"---"*4}TRAYECTORIA-ACADEMICA{"---"*4}")
                     print( "Mostrando Historial de todos los cursos: ")
                     approved_courses = []
@@ -401,7 +397,7 @@ class Student(User):
 
                     input(f"\nPresiona Enter para volver al menú principal...")
 
-                case "6": # pablo
+                case "5": # pablo
                     print(f"{"---"*4}VER NOTAS DE TODOS LOS CURSOS{"---"*4}")
                     if not self.assigned_c:
                         print("NO ESTAS INSCRITO EN NINGUN CURSO......")
@@ -417,7 +413,7 @@ class Student(User):
                             print(f"Curso: {curso.name} | Nota Promedio: {nota_promedio} | Estado: {mensaje}")
 
                     input("\nPresione enter Enter para volver al menú inicial...")
-                case "7": #pablo
+                case "6": #pablo
                     print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
                     break
                 case _:
