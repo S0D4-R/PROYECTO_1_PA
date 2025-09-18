@@ -822,7 +822,7 @@ def deploy_admin_menu(faculty):
 
                 course_id = id_creation(course_name, "C")
                 faculty.courses_db[course_id] = Curso(course_id, course_name, teacher_id)
-                if teacher_id != "N/A":
+                if teacher_id != "N/A": #error corregido
                     faculty.teachers_db[teacher_id].assigned_courses.append(course_id)
                 print(f"Curso '{course_name}' creado con ID: {course_id}")
 
