@@ -783,25 +783,16 @@ class Actividad:
         return actividad
 
     def set_status(self):
-        ahora = datetime.datetime.now()
-        ahora_fecha = ahora.date()
-        ahora_hora = ahora.time()
-        if ahora_fecha > self.date:
+        try:
+            ahora= datetime.datetime.now()
+            fecha_cierre = datetime.datetime.strptime(f"{self.date}{self.h_cierre}", "%d-%m-%Y %H:%M" )
+            self.status = ahora <= fecha_cierre
+        except ValueError:
             self.status = False
-        elif ahora_fecha == self.date:
-            if self.h_apertura <= ahora_hora <= self.h_cierre:
-                self.status = True
-            else:
-                self.status = False
-        else:
-            if ahora_hora > self.h_apertura:
-                self.status = True
-            else:
-                self.status = False
 
     def mostrar_datos(self):
         print(
-            f"------------------------------\nValor: {self.valor_n}\n fecha: {self.date}\n apertura: {self.h_apertura}\n cierre: {self.h_cierre}\n tipo: {self.type_a}\n status: {self.status}")
+            f"------------------------------\nNombre: {self.name}\n Valor: {self.valor}\nFecha Limite: {self.date}\nApertura: {self.h_apertura}\nCierre: {self.h_cierre}\nTipo: {self.type_a}\nEstado:{'Abierta' if self.status else 'Cerrada'}")
 
 
 def id_creation(name_x, typeP):
