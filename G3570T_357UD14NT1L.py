@@ -810,6 +810,7 @@ def deploy_admin_menu(faculty):
                 else:
                     for temp_cont, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
                         print(f"{temp_cont}|{teacher_x.name}|{teacher_x.id_cat} ~ ID")
+
                     search_work_id = input("> Coloque el ID del maestro que desea asignar (o '0' para ninguno): ")
                     if search_work_id in faculty.teachers_db:
                         teacher_id = search_work_id
@@ -820,9 +821,9 @@ def deploy_admin_menu(faculty):
 
 
                 course_id = id_creation(course_name, "C")
-                faculty.courses_db[course_id] = Curso(course_id, course_name, teacher)
+                faculty.courses_db[course_id] = Curso(course_id, course_name, teacher_id)
                 if teacher_id != "N/A":
-                    faculty.teachers_db[teacher].assigned_courses.append(course_id)
+                    faculty.teachers_db[teacher_id].assigned_courses.append(course_id)
                 print(f"Curso '{course_name}' creado con ID: {course_id}")
 
             # Creación de usuarios ; dpi, address, phone, dob, password_u
@@ -873,6 +874,7 @@ def deploy_admin_menu(faculty):
                 print("-" * 15, "MAESTROS REGISTRADOS", "-" * 15)
                 for index, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
                     print(f"{index}. {teacher_x.display_info(faculty)}")
+                    print("-" * 40)
 
             case "6":
                 if not faculty.teachers_db or not faculty.courses_db:
