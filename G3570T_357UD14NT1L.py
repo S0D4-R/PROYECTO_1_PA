@@ -332,24 +332,6 @@ class Student(User):
                                 print(f"No tienes cursos perdidos, ¡Muchas felicidades sigue así!")
                             input("\nPresiona Enter para volver al menú principal...")
 
-    '''
-    este metodo se encarga de revertir el metodo de "to_dict" que convierte los objetos en 'clave/valor'
-    para poder guardarlos en el json, ahora debemos revertir esto para poder utilizar nuestros objetos
-    o convertir estas string en objetos de la clase curso o actividad con 
-    sus atributos de manera funcional.
-    '''
-
-    @staticmethod
-    def from_dict(data):
-        curso = Curso(data['id_course'], data['name'], data['teacher_assigned'])
-        curso.roster_alumnos= data ['roster_alumnos']
-        for act_data in data ['asignaciones']:
-            actividad = Actividad.from_dict(act_data)
-            curso.asignaciones.append(actividad)
-        return curso
-
-
-
                 case "4": #pablo
                     print("---" * 4 + "TRAYECTORIA ACADÉMICA" + "---" * 4)
                     print( "Mostrando Historial de todos los cursos: ")
@@ -768,45 +750,18 @@ class Actividad:
         return actividad
 
     def set_status(self):
-        ahora = datetime.datetime.now()
-        ahora_fecha = ahora.date()
-        ahora_hora = ahora.time()
-        if ahora_fecha > self.date:
+        try:
+            ahora= datetime.datetime.now()
+            fecha_cierre = datetime.datetime.strptime(f"{self.date}{self.h_cierre}", "%d-%m-%Y %H:%M" )
+            self.status = ahora <= fecha_cierre
+        except ValueError:
             self.status = False
-        elif ahora_fecha == self.date:
-            if self.h_apertura <= ahora_hora <= self.h_cierre:
-                self.status = True
-            else:
-                self.status = False
-        else:
-            if ahora_hora > self.h_apertura:
-                self.status = True
-            else:
-                self.status = False
 
     def mostrar_datos(self):
         print(
-            f"------------------------------\nValor: {self.valor_n}\n fecha: {self.date}\n apertura: {self.h_apertura}\n cierre: {self.h_cierre}\n tipo: {self.type_a}\n status: {self.status}")
+            f"------------------------------\nNombre: {self.name}\n Valor: {self.valor}\nFecha Limite: {self.date}\nApertura: {self.h_apertura}\nCierre: {self.h_cierre}\nTipo: {self.type_a}\nEstado:{'Abierta' if self.status else 'Cerrada'}")
 
 
-def id_creation(name_x, typeP):
-    ran_code1 = random.randint(1000, 9999)
-    ran_code2 = random.randint(0, 9)
-    if typeP == "C":
-        id_p1 = name_x.strip()
-
-        id_gen = id_p1[0].upper() + id_p1[1].upper() + id_p1[2].upper() + str(ran_code1) + str(ran_code2)
-        return id_gen
-    elif typeP == "S":
-        id_gen = "STU" + str(ran_code1) + str(ran_code2)
-        return id_gen
-    elif typeP == "T":
-        id_gen = "DOC" + str(ran_code1) + str(ran_code2)
-        return id_gen
-    elif typeP == "A":
-        return "ACT" + str(ran_code1) + str(ran_code2)
-    else:
-        return None
 
 
 def b_day_check(bday):
@@ -1058,6 +1013,27 @@ class Database:
 
 # Ol
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def id_creation(name_x, typeP):
+    ran_code1 = random.randint(1000, 9999)
+    ran_code2 = random.randint(0, 9)
+    if typeP == "C":
+        id_p1 = name_x.strip()
+
+        id_gen = id_p1[0].upper() + id_p1[1].upper() + id_p1[2].upper() + str(ran_code1) + str(ran_code2)
+        return id_gen
+    elif typeP == "S":
+        id_gen = "STU" + str(ran_code1) + str(ran_code2)
+        return id_gen
+    elif typeP == "T":
+        id_gen = "DOC" + str(ran_code1) + str(ran_code2)
+        return id_gen
+    elif typeP == "A":
+        return "ACT" + str(ran_code1) + str(ran_code2)
+    else:
+        return None
+
+
+
 engineering_faculty = Database()
 engineering_faculty.cargar_cursos()
 engineering_faculty.cargar_profesores()
