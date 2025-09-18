@@ -741,6 +741,7 @@ class Curso:
         return nota_obtenida, nota_total_posible
 
 class Actividad:
+    # CLASE QUE NOS SRIVE PARA LA GESTIONAR LAS ACTIVIDADES ACADEMICAS
     def __init__(self, act_id, name, valor_neto, valor_de_calificacion, date_str, h_apertura_str, h_cierre_str, type_a):
         self.__act_id = act_id
         self.name = name
@@ -797,19 +798,6 @@ class Actividad:
 
 
 
-def b_day_check(bday):
-    check = bday.split("/")
-    if len(check) == 3:
-        if (int(check[0]) > 31 or int(check[0]) < 0) or (int(check[1]) > 12 or int(check[1]) < 0) or (
-                int(check[2]) > 9999 or int(check[2]) < 0):
-            print("Formato de fecha inválido.")
-            new_bday = input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: ")
-        else:
-            return bday
-    else:
-        print("Formato de fecha inválido.")
-        new_bday = input("> Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: ")
-        return b_day_check(new_bday)
 
 
 def doc_check(dpi, faculty):
@@ -1064,6 +1052,16 @@ def id_creation(name_x, typeP):
         return "ACT" + str(ran_code1) + str(ran_code2)
     else:
         return None
+
+def b_day_check(bday):
+    try:
+        datetime.datetime.strptime(, "%d/%m/%Y")
+        return bday
+    except ValueError:
+        print(f"Formato de fecha invalido, Intentelo de nuevo.....")
+        new_bday = input(">Coloque la fecha de nacimiento del Usuario DD/MM/AAAA: ")
+        return b_day_check(new_bday)
+
 
 
 
