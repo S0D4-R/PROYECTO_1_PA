@@ -734,17 +734,18 @@ class Curso:
         return nota_obtenida, nota_total_posible
 
 class Actividad:
-    def __init__(self, act_id, name, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
+    def __init__(self, act_id, name, valor_neto, valor_de_calificacion, date_str, h_apertura_str, h_cierre_str, type_a):
         self.__act_id = act_id
         self.name = name
         self.valor_n = valor_neto
         self.valor_dc = valor_de_calificacion
-        self.date = datetime.datetime.strptime(date, "%d-%m-%Y").date()
-        self.h_apertura = datetime.datetime.strptime(h_apertura, "%H:%M").time()
-        self.h_cierre = datetime.datetime.strptime(h_cierre, "%H:%M").time()
+        self.date = date_str
+        self.h_apertura = h_apertura_str
+        self.h_cierre = h_cierre_str
         self.type_a = type_a
         self.status = False
         self.submission = {}
+        self.set_status()
 
     @property
     def act_id(self):
