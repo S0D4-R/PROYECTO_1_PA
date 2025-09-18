@@ -914,12 +914,10 @@ def deploy_admin_menu(faculty):
                     case "1":
                 """
                 try:
-                    with open("estudiantes.txt", "w", encoding="utf-8") as courses_file:
+                    with open("estudiantes.txt", "w", encoding="utf-8") as students_file:
                         for id_s, alumno in faculty.students_db.items():
-                            assigned_c_data = {}
-                            for cid, course_obj in alumno.assigned_c.items():
-                                assigned_c_data[cid] = course_obj.name
-                            courses_file.write(
+                            assigned_c_data = {cid: course_obj.name for cid, course_obj in alumno.assigned_c.items()}
+                            students_file.write(
                                 f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_data)}\n")
 
                     with open("Profesores.txt", "w", encoding="utf-8") as teachers_file:
@@ -975,7 +973,8 @@ class Database:
                 for linea in archivo_profesores:
                     linea = linea.strip()
                     if linea:
-                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses_str = linea.split("||", 8)
+                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses_str = linea.split("||",
+                                                                                                                   8)
                         dob_date = datetime.datetime.strptime(dob, "%Y-%m-%d %H:%M:%S")
                         maestro = Teacher(name, dpi, address, phone, dob_date, password, id_t)
                         maestro.assigned_courses = json.loads(assigned_courses_str)
