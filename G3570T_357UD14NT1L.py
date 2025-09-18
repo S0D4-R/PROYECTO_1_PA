@@ -619,7 +619,7 @@ class Teacher(User):
             opciones_menu = ["1.Ver cursos", "2.Cerrar sesión"]
             seleccion = menu(opciones_menu, "MENÚ DOCENTE")
             select_cat = opciones_menu[seleccion].split(".")[0]
-            match select_cat:
+            match select_cat:#1
                 case "1":
                     if not self.assigned_courses:
                         print("No hay cursos asignados")
