@@ -914,7 +914,7 @@ def deploy_admin_menu(faculty):
                     case "1":
                 """
                 try:
-                    with open("estudiantes.txt", "w", encoding="utf-8") as students_file:
+                    with open("estudiantes.txt", "w", encoding="utf-8") as courses_file:
                         for id_s, alumno in faculty.students_db.items():
                             assigned_c_data = {}
                             for cid, course_obj in alumno.assigned_c.items():
