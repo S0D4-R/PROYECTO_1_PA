@@ -224,7 +224,7 @@ class Student(User):
 
     def deploy_s_menu(self,faculty):
         while True:
-            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Ver perfil.","4.Trayectoria de cursos.","5.Ver notas de Cursos","6.Crear reporte","7.Cerrar Sesión."]
+            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Ver perfil.","4.Trayectoria de cursos.","5.Ver notas de Cursos","6.Ver mis reportes.","7.Cerrar Sesión."]
             seleccion = menu(opciones_menu, "MENÚ ESTUDIANTE")
             option = opciones_menu[seleccion].split(".")[0]
 
@@ -339,7 +339,7 @@ class Student(User):
 
                     if self.assigned_c:
                         for curso in self.assigned_c.values():
-                            nota_promedio, _ = curso.calcular_nota()
+                            nota_promedio, _ = curso.calcular_nota(self.carnet)
                             if nota_promedio >= 65:
                                 approved_courses.append(curso.name)
                             else:
@@ -365,8 +365,8 @@ class Student(User):
                     if not self.assigned_c:
                         print("NO ESTAS INSCRITO EN NINGUN CURSO......")
                     else:
-                        for curso_nombre, curso in self.assigned_c.items():
-                            nota_promedio, _ = curso.calcular_nota()
+                        for curso, in self.assigned_c.values():
+                            nota_promedio, _ = curso.calcular_nota(self.carnet)
                             mensaje =""
                             if nota_promedio < 30:
                                 mensaje = "DEBES MEJORAR TU NOTA...."
@@ -377,14 +377,11 @@ class Student(User):
 
                     input("\nPresione enter Enter para volver al menú inicial...")
 
-                case "6": #mostrando en pantalla los reportes del estudiante que el profesor creo0
-                    print("---" * 4 + "MOSTRANDO MIS REPORTES" + "---" * 4)
-                    for i, reporte in enumerate(self.reports, 1):
-                        print("\n"+"---" * 4 + "ENUMERACIÓN" + "---" * 4)
-                        print("\n"+"---" * 4 + f"REPORTE {i}" + "---" * 4)
-                        print(f" Curso: {reporte['curso']} | Profesor: {reporte['profesor']} | Fecha : {reporte['fecha']} | Descripción : {reporte['descripcion']} ")
-                        print("-"*10)
-                        input("\nPresione enter Enter para volver al menú inicial...")
+                case "6":
+                    print(f"-----------MOSTRANDO MIS REPOTES"------------)
+                    print()
+                    self.ver_reportes
+
 
                 case "7": #pablo
                     print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
