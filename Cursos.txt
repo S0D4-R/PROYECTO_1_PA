@@ -1,4 +1,4 @@
-MER36987||Mercadoctenia||DOC60256||[]||[]
+MER36987||Mercadoctenia||DOC31531||{"STU75978": "Sofia Morales"}||[{"act_id": "ACT56592", "name": "Mapa Mental", "valor_n": 10, "valor_dc": 0, "date": "19-09-2025", "h_apertura": "03:39", "h_cierre": "12:00", "type_a": "tarea", "status": false, "submission": {}}]
 VEN87031||Venta de cocteles||DOC21955||[]||[]
 CIB46027||Ciberseguridad||DOC21955||{"STU59833": "Joven Maynor"}||[]
 VEN30838||Venta de helados||DOC24206||[]||[]

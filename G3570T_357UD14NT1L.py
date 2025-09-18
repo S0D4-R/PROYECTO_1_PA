@@ -548,6 +548,13 @@ class Teacher(User):
                 assign = Actividad(act_id,act_name,val_net, val_clasif, fecha, hora_open, hora_close, tipo)
                 curso.asignaciones.append(assign)
 
+                with open("Cursos.txt", "w", encoding="utf-8") as courses_file:
+                    for course_id, course_x in engineering_faculty.courses_db.items():
+                        courses_file.write(
+                            f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps([a.to_dict() for a in course_x.asignaciones])}\n")
+
+                print(f"Asignación '{act_name}' creada con éxito.")
+
             except ValueError:
                 print("Ingrese solo números enteros")
             except nameDupeError as e:
