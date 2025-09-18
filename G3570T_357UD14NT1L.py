@@ -332,24 +332,6 @@ class Student(User):
                                 print(f"No tienes cursos perdidos, ¡Muchas felicidades sigue así!")
                             input("\nPresiona Enter para volver al menú principal...")
 
-    '''
-    este metodo se encarga de revertir el metodo de "to_dict" que convierte los objetos en 'clave/valor'
-    para poder guardarlos en el json, ahora debemos revertir esto para poder utilizar nuestros objetos
-    o convertir estas string en objetos de la clase curso o actividad con 
-    sus atributos de manera funcional.
-    '''
-
-    @staticmethod
-    def from_dict(data):
-        curso = Curso(data['id_course'], data['name'], data['teacher_assigned'])
-        curso.roster_alumnos= data ['roster_alumnos']
-        for act_data in data ['asignaciones']:
-            actividad = Actividad.from_dict(act_data)
-            curso.asignaciones.append(actividad)
-        return curso
-
-
-
                 case "4": #pablo
                     print("---" * 4 + "TRAYECTORIA ACADÉMICA" + "---" * 4)
                     print( "Mostrando Historial de todos los cursos: ")
