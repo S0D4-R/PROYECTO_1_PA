@@ -872,7 +872,7 @@ def deploy_admin_menu(faculty):
             case "5":
                 print("-" * 15, "MAESTROS REGISTRADOS", "-" * 15)
                 for index, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
-                    print(f"{index}.{teacher_x.display_info(faculty)})")
+                    print(f"{index}. {teacher_x.display_info(faculty)}")
 
             case "6":
                 if not faculty.teachers_db or not faculty.courses_db:
