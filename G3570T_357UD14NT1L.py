@@ -824,7 +824,7 @@ def deploy_admin_menu(faculty):
                                                            user_pass, user_id, user_inscr_year)
                     print(f"Estudiante {user_name} creado con ID: {user_id}")
 
-                 elif user_type == "2":
+                elif user_type == "2":
                     user_type = "T"
                     user_id = id_creation("", user_type)
                     faculty.teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob,
@@ -838,7 +838,12 @@ def deploy_admin_menu(faculty):
                 print("-" * 17, "CURSOS DISPONIBLES", "-" * 17)
                 print("No.".ljust(8) + "Nombre del curso".ljust(30) + "Maestro asignado".ljust(20) +f"\n" + "---"*18)
                 for index, course in enumerate(faculty.courses_db.values(), start=1):
-                    print(str(index).ljust(8) + course.name.ljust(30) + faculty.teachers_db[course.teacher_assigned].name.ljust(20))
+                    teacher_name = faculty.teachers_db.get(course.teacher_assigned)
+                    if teacher_name:
+                        teacher_name = teacher_name.name
+                    else:
+                        teacher_name = "N/A"
+                    print(f"{index:<5}{course.id_course:<15}{course.name:<30}{teacher_name:<20}")
 
             case "4":
                 print("-" * 15, "ALUMNOS REGISTRADOS", "-" * 15)
