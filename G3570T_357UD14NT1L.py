@@ -414,7 +414,7 @@ class Student(User):
 
                     input("\nPresione enter Enter para volver al menú inicial...")
 
-                case "6": #mostrando en pantalla los reportes del estudiante que el profesor creo
+                case "6": #mostrando en pantalla los reportes del estudiante que el profesor creo0
                     print(f"{"---" * 4}MOSTRANDO MIS REPORTES {"---" * 4}")
                     self.crear_reporte(self, curso)
                     for i, reporte in enumerate(self.reports, 1):
