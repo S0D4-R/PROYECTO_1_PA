@@ -135,36 +135,38 @@ class Student(User):
     def display_info(self):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
-    def inscription(self,course_name,faculty):
-        course_name = course_name.lower()
-        for curse in faculty.courses_db.values():
-            if curse.name.lower() == course_name.lower():
-                if curse.id_course in self.assigned_c:
-                    print("Ya te asignaste a este curso...")
-                    return
-                else:
-                    self.assigned_c[curse.id_course] = curse
-                    try:
-                        curse.roster_alumnos = dict(json.loads(curse.roster_alumnos))
-                    except Exception:
-                        curse.roster_alumnos = {}
+    def inscription(self,course_id,faculty):
+        course_id = course_id.strip()
+        curse = faculty.courses_db.get(course_id)
+        if not curse:
+            print("No existe un curso con ese ID...")
+            return
 
-                    curse.roster_alumnos[self.__id_s] = self.name
+        if curse.id_course in self.assigned_c:
+            print("Ya te asignaste a este curso...")
+            return
+        else:
+            self.assigned_c[curse.id_course] = curse
+            try:
+                curse.roster_alumnos = dict(json.loads(curse.roster_alumnos))
+            except Exception:
+                curse.roster_alumnos = {}
 
-                    with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
-                        for id_s, alumno in faculty.students_db.items():
-                            assigned_c_dict = {}
-                            for cid in alumno.assigned_c:
-                                assigned_c_dict[cid] = True
-                            archivo.write(f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_dict)}\n")
+            curse.roster_alumnos[self.__id_s] = self.name
 
-                    with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
-                        for id_c, curso in faculty.courses_db.items():
-                            archivo_c.write(f"{curso.id_course}||{curso.name}||{curso.teacher_assigned}||{json.dumps(curso.roster_alumnos)}||{json.dumps(curso.asignaciones)}\n")
+            with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
+                for id_s, alumno in faculty.students_db.items():
+                    assigned_c_dict = {}
+                    for cid in alumno.assigned_c:
+                        assigned_c_dict[cid] = True
+                    archivo.write(f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_dict)}\n")
 
-                    print(f"Inscripción a {curse.name} realizada correctamente.")
-                    return
-        print("Curso no encontrado.")
+            with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
+                for id_c, curso in faculty.courses_db.items():
+                    archivo_c.write(f"{curso.id_course}||{curso.name}||{curso.teacher_assigned}||{json.dumps(curso.roster_alumnos)}||{json.dumps(curso.asignaciones)}\n")
+
+            print(f"Inscripción al curso con ID {curse.id_course} realizada correctamente.")
+
     def promedio_general(self):
         punteo_obtenido=0
         posibilidad= 0
@@ -304,13 +306,13 @@ class Student(User):
                             print("Se debe ingresar un número válido...")
                 case "2":
                     print("---" * 4 + "INSCRIPCIÓN A CURSOS" + "---" * 4)
-                    if not faculty.courses_db:
-                        print("No hay cursos disponibles...")
-                    print("Cursos disponibles")
-                    for curso in faculty.courses_db.values():
-                        print(f"{curso.name} - Docente: {curso.teacher_assigned}")
-                    course_name = input("Ingrese nombre del curso a inscribir: ")
-                    self.inscription(course_name, faculty)
+                    print("--- CURSOS DISPONIBLES ---")
+                    print("--- CURSOS DISPONIBLES ---")
+                    for id_c, curso in faculty.courses_db.items():
+                        print(f"ID: {id_c} | Nombre: {curso.name}")
+
+                    course_id = input("Ingrese el ID del curso al que desea inscribirse: ").strip()
+                    self.inscription(course_id, faculty)
 
                 case "3": # pablo
                     print("---" * 4 + "VER PERFIL" + "---" * 4)
