@@ -954,8 +954,7 @@ def deploy_admin_menu(faculty):
 
                     with open("Cursos.txt", "w", encoding="utf-8") as courses_file:
                         for course_id, course_x in faculty.courses_db.items():
-                            courses_file.write(
-                                f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps([a.to_dict() for a in course_x.asignaciones])}\n")
+                            courses_file.write(f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps([a.to_dict() for a in course_x.asignaciones])}\n")
 
                     print("> Datos Guardados con éxito")
                 except Exception as e:
