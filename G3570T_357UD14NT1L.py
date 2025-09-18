@@ -773,17 +773,16 @@ def deploy_admin_menu(faculty):
         admin_ops = ops[seleccion].split(".")[0]
         match admin_ops:
 
-
             # Creación de cursos
             case "1":
                 print("-" * 15, "COURSE CREATION", "-" * 15)
-                name_ver = False
-                while not name_ver:
-                    course_name = input("> Nombre del curso: ")
+                course_name = ""
+                while len(course_name) <= 3:
+                    course_name = input("> Nombre del curso (mínimo 4 caracteres): ")
                     if len(course_name) <= 3:
-                        print("> El nombre no es válido")
-                    else:
-                        name_ver = True
+                        print("> El nombre no es válido.....")
+
+
                 teacher = "N/A"
                 if not faculty.teachers_db:
                     print("> No hay maestros disponibles...\n> Curso ha sido creado con éxito...")
@@ -791,20 +790,20 @@ def deploy_admin_menu(faculty):
                 else:
                     for temp_cont, teacher_x in enumerate(faculty.teachers_db.values(), start=1):
                         print(f"{temp_cont}|{teacher_x.name}|{teacher_x.id_cat} ~ ID")
-                    chose_teach = False
-                    while not chose_teach:
-                        search_work_id = input("> Coloque el ID del maestro que desea asignar: ")
-                        if search_work_id in faculty.teachers_db:
-                            teacher = faculty.teachers_db[search_work_id].id_cat
-                            chose_teach = True
-                        elif search_work_id == "0":
-                            print("> Ningún maestro seleccionado...\n> Curso ha sido creado con éxito...")
-                            chose_teach = True
+                    search_work_id = input("> Coloque el ID del maestro que desea asignar (o '0' para ninguno): ")
+                    if search_work_id in faculty.teachers_db:
+                        teacher_id = search_work_id
+                    elif search_work_id == "0":
+                        print("> Ningún maestro seleccionado. Curso creado sin maestro asignado.")
+                    else:
+                        print("> ID de maestro no válido. Curso creado sin maestro asignado.")
+
 
                 course_id = id_creation(course_name, "C")
                 faculty.courses_db[course_id] = Curso(course_id, course_name, teacher)
-                if teacher is not None:
+                if teacher_id != "N/A":
                     faculty.teachers_db[teacher].assigned_courses.append(course_id)
+                print(f"Curso '{course_name}' creado con ID: {course_id}")
 
             # Creación de usuarios ; dpi, address, phone, dob, password_u
             case "2":
@@ -817,21 +816,23 @@ def deploy_admin_menu(faculty):
                 user_dpi = doc_check(input("> Coloque el DPI del Usuario: "), faculty)
                 user_inscr_year = input("> Coloque el año de inscripción: ")
 
-                type_conf = False
-                while not type_conf:
-                    user_type = input("> Seleccione el tipo de usuario:\n1. Estudiante\n2. Docente\n")
-                    if user_type == "1":
-                        user_type = "S"
-                        user_id = id_creation("", user_type)
-                        faculty.students_db[user_id] = Student(user_name, user_dpi, user_address, user_phone, user_dob,
-                                                               user_pass, user_id, user_inscr_year)
+                user_type = input("> Seleccione el tipo de usuario:\n1. Estudiante\n2. Docente\n")
+                if user_type == "1":
+                    user_type = "S"
+                    user_id = id_creation("", user_type)
+                    faculty.students_db[user_id] = Student(user_name, user_dpi, user_address, user_phone, user_dob,
+                                                           user_pass, user_id, user_inscr_year)
+                    print(f"Estudiante {user_name} creado con ID: {user_id}")
 
-                    elif user_type == "2":
-                        user_type = "T"
-                        user_id = id_creation("", user_type)
-                        faculty.teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob,
+                 elif user_type == "2":
+                    user_type = "T"
+                    user_id = id_creation("", user_type)
+                    faculty.teachers_db[user_id] = Teacher(user_name, user_dpi, user_address, user_phone, user_dob,
                                                                user_pass, user_id)
-                    type_conf = True
+                    print(f"Docente {user_name} creado con ID: {user_id}")
+                else:
+                    print("Opción de tipo de usuario no válida.")
+
 
             case "3":
                 print("-" * 17, "CURSOS DISPONIBLES", "-" * 17)
