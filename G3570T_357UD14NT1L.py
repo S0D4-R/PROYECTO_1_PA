@@ -169,14 +169,7 @@ class Student(User):
             print("Curso no encontrado...")
             return
 
-        actividades = []
-        try:
-            if self.assigned_c.get(curso_id) and type(self.assigned_c[curso_id]) == dict:
-                actividades = self.assigned_c[curso_id].get("actividades", [])
-        except Exception:
-            actividades = []
-
-        if not actividades:
+        if not curso.asignaciones:
             print("No hay actividades registradas en este curso...")
             return
 
@@ -184,21 +177,20 @@ class Student(User):
         nota_final = 0
         nota_total = 0
 
-        for indice, act in enumerate(actividades, start=1):
-            try:
-                actividad_obj = act[0]
-                entregado = "Entregado" if act[1] else "No entregado"
-                print(f"{indice}. {actividad_obj.name} - Valor: {actividad_obj.valor_n} - Estado: {entregado}")
-                nota_final += actividad_obj.valor_dc or 0
-                nota_total += actividad_obj.valor_n or 0
-            except Exception:
-                continue
+        for indice, actividad in enumerate(curso.asignaciones, start=1):
+            valor_obtenido = actividad.submission.get(self.carnet, 0)
+            if valor_obtenido != 0:
+                print(f"{indice}. {actividad.name} - Valor: {actividad.valor_n} - Nota obtenida: {valor_obtenido}")
+                nota_final += valor_obtenido
+            else:
+                print(f"{indice}. {actividad.name} - Valor: {actividad.valor_n} - Nota: Pendiente")
+            nota_total += actividad.valor_n
+
         if nota_total == 0:
             print("No se han registrado calificaciones todavía.")
         else:
             porcentaje = (nota_final / nota_total) * 100
-            print("Nota obtenida:", nota_final, "/", nota_total, f"({porcentaje}%)")
-            print(f"Nota obtenida: {nota_final}/{nota_total} ({(nota_final / nota_total) * 100}%)")
+            print(f"Nota obtenida: {nota_final}/{nota_total} ({porcentaje}%)")
 
     def ver_nota_actividad(self,curso_seleccionado):
         if not curso_seleccionado.asignaciones:
