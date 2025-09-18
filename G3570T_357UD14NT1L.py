@@ -114,12 +114,28 @@ class Student(User):
     def display_info(self):
         return f"{self.name}|Carnet:{self.carnet} | DPI: {self.documento_personal} | tel:{self.phone_u} |Año Ingreso:{self.gen}"
 
-    def inscription(self,course_id,faculty):
-        course_id = course_id.strip()
-        curse = faculty.courses_db.get(course_id)
-        if not curse:
-            print("No existe un curso con ese ID...")
+    def inscription(self,faculty):
+        if not faculty.courses_db:
+            print("No hay cursos disponibles...")
             return
+
+        cursos_lista = list(faculty.courses_db.values())
+        print("--- CURSOS DISPONIBLES ---")
+        for i, curso in enumerate(cursos_lista, start=1):
+            docente = faculty.teachers_db.get(curso.teacher_assigned, "N/A")
+            if docente != "N/A":
+                docente = docente.name
+            print(f"{i}. {curso.name} - Docente: {docente}")
+        while True:
+            try:
+                opcion = int(input("Ingrese el número del curso al que desea inscribirse: ").strip())
+                if 1 <= opcion <= len(cursos_lista):
+                    curse = cursos_lista[opcion - 1]
+                    break
+                else:
+                    print("Número de curso inválido. Intente nuevamente.")
+            except ValueError:
+                print("Debe ingresar un número válido. Intente nuevamente.")
 
         if curse.id_course in self.assigned_c:
             print("Ya te asignaste a este curso...")
@@ -140,8 +156,7 @@ class Student(User):
             for id_c, curso in faculty.courses_db.items():
                 archivo_c.write(
                     f"{curso.id_course}||{curso.name}||{curso.teacher_assigned}||{json.dumps(curso.roster_alumnos)}||{json.dumps([a.to_dict() for a in curso.asignaciones])}\n")
-
-            print(f"Inscripción al curso con ID {curse.id_course} realizada correctamente.")
+        print(f"Inscripción al curso '{curse.name}' realizada correctamente.")
 
     def promedio_general(self):
         punteo_obtenido=0
@@ -261,12 +276,7 @@ class Student(User):
                 case "2":
                     print("---" * 4 + "INSCRIPCIÓN A CURSOS" + "---" * 4)
                     print("--- CURSOS DISPONIBLES ---")
-                    print("--- CURSOS DISPONIBLES ---")
-                    for id_c, curso in faculty.courses_db.items():
-                        print(f"ID: {id_c} | Nombre: {curso.name}")
-
-                    course_id = input("Ingrese el ID del curso al que desea inscribirse: ").strip()
-                    self.inscription(course_id, faculty)
+                    self.inscription( faculty)
 
                 case "3": # pablo
                     print("---" * 4 + "VER PERFIL" + "---" * 4)
@@ -413,7 +423,7 @@ class Teacher(User):
     def id_cat(self, id_cat):
         pass
 
-    def subir_notas(self, curso):
+    def subir_notas(self, curso, faculty):
         rig = ["1. Actualizar las notas de todas las actividades","2. Actualizar notas de una actividad"]
         opciones = menu(rig, "SUBIR NOTAS")
         option = rig[opciones].split(".")[0]
@@ -422,12 +432,12 @@ class Teacher(User):
                 if not curso.asignaciones:
                     print("Aún no hay actividades")
                     return
-                for actividad in curso.asgnaciones:
+                for actividad in curso.asignaciones:
                     actividad.mostrar_datos()
                     for id_est in curso.roster_alumnos:
                         for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
                             act[0].set_status()
-                            if act[0].submission.values():
+                            if id_est in act[0].submission and act[0].submission[id_est] == "Entregado":
                                 act[1] = True
                             if act[1]:
                                 print("El estudiante realizó su entrega")
@@ -452,21 +462,21 @@ class Teacher(User):
                 if not curso.asignaciones:
                     print("Aún no hay actividades")
                     return
-                for actividad in curso.asgnaciones:
+                for actividad in curso.asignaciones:
                     actividad.mostrar_datos()
                 id_act = input("Ingrese la ID de la actividad: ")
                 if not any(id_act == actividad.act_id for actividad in curso.asignaciones):
                     print("No se encontro la actividad")
                 else:
                     for actividad in curso.asignaciones:
-                        if actividad.id == id_act:
+                        if actividad.act_id == id_act:
                             if not curso.roster_alumnos:
                                 print("No hay estudiantes en este curso")
                             for id_est in curso.roster_alumnos:
                                 for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
                                     if act[0].act_id == id_act:
                                         act[0].set_status()
-                                        if act[0].submission.values():
+                                        if id_est in act[0].submission and act[0].submission[id_est] == "Entregado":
                                             act[1] = True
                                         if act[1]:
                                             print("El estudiante realizó su entrega")
@@ -641,7 +651,7 @@ class Teacher(User):
                                         case "1":
                                             self.crear_asignacion(course_find)
                                         case "2":
-                                            self.subir_notas(course_find)
+                                            self.subir_notas(course_find, engineering_faculty)
                                         case "3":
                                             self.crear_reporte(course_find)
                                         case _:
