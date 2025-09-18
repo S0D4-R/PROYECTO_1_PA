@@ -250,7 +250,7 @@ class Student(User):
 
     def deploy_s_menu(self,faculty):
         while True:
-            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Ver perfil.","4.Trayectoria de cursos.","5.Ver notas de Cursos","6.Cerrar Sesión."]
+            opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Ver perfil.","4.Trayectoria de cursos.","5.Ver notas de Cursos","6.Crear reporte","7.Cerrar Sesión."]
             seleccion = menu(opciones_menu, "MENÚ ESTUDIANTE")
             option = opciones_menu[seleccion].split(".")[0]
 
@@ -413,7 +413,18 @@ class Student(User):
                             print(f"Curso: {curso.name} | Nota Promedio: {nota_promedio} | Estado: {mensaje}")
 
                     input("\nPresione enter Enter para volver al menú inicial...")
-                case "6": #pablo
+
+                case "6": #mostrando en pantalla los reportes del estudiante
+                    print(f"{"---" * 4}MOSTRANDO MIS REPORTES {"---" * 4}")
+                    self.crear_reporte(self, curso)
+                    for i, reporte in enumerate(self.reports, 1):
+                        print(f"\n{"---" * 4}MOSTRANDO MIS REPORTES ENUMERADOS{"---" * 4}")
+                        print(f"\n{"---" * 4} REPORTE {i} {"---" * 4}")
+                        print(f" Curso: {reporte['curso']} | Profesor: {reporte['profesor']} | Fecha : {reporte['fecha']} | Descripción : {reporte['descripcion']} ")
+                        print("-"*10)
+                        input("\nPresione enter Enter para volver al menú inicial...")
+
+                case "7": #pablo
                     print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
                     break
                 case _:
