@@ -762,6 +762,15 @@ class Actividad:
             "submission": self.submission
 
         }
+    @staticmethod
+    def from_dict(data):
+        actividad = Actividad(
+            data["act_id"], data["name"], data["valor_n"], data["valor_dc"],
+            data["date"], data["h_apertura"], data["h_cierre"], data["type _a"]
+        )
+        actividad.submission = data.get("submission", {})
+        actividad.status = data.get("status", False)
+        return actividad
 
     def set_status(self):
         ahora = datetime.datetime.now()
