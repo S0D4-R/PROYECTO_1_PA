@@ -496,12 +496,13 @@ class Teacher(User):
             print("Aún no está a cargo de un curso, no puede crear actividades")
         else:
             try:
+                cursos = [engineering_faculty.courses_db[course_id] for course_id in self.assigned_courses if course_id in engineering_faculty.courses_db]
                 curso_search = None
-                if not any(curso == course.name for course in self.assigned_courses):
-                    raise courseError("El curso asignado no existe")
-                for i, curso_option in enumerate(self.assigned_courses):
-                    if curso_option.name == curso:
-                        curso_search = self.assigned_courses[i]
+                for curso_obj in cursos:
+                    if curso_obj.name == curso.name:
+                        curso_search = curso_obj
+                if not curso_search:
+                    raise courseError("No se encontro el curso")
 
                 act_id = id_creation(curso.name,"A")
                 act_name = input("Ingrese el nombre de la actividad: ")
