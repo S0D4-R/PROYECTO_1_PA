@@ -332,24 +332,6 @@ class Student(User):
                                 print(f"No tienes cursos perdidos, ¡Muchas felicidades sigue así!")
                             input("\nPresiona Enter para volver al menú principal...")
 
-    '''
-    este metodo se encarga de revertir el metodo de "to_dict" que convierte los objetos en 'clave/valor'
-    para poder guardarlos en el json, ahora debemos revertir esto para poder utilizar nuestros objetos
-    o convertir estas string en objetos de la clase curso o actividad con 
-    sus atributos de manera funcional.
-    '''
-
-    @staticmethod
-    def from_dict(data):
-        curso = Curso(data['id_course'], data['name'], data['teacher_assigned'])
-        curso.roster_alumnos= data ['roster_alumnos']
-        for act_data in data ['asignaciones']:
-            actividad = Actividad.from_dict(act_data)
-            curso.asignaciones.append(actividad)
-        return curso
-
-
-
                 case "4": #pablo
                     print("---" * 4 + "TRAYECTORIA ACADÉMICA" + "---" * 4)
                     print( "Mostrando Historial de todos los cursos: ")
@@ -423,7 +405,7 @@ class Teacher(User):
     def id_cat(self, id_cat):
         pass
 
-    def subir_notas(self, curso):
+    def subir_notas(self, curso, faculty):
         rig = ["1. Actualizar las notas de todas las actividades","2. Actualizar notas de una actividad"]
         opciones = menu(rig, "SUBIR NOTAS")
         option = rig[opciones].split(".")[0]
@@ -435,27 +417,27 @@ class Teacher(User):
                 for actividad in curso.asignaciones:
                     actividad.mostrar_datos()
                     for id_est in curso.roster_alumnos:
-                        for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
-                            act[0].set_status()
-                            if id_est in act[0].submission and act[0].submission[id_est] == "Entregado":
-                                act[1] = True
-                            if act[1]:
-                                print("El estudiante realizó su entrega")
-                            else:
-                                print("El estudiante aún no ha entregado nada")
-                            while True:
-                                try:
-                                    punteo = int(input("Ingrese el punteo: "))
-                                    if punteo < 1 or punteo > act[0].valor_n:
-                                        print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
-                                    else:
-                                        act[0].valor_dc = punteo
-                                        engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["nota"] += punteo
-                                        break
-                                except ValueError:
-                                    print("Solo puede ingresar números enteros")
-                                except Exception as e:
-                                    print("Error inesperado", e)
+                        bool_entregado = id_est in actividad.submission and actividad.submission[id_est] == "Entregado"
+                        if bool_entregado:
+                            print("El estudiante realizó su entrega")
+                        else:
+                            print("El estudiante aún no ha entregado nada")
+
+                        while True:
+                            try:
+                                punteo = int(input("Ingrese el punteo: "))
+                                if punteo < 1 or punteo > actividad.valor_n:
+                                    print(f"El punteo debe ser mayor a 0 y menor a {actividad.valor_n}")
+                                else:
+                                    actividad.submission[id_est] = punteo
+                                    if not bool_entregado:
+                                        actividad.submission[id_est] = "Entregado"
+                                    print("Nota actualizada con éxito.")
+                                    break
+                            except ValueError:
+                                print("Solo puede ingresar números enteros")
+                            except Exception as e:
+                                print("Error inesperado", e)
 
 
             case "2":
@@ -473,28 +455,26 @@ class Teacher(User):
                             if not curso.roster_alumnos:
                                 print("No hay estudiantes en este curso")
                             for id_est in curso.roster_alumnos:
-                                for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
-                                    if act[0].act_id == id_act:
-                                        act[0].set_status()
-                                        if id_est in act[0].submission and act[0].submission[id_est] == "Entregado":
-                                            act[1] = True
-                                        if act[1]:
-                                            print("El estudiante realizó su entrega")
+                                bool_entregado = id_est in actividad.submission and actividad.submission[id_est] == "Entregado"
+                                if bool_entregado:
+                                    print("El estudiante realizó su entrega")
+                                else:
+                                    print("El estudiante aún no ha entregado nada")
+                                while True:
+                                    try:
+                                        punteo = int(input("Ingrese el punteo: "))
+                                        if punteo < 1 or punteo > actividad.valor_n:
+                                            print(f"El punteo debe ser mayor a 0 y menor a {actividad.valor_n}")
                                         else:
-                                            print("El estudiante aún no ha entregado nada")
-                                        while True:
-                                            try:
-                                                punteo = int(input("Ingrese el punteo: "))
-                                                if punteo < 1 or punteo > act[0].valor_n:
-                                                    print(f"El punteo debe ser mayor a 0 y menor a {act[0].valor_n}")
-                                                else:
-                                                    act[0].valor_dc = punteo
-                                                    engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["nota"] += punteo
-                                                break
-                                            except ValueError:
-                                                print("Solo puede ingresar números enteros")
-                                            except Exception as e:
-                                                print("Error inesperado", e)
+                                            actividad.submission[id_est] = punteo
+                                            if not bool_entregado:
+                                                actividad.submission[id_est] = "Entregado"
+                                            print("Nota actualizada con éxito.")
+                                            break
+                                    except ValueError:
+                                        print("Solo puede ingresar números enteros")
+                                    except Exception as e:
+                                        print("Error inesperado", e)
             case _:
                 print("Opción inválida")
 
@@ -567,20 +547,7 @@ class Teacher(User):
                     raise horaFormatError("Debe ingresar el formato hh:mm")
                 tipo = input("Ingrese el tipo de asignación: ")
                 assign = Actividad(act_id,act_name,val_net, val_clasif, fecha, hora_open, hora_close, tipo)
-                curso_search.asignaciones.append(assign)
-                actividad = [assign, False]
-                for id in curso_search.roster_alumnos:
-                    engineering_faculty.students_db[id].assigned_c[curso_search.id_course]["actividades"].append(actividad)
-                engineering_faculty.courses_db[curso_search.id_course].asignaciones.append(assign)
-
-                #for estudiante in curso_search.roster_alumnos.items():
-                    #estudiante.assigned_c[curso_search.id_course] = {
-                        #"nombre": curso_search.name,
-                        #"actividades": [],
-                        #"nota": 0
-                    #}
-                    #actividad = [assign, False]
-                    #estudiante.assigned_c[curso_search.id_course]["actividades"].append(actividad)
+                curso.asignaciones.append(assign)
 
             except ValueError:
                 print("Ingrese solo números enteros")
@@ -651,7 +618,7 @@ class Teacher(User):
                                         case "1":
                                             self.crear_asignacion(course_find)
                                         case "2":
-                                            self.subir_notas(course_find)
+                                            self.subir_notas(course_find, engineering_faculty)
                                         case "3":
                                             self.crear_reporte(course_find)
                                         case _:
