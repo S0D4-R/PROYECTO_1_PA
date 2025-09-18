@@ -327,7 +327,7 @@ class Student(User):
                                 failed_courses.append(curso.name)
                             print("-"*20)
                         else:
-                            print(----"NO ESTAS REGISTRADO A NINGUN CURSO, CONSULTA ESTO CON TU ENCARGADO-------")
+                            print("----NO ESTAS REGISTRADO A NINGUN CURSO, CONSULTA ESTO CON TU ENCARGADO-------")
 
                             print("\n"+"---" * 5 + "RESUMEN DE MIS NOTAS" + "---" * 5)
                             print(f"Cursos Ganados (mayores a un 65% de la nota)")
@@ -530,7 +530,8 @@ class Teacher(User):
                         raise fechaFormatError("El año debe tener 4 valores")
                 else:
                     raise fechaFormatError("Debe ingresar el formato dd-mm-aaaa")
-
+                if datetime.datetime.strptime(fecha, "%d-%m-%Y") < datetime.date.today():
+                    raise ValueError("La fecha de vencimiento debe ser mayor a la fecha actual")
                 hora_open = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
                 if ":" in hora_open:
                     secciones2 = hora_open.split(":")
@@ -826,7 +827,7 @@ def deploy_admin_menu(faculty):
                         print("> El nombre no es válido.....")
 
 
-                teacher = "N/A"
+                teacher_id = "N/A"
                 if not faculty.teachers_db:
                     print("> No hay maestros disponibles...\n> Curso ha sido creado con éxito...")
 
@@ -900,8 +901,12 @@ def deploy_admin_menu(faculty):
                     print("-" * 40)
 
             case "6":
-                if not faculty.teachers_db or not faculty.courses_db:
+                if not faculty.teachers_db:
                     print("> No hay maestros disponibles para asignar...")
+                    return False
+                elif not faculty.courses_db:
+                    print("> No hay cursos disponibles para editar...")
+                    return False
 
 
                 print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
@@ -914,6 +919,7 @@ def deploy_admin_menu(faculty):
                 course_to_assign =faculty.courses_db.get(class_assignment)
                 if not course_to_assign or course_to_assign.teacher_assigned != "N/A":
                     print("> Ese ID no es válido o el curso ya tiene un maestro asignado.")
+                    return False
 
                 print("-" * 15, f"{course_to_assign.name}", "-" * 15)
                 print("> Lista de maestros disponibles: ")
@@ -941,7 +947,8 @@ def deploy_admin_menu(faculty):
 
                 guardar(faculty)
             case "8":
-                print("> Gracias por usar el programa...")
+                print("> Cerrando sesión...")
+                guardar(faculty)
                 admin_key = False
                 return False
 
@@ -1069,8 +1076,7 @@ while key:
         user_pass = input("> User: ")
         password_pass = input("> Password: ")
         if user_pass == "ruler" and password_pass == "admin01":
-            key = deploy_admin_menu(engineering_faculty)
-
+            deploy_admin_menu(engineering_faculty)
 
         elif user_pass in engineering_faculty.students_db and password_pass == engineering_faculty.students_db[
             user_pass].pass_ward:
@@ -1080,6 +1086,7 @@ while key:
             user_pass].pass_ward:
             engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
         elif user_pass == "0" and password_pass == "0":
+            guardar(engineering_faculty)
             key = False
         else:
             print("> Usuario o Contraseña incorrectos, por favor intente de nuevo...")
