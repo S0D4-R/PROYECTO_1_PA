@@ -413,7 +413,7 @@ class Teacher(User):
     def id_cat(self, id_cat):
         pass
 
-    def subir_notas(self, curso):
+    def subir_notas(self, curso, faculty):
         rig = ["1. Actualizar las notas de todas las actividades","2. Actualizar notas de una actividad"]
         opciones = menu(rig, "SUBIR NOTAS")
         option = rig[opciones].split(".")[0]
@@ -422,12 +422,12 @@ class Teacher(User):
                 if not curso.asignaciones:
                     print("Aún no hay actividades")
                     return
-                for actividad in curso.asgnaciones:
+                for actividad in curso.asignaciones:
                     actividad.mostrar_datos()
                     for id_est in curso.roster_alumnos:
                         for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
                             act[0].set_status()
-                            if act[0].submission.values():
+                            if id_est in act[0].submission and act[0].submission[id_est] == "Entregado":
                                 act[1] = True
                             if act[1]:
                                 print("El estudiante realizó su entrega")
@@ -452,21 +452,21 @@ class Teacher(User):
                 if not curso.asignaciones:
                     print("Aún no hay actividades")
                     return
-                for actividad in curso.asgnaciones:
+                for actividad in curso.asignaciones:
                     actividad.mostrar_datos()
                 id_act = input("Ingrese la ID de la actividad: ")
                 if not any(id_act == actividad.act_id for actividad in curso.asignaciones):
                     print("No se encontro la actividad")
                 else:
                     for actividad in curso.asignaciones:
-                        if actividad.id == id_act:
+                        if actividad.act_id == id_act:
                             if not curso.roster_alumnos:
                                 print("No hay estudiantes en este curso")
                             for id_est in curso.roster_alumnos:
                                 for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
                                     if act[0].act_id == id_act:
                                         act[0].set_status()
-                                        if act[0].submission.values():
+                                        if id_est in act[0].submission and act[0].submission[id_est] == "Entregado":
                                             act[1] = True
                                         if act[1]:
                                             print("El estudiante realizó su entrega")
@@ -641,7 +641,7 @@ class Teacher(User):
                                         case "1":
                                             self.crear_asignacion(course_find)
                                         case "2":
-                                            self.subir_notas(course_find)
+                                            self.subir_notas(course_find, engineering_faculty)
                                         case "3":
                                             self.crear_reporte(course_find)
                                         case _:
