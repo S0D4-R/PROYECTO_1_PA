@@ -751,6 +751,11 @@ class Actividad:
     def act_id(self):
         return self.__act_id
 
+    def to_dict(self):
+        return {
+
+        }
+
     def set_status(self):
         ahora = datetime.datetime.now()
         ahora_fecha = ahora.date()
