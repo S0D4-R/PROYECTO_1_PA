@@ -320,7 +320,7 @@ class Student(User):
                     print(f"Dirección: {self.address}")
                     print(f"Número de Teléfono:{self.phone_u} ")
                     print(f"Fecha de Nacimiento: {self.dob}") #atributo dob: fehca de nacimineto del usuario
-                    print(f"Canet:{self.carnet}")
+                    print(f"Carnet:{self.carnet}")
                     print(f"Año de ingreso al establecimiento: {self.gen}")# atributo gen ´año de ingreso del usuario al sistema o estblecimiento´
 
                     print(f"\n{"--"*2}CURSOS EN LOS QUE ESTOY INSCRITO{"--"*2}")
@@ -414,7 +414,7 @@ class Student(User):
 
                     input("\nPresione enter Enter para volver al menú inicial...")
 
-                case "6": #mostrando en pantalla los reportes del estudiante
+                case "6": #mostrando en pantalla los reportes del estudiante que el profesor creo
                     print(f"{"---" * 4}MOSTRANDO MIS REPORTES {"---" * 4}")
                     self.crear_reporte(self, curso)
                     for i, reporte in enumerate(self.reports, 1):
