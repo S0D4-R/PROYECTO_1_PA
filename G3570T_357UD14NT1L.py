@@ -96,38 +96,17 @@ class Student(User):
             return
 
         print("---ACTIVIDADES DEL CURSO---")
-        actividades_validas = []
-        for asignacion in curso_seleccionado.asignaciones:
-            try:
-                asignacion.type_a
-                actividades_validas.append(asignacion)
-            except AttributeError:
-                if 'type_a' in asignacion:
-                    actividades_validas.append(asignacion)
-
-        if not actividades_validas:
-            print("No hay actividades para entregar.")
-            return
-
-        for indice, asignacion in enumerate(actividades_validas, start=1):
-            try:
-                print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date}")
-            except AttributeError:
-                print(
-                    f"{indice}. Tipo: {asignacion['type_a']} | Valor: {asignacion['valor_n']} | Fecha: {asignacion['date']}")
+        for indice, asignacion in enumerate(curso_seleccionado.asignaciones, start=1):
+            print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Fecha: {asignacion.date}")
 
         try:
             seleccion = int(input("Ingrese el número de la actividad a entregar: "))
-            if not 1 <= seleccion <= len(actividades_validas):
+            if not 1 <= seleccion <= len(curso_seleccionado.asignaciones):
                 print("Número de asignación no válido.")
                 return
 
-            actividad = actividades_validas[seleccion - 1]
-            try:
-                actividad.submission[self.carnet] = "Entregado"
-            except AttributeError:
-                actividad['submission'][self.carnet] = "Entregado"
-
+            actividad = curso_seleccionado.asignaciones[seleccion - 1]
+            actividad.submission[self.carnet] = "Entregado"
             print("Actividad entregada con éxito!")
         except ValueError:
             print("Debe ingresar un número válido...")
