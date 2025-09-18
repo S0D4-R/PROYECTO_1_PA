@@ -795,24 +795,6 @@ class Actividad:
             f"------------------------------\nNombre: {self.name}\n Valor: {self.valor}\nFecha Limite: {self.date}\nApertura: {self.h_apertura}\nCierre: {self.h_cierre}\nTipo: {self.type_a}\nEstado:{'Abierta' if self.status else 'Cerrada'}")
 
 
-def id_creation(name_x, typeP):
-    ran_code1 = random.randint(1000, 9999)
-    ran_code2 = random.randint(0, 9)
-    if typeP == "C":
-        id_p1 = name_x.strip()
-
-        id_gen = id_p1[0].upper() + id_p1[1].upper() + id_p1[2].upper() + str(ran_code1) + str(ran_code2)
-        return id_gen
-    elif typeP == "S":
-        id_gen = "STU" + str(ran_code1) + str(ran_code2)
-        return id_gen
-    elif typeP == "T":
-        id_gen = "DOC" + str(ran_code1) + str(ran_code2)
-        return id_gen
-    elif typeP == "A":
-        return "ACT" + str(ran_code1) + str(ran_code2)
-    else:
-        return None
 
 
 def b_day_check(bday):
@@ -1064,6 +1046,27 @@ class Database:
 
 # Ol
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def id_creation(name_x, typeP):
+    ran_code1 = random.randint(1000, 9999)
+    ran_code2 = random.randint(0, 9)
+    if typeP == "C":
+        id_p1 = name_x.strip()
+
+        id_gen = id_p1[0].upper() + id_p1[1].upper() + id_p1[2].upper() + str(ran_code1) + str(ran_code2)
+        return id_gen
+    elif typeP == "S":
+        id_gen = "STU" + str(ran_code1) + str(ran_code2)
+        return id_gen
+    elif typeP == "T":
+        id_gen = "DOC" + str(ran_code1) + str(ran_code2)
+        return id_gen
+    elif typeP == "A":
+        return "ACT" + str(ran_code1) + str(ran_code2)
+    else:
+        return None
+
+
+
 engineering_faculty = Database()
 engineering_faculty.cargar_cursos()
 engineering_faculty.cargar_profesores()
