@@ -1,3 +1,4 @@
-PRE11165||PRECALCULO||DOC21955||"{\"STU75978\": \"Sofia Morales\"}"||"\"\\\"\\\\\\\"[]\\\\\\\"\\\"\""
-PRO35522||PROGRAMACIÓN AVANZADA||DOC60256||"{\"STU75978\": \"Sofia Morales\"}"||"\"\\\"\\\\\\\"[]\\\\\\\"\\\"\""
-MAT52563||MATEMÁTICA||DOC24206||"\"\\\"\\\\\\\"{}\\\\\\\"\\\"\""||"\"\\\"\\\\\\\"[]\\\\\\\"\\\"\""
+MER36987||Mercadoctenia||DOC60256||[]||[]
+VEN87031||Venta de cocteles||DOC21955||[]||[]
+CIB46027||Ciberseguridad||DOC21955||{"STU59833": "Joven Maynor"}||[]
+VEN30838||Venta de helados||DOC24206||[]||[]
