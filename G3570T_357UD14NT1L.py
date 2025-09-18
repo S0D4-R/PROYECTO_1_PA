@@ -994,16 +994,21 @@ class Database:
                 for linea in archivo_estudiantes:
                     linea = linea.strip()
                     if linea:
-                        # id_s, name, dpi, address, phone, dob, passward, carnet, gen, dic(clases)
-                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split("||",
-                                                                                                                   9)
-                        assigned_cl = json.loads(assigned_c_file)
+                        id_s, name, dpi, address, phone, dob, password, carnet, gen, assigned_c_file = linea.split("||",9)
                         alumno = Student(name, dpi, address, phone, dob, password, carnet, gen)
-                        alumno.assigned_c = assigned_cl
+                        assigned_cl = json.loads(assigned_c_file)
+
+                        for course_id, data in assigned_cl.items():
+                            course_obj = self.courses_db.get(course_id)
+                            if course_obj:
+                                alumno.assigned_c[course_id] = course_obj
+
                         self.students_db[id_s] = alumno
                 print("Estudiantes importados desde el archivo estudiantes.txt")
         except FileNotFoundError:
-            print("No existe estudiantes.txt, se creara al guardar...")
+            print("No existe estudiantes.txt, se creará al guardar...")
+        except Exception as e:
+            print(f"Error al cargar estudiantes: {e}")
 
     def cargar_profesores(self):
         try:
@@ -1011,14 +1016,15 @@ class Database:
                 for linea in archivo_profesores:
                     linea = linea.strip()
                     if linea:
-                        # id_t, name, dpi, address, phone, dob, password_u, id_cat, assigned_courses
-                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses = linea.split("||", 8)
+                        id_t, name, dpi, address, phone, dob, password, id_cat, assigned_courses_str = linea.split("||", 8)
                         maestro = Teacher(name, dpi, address, phone, dob, password, id_t)
-                        maestro.assigned_courses = json.loads(assigned_courses)
+                        maestro.assigned_courses = json.loads(assigned_courses_str)
                         self.teachers_db[id_t] = maestro
-                print("Maestros inportados desde el archivo profesores.txt")
+                print("Maestros importados desde el archivo profesores.txt")
         except FileNotFoundError:
-            print("No existe profesores.txt, se creara al guardar")
+            print("No existe profesores.txt, se creará al guardar")
+        except Exception as e:
+            print(f"Error al cargar profesores: {e}")
 
     def cargar_cursos(self):
         try:
@@ -1026,17 +1032,21 @@ class Database:
                 for linea in archivo_cursos:
                     linea = linea.strip()
                     if linea:
-                        # id_course, name, docente, roster_alumnos, asignaciones
-                        id_c, name, teacher_id, roster_alumnos, asignaciones = linea.split("||")
-                        # teacher = self.teachers_db.get(teacher_id)
+                        id_c, name, teacher_id, roster_alumnos_str, asignaciones_str = linea.split("||", 4)
                         curso = Curso(id_c, name, teacher_id)
-                        curso.roster_alumnos = roster_alumnos
-                        curso.asignaciones = asignaciones
+                        curso.roster_alumnos = json.loads(roster_alumnos_str)
+
+                        asignaciones_data = json.loads(asignaciones_str)
+                        for act_data in asignaciones_data:
+                            actividad = Actividad.from_dict(act_data)
+                            curso.asignaciones.append(actividad)
+
                         self.courses_db[id_c] = curso
                 print("Cursos importados...")
         except FileNotFoundError:
-            print("No existe Cursos.txt, se creara al guardar...")
-
+            print("No existe Cursos.txt, se creará al guardar...")
+        except Exception as e:
+            print(f"Error al cargar cursos: {e}")
 
 # Ol
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
