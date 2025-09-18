@@ -727,11 +727,11 @@ class Curso:
 
     def calcular_nota(self, carnet):
         nota_obtenida = 0
-        nota_posible = 0
+        nota_total_posible = 0
         for asignacion in self.asignaciones:
             nota_obtenida += asignacion.submission.get(carnet, 0)
             nota_total_posible += asignacion.valor_n
-        return nota_obtenida, nota_posible
+        return nota_obtenida, nota_total_posible
 
 class Actividad:
     def __init__(self, act_id, name, valor_neto, valor_de_calificacion, date, h_apertura, h_cierre, type_a):
