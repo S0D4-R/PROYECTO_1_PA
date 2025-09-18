@@ -399,6 +399,7 @@ class Student(User):
 
                 case "7": #pablo
                     print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
+                    guardar(engineering_faculty)
                     break
                 case _:
                     print("Opcion no válida, por favor intentelo de nuevo...........")
@@ -647,6 +648,7 @@ class Teacher(User):
                             print("La clave del curso no existe")
                 case "2":
                     print("Saliendo...")
+                    guardar(engineering_faculty)
                     break
                 case _:
                     print("Opción inválida")
@@ -765,7 +767,7 @@ class Actividad:
     def from_dict(data):
         actividad = Actividad(
             data["act_id"], data["name"], data["valor_n"], data["valor_dc"],
-            data["date"], data["h_apertura"], data["h_cierre"], data["type _a"]
+            data["date"], data["h_apertura"], data["h_cierre"], data["type_a"]
         )
         actividad.submission = data.get("submission", {})
         actividad.status = data.get("status", False)
@@ -782,6 +784,28 @@ class Actividad:
     def mostrar_datos(self):
         print(
             f"------------------------------\nNombre: {self.name}\n Valor: {self.valor_n}\nFecha Limite: {self.date}\nApertura: {self.h_apertura}\nCierre: {self.h_cierre}\nTipo: {self.type_a}\nEstado:{'Abierta' if self.status else 'Cerrada'}")
+
+def guardar(faculty):
+    try:
+        with open("estudiantes.txt", "w", encoding="utf-8") as students_file:
+            for id_s, alumno in faculty.students_db.items():
+                assigned_c_data = {cid: course_obj.name for cid, course_obj in alumno.assigned_c.items()}
+                students_file.write(
+                    f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_data)}\n")
+
+        with open("Profesores.txt", "w", encoding="utf-8") as teachers_file:
+            for id_t, teacher_temp in faculty.teachers_db.items():
+                teachers_file.write(
+                    f"{id_t}||{teacher_temp.name}||{teacher_temp.documento_personal}||{teacher_temp.address}||{teacher_temp.phone_u}||{teacher_temp.dob}||{teacher_temp.pass_ward}||{teacher_temp.id_cat}||{json.dumps(teacher_temp.assigned_courses)}\n")
+
+        with open("Cursos.txt", "w", encoding="utf-8") as courses_file:
+            for course_id, course_x in faculty.courses_db.items():
+                courses_file.write(
+                    f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps([a.to_dict() for a in course_x.asignaciones])}\n")
+
+        print("> Datos Guardados con éxito")
+    except Exception as e:
+        print(f"Error al guardar datos: {e}")
 
 
 def deploy_admin_menu(faculty):
@@ -914,26 +938,8 @@ def deploy_admin_menu(faculty):
                 match save_ops:
                     case "1":
                 """
-                try:
-                    with open("estudiantes.txt", "w", encoding="utf-8") as students_file:
-                        for id_s, alumno in faculty.students_db.items():
-                            assigned_c_data = {cid: course_obj.name for cid, course_obj in alumno.assigned_c.items()}
-                            students_file.write(
-                                f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_data)}\n")
 
-                    with open("Profesores.txt", "w", encoding="utf-8") as teachers_file:
-                        for id_t, teacher_temp in faculty.teachers_db.items():
-                            teachers_file.write(
-                                f"{id_t}||{teacher_temp.name}||{teacher_temp.documento_personal}||{teacher_temp.address}||{teacher_temp.phone_u}||{teacher_temp.dob}||{teacher_temp.pass_ward}||{teacher_temp.id_cat}||{json.dumps(teacher_temp.assigned_courses)}\n")
-
-                    with open("Cursos.txt", "w", encoding="utf-8") as courses_file:
-                        for course_id, course_x in faculty.courses_db.items():
-                            courses_file.write(
-                                f"{course_x.id_course}||{course_x.name}||{course_x.teacher_assigned}||{json.dumps(course_x.roster_alumnos)}||{json.dumps([a.to_dict() for a in course_x.asignaciones])}\n")
-
-                    print("> Datos Guardados con éxito")
-                except Exception as e:
-                    print(f"Error al guardar datos: {e}")
+                guardar(faculty)
             case "8":
                 print("> Gracias por usar el programa...")
                 admin_key = False
@@ -1067,11 +1073,11 @@ while key:
 
         elif user_pass in engineering_faculty.students_db and password_pass == engineering_faculty.students_db[
             user_pass].pass_ward:
-            key = engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
+            engineering_faculty.students_db[user_pass].deploy_s_menu(engineering_faculty)
 
         elif user_pass in engineering_faculty.teachers_db and password_pass == engineering_faculty.teachers_db[
             user_pass].pass_ward:
-            key = engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
+            engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
         elif user_pass == "0" and password_pass == "0":
             key = False
         else:
