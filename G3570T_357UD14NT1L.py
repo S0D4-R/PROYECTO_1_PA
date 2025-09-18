@@ -222,6 +222,20 @@ class Student(User):
             punteo_obtenido = asignacion.submission.get(self.carnet, "N/A")
             print(f"{indice}. Tipo: {asignacion.type_a} | Valor: {asignacion.valor_n} | Nota: {punteo_obtenido} | Estado: {estado}")
 
+    def ver_reportes(self):
+        print(f"\n{"---" * 4}MIS REPORTES{"---" * 4}")
+        if not self.reports:
+            print("No tienes reportes creados.")
+            return
+
+        for i, reporte in enumerate(self.reports, 1):
+            print(f"--- Reporte {i} ---")
+            print(f"Curso: {reporte['curso']}")
+            print(f"Profesor: {reporte['profesor']}")
+            print(f"Fecha: {reporte['fecha']}")
+            print(f"Descripción: {reporte['descripcion']}")
+            print("-" * 10)
+
     def deploy_s_menu(self,faculty):
         while True:
             opciones_menu = ["1.Ver cursos","2.Inscripción a cursos.","3.Ver perfil.","4.Trayectoria de cursos.","5.Ver notas de Cursos","6.Ver mis reportes.","7.Cerrar Sesión."]
@@ -378,9 +392,9 @@ class Student(User):
                     input("\nPresione enter Enter para volver al menú inicial...")
 
                 case "6":
-                    print(f"-----------MOSTRANDO MIS REPOTES"------------)
+                    print(f"-----------MOSTRANDO MIS REPOTES------------")
                     print()
-                    self.ver_reportes
+                    self.ver_reportes()
 
 
                 case "7": #pablo
