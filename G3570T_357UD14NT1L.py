@@ -714,6 +714,12 @@ class Curso:
             "asignaciones":[a.to_dict() for a in self.asignaciones]
         }
 
+    '''
+    Este método se encarga propiamente de revertir el metodo de 'to_dict'
+    ya que como un archivo json guarda los objetos por clave/valor 
+    necesitamos volver a convertir estos objetos almacenados en atributos de la 
+    clase 'cuso' y 'actividad'
+    '''
     @staticmethod
     def from_dict(data):
         curso = Curso(data['id_course'], data['name'], data['teacher_assigned'])
