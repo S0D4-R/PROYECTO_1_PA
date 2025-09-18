@@ -768,16 +768,16 @@ class Actividad:
 
 
 def doc_check(dpi, faculty):
-    if any(dpi == teacher.documento_personal for teacher in faculty.teachers_db.values()):
+    if len(dpi) != 13 or not dpi.isdigit():
+        print(f"El DPI no es valido, Debe contener 13 dígitos, intente de nuevo.....")
+        new_dpi = input("> Coloque el DPI del Usuario: ")
+        return doc_check(new_dpi, faculty)
+    if any(dpi= teacher.documento_personal for teacher in faculty.teachers_db.values()) or \
+            any(dpi == student.documento_personal for student in faculty.students_db.values()):
         print("> El DPI ya existe. Por favor, intente de nuevo.")
         new_dpi = input("> Coloque el DPI del Usuario: ")
         return doc_check(new_dpi, faculty)
-    elif any(dpi == student.documento_personal for student in faculty.students_db.values()):
-        print("> El DPI ya existe. Por favor, intente de nuevo.")
-        new_dpi = input("> Coloque el DPI del Usuario: ")
-        return doc_check(new_dpi, faculty)
-    else:
-        return dpi
+    return dpi
 
 
 def deploy_admin_menu(faculty):
