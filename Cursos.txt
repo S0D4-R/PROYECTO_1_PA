@@ -1,1 +1,0 @@
-FRA60354||Fraude Fiscal||DOC55731||{"STU87865": "R3X"}||[{"act_id": "ACT45800", "name": "ROBAR VIEJITAS", "valor_n": 15, "valor_dc": 0, "date": "12-08-2025", "h_apertura": "06:00", "h_cierre": "23:00", "type_a": "Tarea", "status": false, "submission": {}}]
