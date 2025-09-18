@@ -124,25 +124,22 @@ class Student(User):
         if curse.id_course in self.assigned_c:
             print("Ya te asignaste a este curso...")
             return
-        else:
-            self.assigned_c[curse.id_course] = curse
-            try:
-                curse.roster_alumnos = dict(json.loads(curse.roster_alumnos))
-            except Exception:
-                curse.roster_alumnos = {}
+        self.assigned_c[curse.id_course] = curse
 
-            curse.roster_alumnos[self.__id_s] = self.name
+        if not curse.roster_alumnos:
+            curse.roster_alumnos = {}
+        curse.roster_alumnos[self.carnet] = self.name
 
-            with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
-                for id_s, alumno in faculty.students_db.items():
-                    assigned_c_dict = {}
-                    for cid in alumno.assigned_c:
-                        assigned_c_dict[cid] = True
-                    archivo.write(f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_dict)}\n")
-
-            with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
-                for id_c, curso in faculty.courses_db.items():
-                    archivo_c.write(f"{curso.id_course}||{curso.name}||{curso.teacher_assigned}||{json.dumps(curso.roster_alumnos)}||{json.dumps(curso.asignaciones)}\n")
+        with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
+            for id_s, alumno in faculty.students_db.items():
+                assigned_c_data = {}
+                for cid, course_obj in alumno.assigned_c.items():
+                    assigned_c_data[cid] = course_obj.name
+                archivo.write(f"{id_s}||{alumno.name}||{alumno.documento_personal}||{alumno.address}||{alumno.phone_u}||{alumno.dob}||{alumno.pass_ward}||{alumno.carnet}||{alumno.gen}||{json.dumps(assigned_c_data)}\n")
+        with open("Cursos.txt", "w", encoding="utf-8") as archivo_c:
+            for id_c, curso in faculty.courses_db.items():
+                archivo_c.write(
+                    f"{curso.id_course}||{curso.name}||{curso.teacher_assigned}||{json.dumps(curso.roster_alumnos)}||{json.dumps([a.to_dict() for a in curso.asignaciones])}\n")
 
             print(f"Inscripción al curso con ID {curse.id_course} realizada correctamente.")
 
