@@ -816,7 +816,6 @@ def deploy_admin_menu(faculty):
         seleccion = menu(ops, "MENÚ ADMIN")
         admin_ops = ops[seleccion].split(".")[0]
         match admin_ops:
-
             # Creación de cursos
             case "1":
                 print("-" * 15, "COURSE CREATION", "-" * 15)

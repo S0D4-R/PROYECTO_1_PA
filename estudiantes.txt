@@ -1,1 +1,2 @@
 STU70309||Maria Perez||1234567891234||Diagonal 2 Quetzaltenango||12345678||2007-02-12 00:00:00||dino_123||STU70309||2025||{}
+STU11638||jackelin||3514584680902||peten||55436645||2005-08-26 00:00:00||jackelinjaguar||STU11638||2025||{}
