@@ -541,7 +541,7 @@ class Teacher(User):
                         raise horaFormatError("La hora debe tener 2 valores")
                     if len(secciones2[1]) != 2:
                         raise horaFormatError("Los deben tener 2 valores")
-                hora_close = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
+                hora_close = input("Ingrese la hora de cierre de la asignación (formato hh:mm): ")
                 if ":" in hora_close:
                     secciones3 = hora_close.split(":")
                     if len(secciones3) != 2:
@@ -579,6 +579,9 @@ class Teacher(User):
                 print("Error inesperado", e)
 
     def crear_reporte(self, curso):
+        if not curso.roster_alumnos:
+            print("No hay alumnos en el curso")
+            return
         print("\n" + "-" * 10 + " CREAR REPORTE " + "-" * 10)
         try:
             while True:
