@@ -413,7 +413,7 @@ class Teacher(User):
     def id_cat(self, id_cat):
         pass
 
-    def subir_notas(self, curso, faculty):
+    def subir_notas(self, curso):
         rig = ["1. Actualizar las notas de todas las actividades","2. Actualizar notas de una actividad"]
         opciones = menu(rig, "SUBIR NOTAS")
         option = rig[opciones].split(".")[0]
@@ -592,7 +592,7 @@ class Teacher(User):
                 for id_est in curso.roster_alumnos:
                     engineering_faculty.students_db[id_est].display_info()
                 id_search = input("Ingrese la ID del estudiante: ")
-                if id_search not in id_search not in curso.roster_alumnos:
+                if id_search not in curso.roster_alumnos:
                     print("El estudiante no está en el curso")
                 else:
                     break
@@ -641,7 +641,7 @@ class Teacher(User):
                                         case "1":
                                             self.crear_asignacion(course_find)
                                         case "2":
-                                            self.subir_notas(course_find, engineering_faculty)
+                                            self.subir_notas(course_find)
                                         case "3":
                                             self.crear_reporte(course_find)
                                         case _:
