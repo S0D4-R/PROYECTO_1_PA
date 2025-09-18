@@ -365,8 +365,8 @@ class Student(User):
                     if not self.assigned_c:
                         print("NO ESTAS INSCRITO EN NINGUN CURSO......")
                     else:
-                        for curso_nombre, curso in self.assigned_c.items():
-                            nota_promedio, _ = curso.calcular_nota()
+                        for curso, in self.assigned_c.values():
+                            nota_promedio, _ = curso.calcular_nota(self.carnet)
                             mensaje =""
                             if nota_promedio < 30:
                                 mensaje = "DEBES MEJORAR TU NOTA...."
