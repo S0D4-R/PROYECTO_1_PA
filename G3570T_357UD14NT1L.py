@@ -490,6 +490,8 @@ class Teacher(User):
                 else:
                     for actividad in curso.asignaciones:
                         if actividad.id == id_act:
+                            if not curso.roster_alumnos:
+                                print("No hay estudiantes en este curso")
                             for id_est in curso.roster_alumnos:
                                 for act in engineering_faculty.students_db[id_est].assigned_c[curso.id_course]["actividades"]:
                                     if act[0].act_id == id_act:
@@ -528,7 +530,7 @@ class Teacher(User):
                     if curso_option.name == curso:
                         curso_search = self.assigned_courses[i]
 
-                act_id = input("Ingrese la ID de la actividad: ")
+                act_id = id_creation(curso.name,"A")
                 act_name = input("Ingrese el nombre de la actividad: ")
                 if any(act_name.lower() == act.name.lower() for act in curso_search.asignaciones):
                     raise nameDupeError("Ya hay una actividad con ese nombre")
@@ -687,6 +689,7 @@ class Teacher(User):
         if len(self.assigned_courses)>=1:
             for course in self.assigned_courses:
                 print(f"\nID: {course}, Nombre: {faculty.courses_db[course].name}")
+            return ""
         else:
             print("No hay cursos asignados")
             return ""
@@ -780,6 +783,8 @@ def id_creation(name_x, typeP):
     elif typeP == "T":
         id_gen = "DOC" + str(ran_code1) + str(ran_code2)
         return id_gen
+    elif typeP == "A":
+        return "ACT" + str(ran_code1) + str(ran_code2)
     else:
         return None
 
