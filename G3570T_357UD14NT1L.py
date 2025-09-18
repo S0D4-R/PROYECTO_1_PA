@@ -688,6 +688,7 @@ class Teacher(User):
                 print(f"\nID: {course}, Nombre: {faculty.courses_db[course].name}")
         else:
             print("No hay cursos asignados")
+            return ""
 
 
 class Curso:
@@ -892,10 +893,10 @@ def deploy_admin_menu(faculty):
                     type_conf = True
 
             case "3":
-                print("-" * 15, "CURSOS DISPONIBLES", "-" * 15)
+                print("-" * 17, "CURSOS DISPONIBLES", "-" * 17)
+                print("No.".ljust(8) + "Nombre del curso".ljust(30) + "Maestro asignado".ljust(20) +f"\n" + "---"*18)
                 for index, course in enumerate(faculty.courses_db.values(), start=1):
-                    print(
-                        f"> {index}. {course.name}|Maestro asignado: {faculty.teachers_db[course.teacher_assigned].name}")
+                    print(str(index).ljust(8) + course.name.ljust(30) + faculty.teachers_db[course.teacher_assigned].name.ljust(20))
 
             case "4":
                 print("-" * 15, "ALUMNOS REGISTRADOS", "-" * 15)
@@ -939,7 +940,7 @@ def deploy_admin_menu(faculty):
                     faculty.courses_db[class_assignment].teacher_assigned = faculty.teachers_db[
                         teacher_assignment].codigo_catredatico
                     faculty.teachers_db[teacher_assignment].assigned_courses.append(
-                        engineering_faculty.courses_db[class_assignment])
+                        class_assignment)
                     print("Maestro asignado con éxito...\n\n")
 
             case "7":
