@@ -750,6 +750,16 @@ class Actividad:
 
     def to_dict(self):
         return {
+            "act_id": self.__act_id,
+            "name":self.name,
+            "valor_n":self.valor_n,
+            "valor_dc":self.valor_dc,
+            "date":self.date,
+            "h_apertura":self.h_apertura,
+            "h_cierre":self.h_cierre,
+            "type_a":self.type_a,
+            "status":self.status,
+            "submission": self.submission
 
         }
 
