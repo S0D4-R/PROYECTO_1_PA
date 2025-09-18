@@ -1006,7 +1006,7 @@ def id_creation(name_x, typeP):
 
 def b_day_check(bday):
     try:
-        datetime.datetime.strptime(, "%d/%m/%Y")
+        bday = datetime.datetime.strptime(bday,"%d/%m/%Y")
         return bday
     except ValueError:
         print(f"Formato de fecha invalido, Intentelo de nuevo.....")
