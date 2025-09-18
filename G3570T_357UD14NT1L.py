@@ -696,10 +696,7 @@ class Curso:
             "teacher_assigned":self.teacher_assigned,
             "roster_alumnos":self.roster_alumnos,
             "asignaciones":[a.to_dict() for a in self.asignaciones]
-
         }
-
-
 
     def mostrar_datos(self):
         print(
