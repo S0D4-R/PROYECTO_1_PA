@@ -589,11 +589,12 @@ class Teacher(User):
         if not curso.roster_alumnos:
             print("No hay alumnos en el curso")
             return
-        print("\n" + "-" * 10 + " CREAR REPORTE " + "-" * 10)
+        print("\n" + "_" * 10 + " CREAR REPORTE " + "_" * 10)
         try:
             while True:
+                print("ID".ljust(15)+"Nombre".ljust(30) + "\n-------------------------")
                 for id_est in curso.roster_alumnos:
-                    engineering_faculty.students_db[id_est].display_info()
+                    print(engineering_faculty.students_db[id_est].carnet.ljust(15) + engineering_faculty.students_db[id_est].name.ljust(10))
                 id_search = input("Ingrese la ID del estudiante: ")
                 if id_search not in curso.roster_alumnos:
                     print("El estudiante no está en el curso")
@@ -615,6 +616,7 @@ class Teacher(User):
                         "descripcion": desc
                     }
                     est.reports.append(report)
+                    print("Reporte emitido exitosamente")
         except ValueError as e:
             print(e)
         except Exception as e:
@@ -720,12 +722,10 @@ class Curso:
                     print(student.display_info())
         else:
             print("No hay alumnos asignados")
-        print("\nAsignaciones: ")
-        if self.asignaciones:
-            for asignacion in self.asignaciones:
-                asignacion.mostrar_datos()
+        if len(self.asignaciones) > 0:
+            print(f"Hay {len(self.asignaciones)} asignaciones en este curso\n")
         else:
-            print("No hay asignaciones asignadas")
+            print("No hay asignaciones asignadas\n")
 
     def calcular_nota(self, carnet):
         nota_obtenida = 0
@@ -1092,6 +1092,7 @@ while key:
             engineering_faculty.teachers_db[user_pass].deploy_t_menu(engineering_faculty)
         elif user_pass == "0" and password_pass == "0":
             guardar(engineering_faculty)
+            print("Gracias por usar el programa")
             key = False
         else:
             print("> Usuario o Contraseña incorrectos, por favor intente de nuevo...")
