@@ -384,9 +384,9 @@ class Student(User):
                     if not self.assigned_c:
                         print("NO ESTAS INSCRITO EN NINGUN CURSO......")
                     else:
-                        for curso, in self.assigned_c.values():
+                        for curso in self.assigned_c.values():
                             nota_promedio, _ = curso.calcular_nota(self.carnet)
-                            mensaje =""
+                            mensaje = ""
                             if nota_promedio < 30:
                                 mensaje = "DEBES MEJORAR TU NOTA...."
                             elif nota_promedio >= 50:
@@ -394,19 +394,21 @@ class Student(User):
 
                             print(f"Curso: {curso.name} | Nota Promedio: {nota_promedio} | Estado: {mensaje}")
 
-                    input("\nPresione enter Enter para volver al menú inicial...")
-
+                        input("\nPresione enter Enter para volver al menú inicial...")
                 case "6":
                     print(f"-----------MOSTRANDO MIS REPORTES------------")
                     print()
                     self.ver_reportes()
 
-                case "7": #pablo
+                case "7":  # pablo
                     print(f"SALIENDO DEL MENÚ DE ESTUDIANTE - VOLVIENDO AL LOGIN INICIAL...........")
                     guardar(engineering_faculty)
                     break
                 case _:
                     print("Opcion no válida, por favor intentelo de nuevo...........")
+
+
+
 
 class Teacher(User):
     def __init__(self, name, dpi, address, phone, dob, password_u, id_cat):
