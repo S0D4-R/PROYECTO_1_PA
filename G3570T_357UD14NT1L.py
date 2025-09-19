@@ -140,11 +140,16 @@ class Student(User):
         if curse.id_course in self.assigned_c:
             print("Ya te asignaste a este curso...")
             return
+
+        if len(curse.asignaciones) > 0:
+            for actividad in curse.asignaciones:
+                actividad.submission[self.carnet] = "0"
         self.assigned_c[curse.id_course] = curse
 
         if not curse.roster_alumnos:
             curse.roster_alumnos = {}
         curse.roster_alumnos[self.carnet] = self.name
+
 
         with open("estudiantes.txt", "w", encoding="utf-8") as archivo:
             for id_s, alumno in faculty.students_db.items():
@@ -530,7 +535,7 @@ class Teacher(User):
                         raise fechaFormatError("El año debe tener 4 valores")
                 else:
                     raise fechaFormatError("Debe ingresar el formato dd-mm-aaaa")
-                if datetime.datetime.strptime(fecha, "%d-%m-%Y") < datetime.date.today():
+                if datetime.datetime.strptime(fecha, "%d-%m-%Y") < datetime.datetime.today():
                     raise ValueError("La fecha de vencimiento debe ser mayor a la fecha actual")
                 hora_open = input("Ingrese la hora de apertura de la asignación (formato hh:mm): ")
                 if ":" in hora_open:
@@ -567,8 +572,8 @@ class Teacher(User):
 
                 print(f"Asignación '{act_name}' creada con éxito!")
 
-            except ValueError:
-                print("Ingrese solo números enteros")
+            except ValueError as e:
+                print(e)
             except nameDupeError as e:
                 print(e)
             except fechaFormatError as e:
